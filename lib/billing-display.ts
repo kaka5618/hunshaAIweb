@@ -5,7 +5,7 @@ import {
   subscriptionPlans,
 } from "@/constants/billing";
 
-export const DEFAULT_ONE_TIME_PACK_KEY: PackKey = "pack_200";
+export const DEFAULT_ONE_TIME_PACK_KEY: PackKey = "bridal_report";
 export const MARKETING_SUBSCRIPTION_PLAN_FAMILIES = [
   {
     id: "starter",
@@ -29,6 +29,10 @@ function formatCredits(credits: number) {
   return new Intl.NumberFormat("en-US").format(credits);
 }
 
+function formatUsdPriceWithCents(priceCents: number) {
+  return `$${(priceCents / 100).toFixed(2)}`;
+}
+
 function getCreditsPerGrant(planKey: PlanKey) {
   const plan = subscriptionPlans[planKey];
 
@@ -46,7 +50,7 @@ export function getDefaultOneTimePack() {
     key: DEFAULT_ONE_TIME_PACK_KEY,
     pack,
     displayCredits: formatCredits(pack.credits),
-    displayPrice: formatUsdPrice(pack.priceCents),
+    displayPrice: formatUsdPriceWithCents(pack.priceCents),
   };
 }
 

@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyWebhookSignature } from "@/lib/payments/creem";
 import { db } from "@/lib/db";
-import { creditLedger, payment as paymentTable, subscription as subscriptionTable, user as userTable } from "@/lib/db/schema";
+import {
+  bridalPayment,
+  bridalReport,
+  creditLedger,
+  payment as paymentTable,
+  subscription as subscriptionTable,
+  user as userTable,
+} from "@/lib/db/schema";
 import { isPackKey, isSubscriptionKey, oneTimePacks, subscriptionPlans, PlanKey } from "@/constants/billing";
 import {
   computeInitialGrant,
@@ -11,12 +18,15 @@ import {
 } from "@/lib/billing/subscription";
 import { eq, sql } from "drizzle-orm";
 import { sendPurchaseEmail } from "@/lib/email";
+import { BRIDAL_REPORT_PRODUCT_TYPE } from "@/lib/bridal/constants";
 
 type CreemMetadata = {
   userId?: string;
   key?: string;
   kind?: "subscription" | "one_time";
   subscriptionId?: string;
+  productType?: string;
+  reportId?: string;
 };
 
 type CreemDateValue = string | number | Date | null | undefined;
@@ -160,6 +170,12 @@ export async function POST(req: NextRequest) {
     const userId = metadata.userId;
     const key = metadata.key;
     const kind = metadata.kind;
+    const reportId = metadata.reportId;
+    const isBridalReportPayment =
+      kind === "one_time" &&
+      key === "bridal_report" &&
+      metadata.productType === BRIDAL_REPORT_PRODUCT_TYPE &&
+      Boolean(reportId);
 
     if (!userId || !key || !kind) {
       // Don't log details to avoid PII exposure
@@ -190,6 +206,12 @@ export async function POST(req: NextRequest) {
       .from(paymentTable)
       .where(eq(paymentTable.providerPaymentId, paymentId));
     if (existing.length > 0) {
+      if (isBridalReportPayment && reportId) {
+        await db
+          .update(bridalReport)
+          .set({ userId, isPaid: true, status: "paid" })
+          .where(eq(bridalReport.id, reportId));
+      }
       return NextResponse.json({ received: true });
     }
 
@@ -391,6 +413,45 @@ export async function POST(req: NextRequest) {
         } else {
           await deleteSubscriptionSchedule(subscriptionId, tx);
         }
+      }
+
+      if (isBridalReportPayment && reportId) {
+        const [report] = await tx
+          .select({
+            sessionId: bridalReport.sessionId,
+          })
+          .from(bridalReport)
+          .where(eq(bridalReport.id, reportId))
+          .limit(1);
+
+        await tx
+          .update(bridalReport)
+          .set({ userId, isPaid: true, status: "paid" })
+          .where(eq(bridalReport.id, reportId));
+
+        await tx
+          .insert(bridalPayment)
+          .values({
+            id: paymentId,
+            userId,
+            sessionId: report?.sessionId,
+            reportId,
+            provider: "creem",
+            amountCents,
+            currency: currency.toLowerCase(),
+            status: "paid",
+            creemPaymentId: paymentId,
+            raw: JSON.stringify(event).slice(0, 65000),
+            paidAt: new Date(),
+          })
+          .onConflictDoUpdate({
+            target: bridalPayment.creemPaymentId,
+            set: {
+              status: "paid",
+              paidAt: new Date(),
+              raw: JSON.stringify(event).slice(0, 65000),
+            },
+          });
       }
     });
 

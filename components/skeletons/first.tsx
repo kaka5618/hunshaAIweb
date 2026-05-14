@@ -10,32 +10,30 @@ export const SkeletonOne = () => {
       <div className=" w-full md:w-[90%] p-5  mx-auto bg-card shadow-2xl group h-full">
         <div className="flex flex-1 w-full h-full flex-col space-y-2 opacity-20 dark:opacity-60 ">
           <UserMessage>
-            I want to generate an image of two people, fighting outside a bar.
-            They fight to the core. Once they&apos;re done, they sit down and
-            drink beer.
+            I want a wedding dress that feels romantic, but I need to stay
+            under budget for my first boutique appointment.
           </UserMessage>
           <AIMessage>
-            Certainly, I&apos;m generating this picture for you in a while. BTW
-            are you talking about THAT movie?
+            I&apos;ll turn your venue, season, budget, and comfort notes into
+            three focused bridal look directions.
           </AIMessage>
           <UserMessage>
-            I don&apos;t know what you&apos;re talking about.
+            I am worried a stylist will pull dresses that look beautiful but
+            are not practical for me.
           </UserMessage>
-          <AIMessage>Are you sure?</AIMessage>
+          <AIMessage>That is exactly what the report is designed to prevent.</AIMessage>
           <UserMessage>
-            Yes, I&apos;m sure. But if you&apos;re generating that scene, make
-            sure the fighters have clown shoes and rubber chickens instead of
-            fists!
+            Can it give me words to use during the appointment?
           </UserMessage>
-          <AIMessage>Affirmative, here&apos;s your image.</AIMessage>
+          <AIMessage>Yes. You will get a consultant script and clear skip-first guidance.</AIMessage>
         </div>
       </div>
       <div className="flex flex-col gap-4 absolute inset-0">
         <div className="p-2 border border-border bg-muted rounded-[32px]  r h-[250px] w-[250px] md:h-[300px] md:w-[300px] mx-auto  flex-shrink-0  z-20 group-hover:scale-[1.02] transition duration-200">
           <div className="p-2 bg-card border border-border rounded-[24px] flex-shrink-0">
             <BlurImage
-              src="/skeleton-one.png"
-              alt="header"
+              src="/bridal-feature-detail.png"
+              alt="Bridal fabric and lace detail"
               width={800}
               height={800}
               className="rounded-[20px] w-full h-full object-cover object-bottom aspect-square flex-shrink-0 grayscale"
@@ -45,8 +43,8 @@ export const SkeletonOne = () => {
         <div className="p-2 border border-border bg-muted rounded-[32px]  r h-[250px] w-[250px] md:h-[300px] md:w-[300px] mx-auto  flex-shrink-0  z-20 group-hover:scale-[1.02] transition duration-200">
           <div className="p-2 bg-card border border-border rounded-[24px] flex-shrink-0">
             <BlurImage
-              src="/tyler.jpeg"
-              alt="header"
+              src="/bridal-feature-look.jpeg"
+              alt="Bridal dress recommendation preview"
               width={800}
               height={800}
               className="rounded-[20px] w-full h-full object-cover object-bottom aspect-square flex-shrink-0 grayscale"

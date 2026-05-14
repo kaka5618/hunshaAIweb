@@ -1,71 +1,74 @@
 "use client";
-import { stagger, useAnimate } from "framer-motion";
-import React, { useState } from "react";
+
+import Image from "next/image";
+import { motion } from "framer-motion";
+
+const recommendations = [
+  {
+    name: "Romantic A-line",
+    detail: "Garden venue · Lace · $1.8k-$2.6k",
+    score: "96%",
+  },
+  {
+    name: "Clean Satin Column",
+    detail: "City hall · Satin · $1.4k-$2.2k",
+    score: "91%",
+  },
+  {
+    name: "Soft Sleeve Classic",
+    detail: "Chapel · Crepe · $2.0k-$3.1k",
+    score: "88%",
+  },
+];
 
 export const SkeletonTwo = () => {
-  const [scope, animate] = useAnimate();
-  const [animating, setAnimating] = useState(false);
-
-  const handleAnimation = async () => {
-    if (animating) return;
-
-    setAnimating(true);
-    await animate(
-      ".message",
-      {
-        opacity: [0, 1],
-        y: [20, 0],
-      },
-      {
-        delay: stagger(0.5),
-      }
-    );
-    setAnimating(false);
-  };
   return (
-    <div className="relative h-full w-full mt-4">
-      <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-background via-background to-transparent w-full pointer-events-none" />
-      <div className="p-4 border border-border bg-muted rounded-[32px] h-full z-20">
-        <div className="p-2 bg-card border border-border rounded-[24px] h-full">
-          <div className="w-20 rounded-full bg-muted/80 mx-auto h-6" />
-          <div
-            onMouseEnter={handleAnimation}
-            ref={scope}
-            className="content mt-4 w-[90%] mx-auto"
-          >
-            <UserMessage>
-              Hello chat! Give me all the links from this website -
-              https://ui.aceternity.com
-            </UserMessage>
-            <AIMessage>Why don&apos;t you do it yourself?</AIMessage>
-            <UserMessage>
-              Umm.. Because I&apos;m paying $20/mo for your services?
-            </UserMessage>
-            <AIMessage>You think I work for the money?</AIMessage>
-            <UserMessage>Who do you think you are?</UserMessage>
-            <AIMessage>I&apos; batman.</AIMessage>
-            <AIMessage>
-              Now Playing <br />{" "}
-              <span className="italic">Something in the way - Nirvana</span>
-            </AIMessage>
+    <div className="relative mt-4 h-full w-full">
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background via-background to-transparent pointer-events-none" />
+      <div className="mx-auto h-full max-w-[360px] rounded-[36px] border border-border bg-muted p-3 shadow-2xl">
+        <div className="h-full rounded-[28px] border border-border bg-card p-4">
+          <div className="mx-auto h-5 w-20 rounded-full bg-muted" />
+
+          <div className="mt-5 overflow-hidden rounded-2xl border border-border">
+            <Image
+              src="/bridal-feature-look.jpeg"
+              alt="Mobile bridal look preview"
+              width={700}
+              height={700}
+              className="h-44 w-full object-cover object-top"
+            />
+          </div>
+
+          <div className="mt-4">
+            <p className="text-sm font-semibold text-foreground">AI Bridal Preview</p>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">
+              Three visual directions with neckline, waist, sleeve, and venue detail cards.
+            </p>
+          </div>
+
+          <div className="mt-4 space-y-2">
+            {recommendations.map((item, index) => (
+              <motion.div
+                key={item.name}
+                initial={{ opacity: 0.65, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.08 }}
+                className="rounded-xl border border-border bg-background p-3"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-medium text-foreground">{item.name}</p>
+                    <p className="mt-1 text-[10px] text-muted-foreground">{item.detail}</p>
+                  </div>
+                  <span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-medium text-primary">
+                    {item.score}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-const UserMessage = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="message bg-muted text-foreground p-2 sm:p-4 text-[10px] sm:text-xs my-4 rounded-md">
-      {children}
-    </div>
-  );
-};
-const AIMessage = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="message bg-foreground text-background p-2 sm:p-4 text-[10px] sm:text-xs my-4 rounded-md">
-      {children}
     </div>
   );
 };

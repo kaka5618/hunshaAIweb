@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "./button";
 import { useTranslations } from 'next-intl';
+import { LocaleLink } from "@/components/locale-link";
 
 export const CTA = () => {
   const t = useTranslations('cta');
@@ -33,7 +34,7 @@ export const CTA = () => {
               </p>
 
               <div className="relative z-10 mx-auto flex justify-center mt-6">
-                <Button as="a" href="https://applysistine.vercel.app" target="_blank" rel="noopener noreferrer">{t('button')}</Button>
+                <Button as={LocaleLink} href="/quiz">{t('button')}</Button>
               </div>
             </div>
           </div>

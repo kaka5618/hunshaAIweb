@@ -1,9 +1,9 @@
 {
   "common": {
     "brand": {
-      "name": "SISTINE",
-      "tagline": "Sistine AI & Sistine Labs",
-      "copyright": "Copyright © 2025 Sistine AI & Sistine Labs",
+      "name": "Find My Bridal Look",
+      "tagline": "AI bridal style confidence report",
+      "copyright": "Copyright © 2026 Find My Bridal Look",
       "allRightsReserved": "All rights reserved"
     },
     "actions": {
@@ -37,10 +37,11 @@
   "navigation": {
     "main": {
       "pricing": "Pricing",
+      "quiz": "Style Quiz",
       "blog": "Blog",
       "contact": "Contact",
       "docs": "Docs",
-      "dashboard": "Dashboard",
+      "dashboard": "My Reports",
       "demo": "Demo",
       "chat": "Chat",
       "image": "Image",
@@ -64,49 +65,49 @@
     }
   },
   "hero": {
-    "badge": "⚡ The First Starter Built for Vibe Coding",
-    "title": "Vibe Code Your AI SaaS to Production",
-    "description": "No coding skills? Perfect. Sistine + AI coding assistants = Your SaaS idea live in hours. Just describe what you want. Ship what users love.",
+    "badge": "Bridal Style Report · $19.90 one-time",
+    "title": "Find My Bridal Look",
+    "description": "Get a personal bridal style report before your salon appointment: three dress directions, AI visuals, budget guardrails, and consultant scripts you can bring with you.",
     "cta": {
-      "primary": "View Docs",
-      "secondary": "Get Code"
+      "primary": "Start the Style Quiz",
+      "secondary": "See What's Included"
     },
     "modal": {
-      "eyebrow": "Code Access",
-      "title": "Get the source code from our course community",
-      "description": "The full Sistine Starter codebase, update notes, and companion materials are distributed inside our course community.",
-      "instruction": "If you're enrolled, open the course page below in a new tab to access the code, updates, and course resources.",
-      "linkLabel": "Open the course community",
-      "linkHint": "Course community: https://scys.com/deepsea/2001/course",
+      "eyebrow": "Report Preview",
+      "title": "A practical bridal report before your appointment",
+      "description": "Your report combines quiz answers, AI copy, visual look directions, and shopping guardrails.",
+      "instruction": "Start with the style quiz, upload a reference photo, then unlock the full report when the preview is ready.",
+      "linkLabel": "Start the style quiz",
+      "linkHint": "Your photo and report data are stored temporarily.",
       "close": "Close"
     }
   },
   "features": {
-    "title": "Everything You Need for Vibe Coding Success",
-    "subtitle": "Stop wasting time on boilerplate. Focus on describing your unique features while Sistine handles the foundation. Ship faster with AI.",
+    "title": "Walk Into Your Bridal Appointment With a Plan",
+    "subtitle": "Turn your venue, budget, body-comfort notes, and style preferences into a practical report built for real dress shopping.",
     "items": {
       "aiOptimized": {
-        "title": "Built for AI-Assisted Development",
-        "description": "Perfectly structured for Cursor, Windsurf, and Claude Code. Every file, every component optimized for AI understanding and modification."
+        "title": "Three Style Directions",
+        "description": "Compare romantic, modern, classic, or venue-led dress directions before you step into a salon."
       },
       "zeroPipeline": {
-        "title": "Zero to Production Pipeline",
-        "description": "Authentication, payments, database, deployment - all configured. Just prompt your AI assistant and watch your SaaS come to life."
+        "title": "AI Bridal Visuals",
+        "description": "See full-body concepts plus neckline, waist, sleeve, and venue detail images for each direction."
       },
       "nonTechnical": {
-        "title": "Non-Technical Founder Friendly",
-        "description": "Don't know React from Rails? Doesn't matter. If you can describe your idea clearly, you can ship a SaaS product."
+        "title": "Budget Guardrails",
+        "description": "Know what to try first, what to skip, and where upgrades like lace, trains, or structure may push the price."
       },
       "productionGrade": {
-        "title": "Production-Grade from Day One",
-        "description": "Real users, real payments, real scale. Built on Next.js, PostgreSQL, and Creem - the same stack powering billion-dollar companies."
+        "title": "Consultant Scripts",
+        "description": "Bring clear language to your appointment so the stylist can start with dresses that match your taste and budget."
       }
     }
   },
   "pricing": {
-    "title": "Pricing Plans",
-    "subtitle": "Simple, transparent pricing that scales with your business",
-    "description": "Choose between live recurring subscriptions and a one-time credit top-up. Every price on this page is driven directly from the billing config used at checkout.",
+    "title": "One Report. One Price.",
+    "subtitle": "A custom Bridal Style & Appointment Confidence Report for $19.90.",
+    "description": "No subscription and no credits. Complete the quiz, preview your first bridal look, then unlock the full report when you're ready.",
     "billing": {
       "monthly": "Monthly",
       "yearly": "Yearly"
@@ -124,7 +125,7 @@
       },
       "values": {
         "subscription": "Subscription",
-        "oneTime": "One-time pack",
+        "oneTime": "One-time report",
         "notApplicable": "N/A",
         "creditsPerMonth": "{credits} / month",
         "creditsPerYear": "{credits} / year",
@@ -133,7 +134,7 @@
         "instantAfterPayment": "Added instantly after payment",
         "bestForStarter": "Shipping an MVP with recurring usage",
         "bestForPro": "Heavier production workloads and frequent generation",
-        "bestForCredits": "Top-ups without changing your subscription"
+        "bestForCredits": "Brides preparing for salon appointments"
       }
     },
     "details": {
@@ -141,8 +142,8 @@
       "yearlyCredits": "{credits} credits per year",
       "subscriptionDelivery": "Recurring subscription billed through Creem",
       "yearlyInstallments": "Annual billing releases {credits} credits each month",
-      "oneTimeCredits": "{credits} credits in one payment",
-      "oneTimeDelivery": "One-time checkout, credits added instantly"
+      "oneTimeCredits": "One complete report",
+      "oneTimeDelivery": "One-time checkout, report unlocked after payment"
     },
     "tiers": {
       "starter": {
@@ -168,13 +169,13 @@
         ]
       },
       "credits": {
-        "name": "Credits Pack",
-        "description": "One-time credits you can stack on top of any plan.",
-        "cta": "Buy {credits} Credits",
+        "name": "Bridal Style Report",
+        "description": "A personalized report with 3 bridal style directions, AI images, budget advice, and appointment scripts.",
+        "cta": "Unlock My Full Report",
         "features": [
-          "Credits are added immediately after payment",
-          "Keeps your current subscription unchanged",
-          "Useful for launches, spikes, and one-off bursts"
+          "3 recommended bridal style directions",
+          "15 AI-generated bridal and detail images",
+          "Budget guardrails and consultant talking points"
         ]
       }
     }
@@ -266,42 +267,42 @@
   },
   "gridFeatures": {
     "aiReady": {
-      "title": "AI-Ready Architecture",
-      "description": "Pre-configured AI workflows for chat, image, and video generation, powered by Volcano Engine by default."
+      "title": "Quiz-Led Recommendations",
+      "description": "Your report starts from venue, season, budget, silhouette, neckline, and comfort preferences."
     },
     "creem": {
-      "title": "Creem Payments",
-      "description": "Complete billing system with subscriptions, usage tracking, and customer portal built-in."
+      "title": "One-Time Purchase",
+      "description": "Unlock the full report through Creem with a simple one-time checkout. No subscription."
     },
     "auth": {
-      "title": "Authentication System",
-      "description": "Better Auth with email/password and OAuth. Session management and protected routes ready."
+      "title": "Report Vault",
+      "description": "Create an account only when you unlock, so your report is saved and easy to find later."
     },
     "deploy": {
-      "title": "One-Click Deploy",
-      "description": "Deploy to Vercel, Railway, or any platform instantly. Production-ready from day one."
+      "title": "Free Preview First",
+      "description": "See the first bridal direction before deciding whether to unlock the full report."
     },
     "typescript": {
-      "title": "TypeScript + Tailwind",
-      "description": "Modern tech stack with Next.js 14, TypeScript, Tailwind CSS, and shadcn/ui components."
+      "title": "Detailed Visuals",
+      "description": "Full-body concepts plus neckline, waist, sleeve, and venue scene images for each direction."
     },
     "database": {
-      "title": "Database + ORM",
-      "description": "PostgreSQL with Drizzle ORM. Type-safe queries and migrations configured."
+      "title": "Appointment Language",
+      "description": "Bring a clear consultant script instead of vague inspiration screenshots."
     },
     "seo": {
-      "title": "SEO & Marketing",
-      "description": "Meta tags, Open Graph, sitemap, and analytics. Everything for organic growth."
+      "title": "Privacy-Minded",
+      "description": "Original uploads are temporary; your share page never exposes private quiz or budget details."
     },
     "vibeCoding": {
-      "title": "Vibe Coding Ready",
-      "description": "Optimized for Cursor, Windsurf, and Claude Code. AI understands every component."
+      "title": "PDF Ready",
+      "description": "Download a report you can revisit, share, and bring into your dress appointment."
     }
   },
   "cta": {
-    "title": "Ready to Ship Your AI SaaS?",
-    "description": "Join hundreds of developers who launched their SaaS products with Sistine and Vibe Coding.",
-    "button": "Get Code"
+    "title": "Ready to find your bridal direction?",
+    "description": "Start with the quiz. Your preview comes first, and the full report unlocks only when you're ready.",
+    "button": "Start the Style Quiz"
   },
   "auth": {
     "login": {
@@ -972,6 +973,266 @@
         "designation": "The Explorer"
       }
     ]
+  },
+  "bridalQuiz": {
+    "meta": {
+      "title": "Bridal Style Quiz",
+      "description": "Answer a few questions to begin your personalized bridal style report."
+    },
+    "eyebrow": "Bridal Style Quiz",
+    "title": "Tell us what your bridal appointment needs to solve",
+    "description": "Your answers shape the style directions, budget advice, visual prompts, and consultant scripts in your report.",
+    "step": "Step {current} of {total}",
+    "singleHint": "Choose one option.",
+    "multiHint": "Choose all that apply.",
+    "actions": {
+      "back": "Back",
+      "next": "Next",
+      "finish": "Save and continue",
+      "saving": "Saving..."
+    },
+    "errors": {
+      "required": "Choose an option before continuing.",
+      "session": "We could not start your bridal session. Please try again.",
+      "save": "We could not save your quiz. Please try again."
+    },
+    "questions": {
+      "venue": {
+        "title": "What kind of venue are you getting married at?",
+        "options": {
+          "garden": "Garden or outdoor ceremony",
+          "church": "Church or chapel",
+          "beach": "Beach or coastal venue",
+          "ballroom": "Ballroom or hotel",
+          "cityHall": "City hall or intimate ceremony",
+          "outdoorEstate": "Estate, vineyard, or countryside venue"
+        }
+      },
+      "season": {
+        "title": "What season is your wedding?",
+        "options": {
+          "spring": "Spring",
+          "summer": "Summer",
+          "fall": "Fall",
+          "winter": "Winter",
+          "notSure": "Not sure yet"
+        }
+      },
+      "dressBudget": {
+        "title": "What is your dress budget?",
+        "options": {
+          "under1000": "Under $1,000",
+          "1000to2000": "$1,000 - $2,000",
+          "2000to3500": "$2,000 - $3,500",
+          "3500plus": "$3,500+",
+          "notSure": "I need help setting a range"
+        }
+      },
+      "styleWords": {
+        "title": "Which words describe the bridal look you like?",
+        "options": {
+          "romantic": "Romantic",
+          "classic": "Classic",
+          "modern": "Modern",
+          "minimal": "Minimal",
+          "glamorous": "Glamorous",
+          "bohemian": "Bohemian"
+        }
+      },
+      "silhouettes": {
+        "title": "Which silhouettes are you curious about?",
+        "options": {
+          "aLine": "A-line",
+          "ballGown": "Ball gown",
+          "mermaid": "Mermaid or fit-and-flare",
+          "sheath": "Sheath or column",
+          "empire": "Empire waist",
+          "notSure": "Not sure yet"
+        }
+      },
+      "necklines": {
+        "title": "Which necklines would you like to explore?",
+        "options": {
+          "sweetheart": "Sweetheart",
+          "vNeck": "V-neck",
+          "square": "Square",
+          "offShoulder": "Off shoulder",
+          "highNeck": "High neck",
+          "strapless": "Strapless"
+        }
+      },
+      "coverage": {
+        "title": "How much coverage feels best?",
+        "options": {
+          "sleeveless": "Sleeveless is fine",
+          "shortSleeve": "A little shoulder or arm coverage",
+          "longSleeve": "Long sleeves",
+          "moreCoverage": "More coverage overall",
+          "openToAll": "Open to trying anything"
+        }
+      },
+      "bodyComfort": {
+        "title": "Any areas where you want extra confidence?",
+        "options": {
+          "arms": "Arms",
+          "midsection": "Midsection",
+          "hips": "Hips",
+          "bust": "Bust support",
+          "height": "Height or proportions",
+          "noConcern": "No specific concern"
+        }
+      },
+      "shoppingConcerns": {
+        "title": "What worries you most about dress shopping?",
+        "options": {
+          "pressure": "Feeling pressured to buy",
+          "budget": "Going over budget",
+          "tooManyOptions": "Too many options",
+          "bodyConfidence": "Body confidence",
+          "familyOpinions": "Family or friend opinions",
+          "timeline": "Timeline or delivery"
+        }
+      },
+      "appointmentGoal": {
+        "title": "What do you want the report to help with most?",
+        "options": {
+          "narrowStyle": "Narrow down my style",
+          "avoidPressure": "Avoid sales pressure",
+          "stayOnBudget": "Stay on budget",
+          "feelConfident": "Feel more confident",
+          "compareOptions": "Compare a few directions"
+        }
+      }
+    }
+  },
+  "bridalUpload": {
+    "meta": {
+      "title": "Upload Your Bridal Reference Photo",
+      "description": "Upload a reference photo to continue your bridal style report."
+    },
+    "eyebrow": "Reference Photo",
+    "title": "Upload a photo for your bridal preview",
+    "description": "Choose a clear, front-facing photo. Your original upload is used for report generation and stored temporarily.",
+    "dropzone": {
+      "cta": "Click to choose a JPG, PNG, or WebP image",
+      "help": "Maximum 8MB. Use a clear photo with your face and full outfit visible when possible."
+    },
+    "previewAlt": "Selected bridal reference preview",
+    "consents": {
+      "consent": "I confirm I have the right to upload this photo and use it for AI bridal styling.",
+      "ageConfirmed": "I confirm I am at least 18 years old.",
+      "aiDisclosureAccepted": "I understand the result is an AI-generated style simulation, not a real product photo."
+    },
+    "actions": {
+      "continue": "Continue to Preview",
+      "uploading": "Preparing preview..."
+    },
+    "errors": {
+      "type": "Please upload a JPG, PNG, or WebP image.",
+      "size": "Image must be less than 8MB.",
+      "fileRequired": "Choose a photo before continuing.",
+      "consent": "Please complete all confirmations before continuing.",
+      "session": "We could not start your bridal session. Please try again.",
+      "upload": "We could not upload your photo. Please try again.",
+      "generate": "We could not generate your bridal preview. Please try again."
+    }
+  },
+  "bridalGenerating": {
+    "meta": {
+      "title": "Preparing Your Bridal Report",
+      "description": "Your bridal style recommendations are being prepared."
+    },
+    "eyebrow": "Report generation",
+    "title": "Preparing your bridal preview",
+    "description": "We are checking your report status and will open your preview as soon as the recommendations are ready.",
+    "statusLabel": "Current status",
+    "statuses": {
+      "draft": "Draft",
+      "generating_preview": "Generating preview",
+      "preview_ready": "Preview ready",
+      "awaiting_payment": "Awaiting payment",
+      "paid": "Paid",
+      "generating": "Generating full report",
+      "ready": "Ready",
+      "failed": "Failed",
+      "expired": "Expired"
+    },
+    "actions": {
+      "retry": "Retry"
+    },
+    "errors": {
+      "missingReport": "Report ID is missing. Please return to the upload step.",
+      "status": "We could not read your report status. Please try again.",
+      "failed": "This report could not be generated. Please try again from the upload step."
+    }
+  },
+  "bridalReport": {
+    "meta": {
+      "title": "Your Bridal Style Report",
+      "description": "Review your AI-generated bridal dress recommendations."
+    },
+    "eyebrow": "Bridal style preview",
+    "title": "Your bridal look directions are ready",
+    "description": "Use these first recommendations to understand which silhouettes, necklines, fabrics, and budget boundaries are worth trying first.",
+    "unlock": {
+      "title": "Unlock the full report",
+      "description": "Get the complete visual report, shopping scripts, and detail guidance for {price}.",
+      "paidTitle": "Full report unlocked",
+      "paidDescription": "You have access to the full report content.",
+      "cta": "Unlock full report {price}",
+      "loading": "Opening checkout...",
+      "error": "We could not start checkout. Please sign in and try again.",
+      "includes": {
+        "visuals": "AI visual directions and detail cards",
+        "details": "Budget guardrails and avoid-first notes",
+        "scripts": "Consultant scripts for your appointment"
+      }
+    },
+    "recommendation": {
+      "rank": "Direction {rank}",
+      "neckline": "Neckline",
+      "fabric": "Fabric",
+      "budget": "Budget",
+      "venueMatch": "Venue fit",
+      "whyItWorks": "Why it works",
+      "whatToAvoid": "Avoid first",
+      "tryFirst": "Try first",
+      "skipFirst": "Skip first",
+      "imageAlt": "Generated bridal visual for {name}"
+    },
+    "locked": {
+      "title": "Full visual report is locked",
+      "description": "The preview shows your three style directions. Unlock to continue into AI bridal visuals, detail captions, consultant scripts, PDF export, and share tools."
+    },
+    "paymentConfirming": {
+      "title": "Confirming your payment",
+      "description": "We are waiting for Creem to confirm the payment. This page will refresh automatically and start report generation when confirmation arrives."
+    },
+    "fullGeneration": {
+      "title": "Generate your full visual report",
+      "description": "Your payment is confirmed. Generate the full report visuals now. If image provider keys are not configured yet, local placeholder visuals will be used so the flow stays testable.",
+      "cta": "Generate full report",
+      "loading": "Generating...",
+      "error": "We could not generate the full report. Please try again."
+    },
+    "appointment": {
+      "title": "Appointment scripts"
+    },
+    "budget": {
+      "title": "Budget guardrails"
+    },
+    "detailCaptions": {
+      "title": "Detail captions",
+      "neckline": "Neckline",
+      "waist": "Waist",
+      "sleeve": "Sleeve"
+    },
+    "deliverables": {
+      "title": "Export and share",
+      "description": "Open a print-ready report in a new tab. Use your browser print dialog to save it as a PDF. Share links are reserved for the next delivery layer.",
+      "pdf": "Open printable report",
+      "share": "Share coming next"
+    }
   },
   "footer": {
     "tagline": "Transform your SaaS ideas into reality with the power of AI.",

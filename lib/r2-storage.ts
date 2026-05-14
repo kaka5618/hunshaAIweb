@@ -31,7 +31,7 @@ const r2Client = STORAGE_ACCESS_KEY_ID && STORAGE_SECRET_ACCESS_KEY ? new S3Clie
 /**
  * Upload file to R2 storage
  */
-async function uploadToR2(
+export async function uploadToR2(
   key: string, 
   body: Buffer | Uint8Array,
   contentType: string = 'application/octet-stream'

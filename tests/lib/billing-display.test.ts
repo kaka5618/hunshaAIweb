@@ -7,22 +7,22 @@ import {
 
 describe("getDefaultOneTimePack", () => {
   it("returns the configured default pack key", () => {
-    expect(DEFAULT_ONE_TIME_PACK_KEY).toBe("pack_200");
+    expect(DEFAULT_ONE_TIME_PACK_KEY).toBe("bridal_report");
   });
 
   it("returns the pack values from billing config", () => {
     expect(getDefaultOneTimePack()).toEqual({
-      key: "pack_200",
+      key: "bridal_report",
       pack: {
-        key: "pack_200",
+        key: "bridal_report",
         kind: "one_time",
-        priceCents: 500,
+        priceCents: 1990,
         currency: "usd",
-        credits: 200,
-        creemPriceId: "prod_3SiroZeMbMQidMVFDMUzKy",
+        credits: 0,
+        creemPriceId: undefined,
       },
-      displayCredits: "200",
-      displayPrice: "$5",
+      displayCredits: "0",
+      displayPrice: "$19.90",
     });
   });
 });

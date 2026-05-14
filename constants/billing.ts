@@ -6,7 +6,7 @@ export type PlanKey =
   | "pro_monthly"
   | "pro_yearly";
 
-export type PackKey = "pack_200";
+export type PackKey = "pack_200" | "bridal_report";
 
 export type GrantScheduleConfig =
   | {
@@ -97,6 +97,14 @@ export const subscriptionPlans: Record<PlanKey, SubscriptionPlan> = {
 };
 
 export const oneTimePacks: Record<PackKey, OneTimePack> = {
+  bridal_report: {
+    key: "bridal_report",
+    kind: "one_time",
+    priceCents: 1990,
+    currency: "usd",
+    credits: 0,
+    creemPriceId: process.env.CREEM_REPORT_PRODUCT_ID,
+  },
   pack_200: {
     key: "pack_200",
     kind: "one_time",

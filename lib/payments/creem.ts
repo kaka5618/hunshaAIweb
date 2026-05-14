@@ -9,6 +9,7 @@ type CreateCheckoutParams = {
   cancelUrl: string;
   // Provider identifiers to be filled later
   creemPriceId?: string;
+  metadata?: Record<string, string>;
 };
 
 export type CreateCheckoutResult = {
@@ -38,6 +39,7 @@ export async function createCheckoutSession(params: CreateCheckoutParams): Promi
       userId: params.userId,
       key: params.key,
       kind: params.kind,
+      ...params.metadata,
     },
   };
 

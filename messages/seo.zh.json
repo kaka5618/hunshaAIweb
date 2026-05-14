@@ -1,52 +1,52 @@
 {
   "home": {
-    "title": "Sistine AI - 通过 Vibe Coding 将您的 AI SaaS 产品投入生产",
-    "description": "Sistine AI 是一个提供广泛 AI 工具和服务的平台,帮助您掌控业务。生成图像、文本以及启动业务所需的一切。",
-    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+    "title": "Find My Bridal Look - AI 婚纱风格报告",
+    "description": "Find My Bridal Look 帮助准新娘在试纱前获得个性化 AI 婚纱风格报告、视觉方向、预算边界和沟通话术。",
+    "ogImage": "/banner.png"
   },
   "pricing": {
-    "title": "定价方案 - Sistine AI SaaS 入门套件",
-    "description": "为您的 AI SaaS 选择完美的方案。此定价模块由 Sistine Starter 构建 - 与 Creem 完全集成,支持订阅支付。",
-    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+    "title": "定价 - Find My Bridal Look",
+    "description": "一次性支付 $19.90 解锁专属 Bridal Style & Appointment Confidence Report。",
+    "ogImage": "/banner.png"
   },
   "blog": {
-    "title": "博客 - Sistine AI",
-    "description": "来自我们团队的最新见解与更新。了解 AI SaaS 开发、vibe coding 以及构建生产级应用的最佳实践。",
-    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+    "title": "博客 - Find My Bridal Look",
+    "description": "婚纱风格建议、试纱准备、婚纱购物技巧和 AI 婚礼规划灵感。",
+    "ogImage": "/banner.png"
   },
   "contact": {
-    "title": "联系我们 - Sistine AI",
-    "description": "与 Sistine AI 团队取得联系。我们很乐意倾听您的声音,并会尽快回复。",
-    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+    "title": "联系我们 - Find My Bridal Look",
+    "description": "联系 Find My Bridal Look 团队，获取婚纱风格报告相关支持。",
+    "ogImage": "/banner.png"
   },
   "login": {
-    "title": "登录 - Sistine AI",
-    "description": "登录您的 Sistine AI 账户,访问为您业务提供的强大 AI 工具和服务。",
-    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+    "title": "登录 - Find My Bridal Look",
+    "description": "登录以访问您的婚纱风格报告。",
+    "ogImage": "/banner.png"
   },
   "signup": {
-    "title": "注册 - Sistine AI",
-    "description": "创建您的 Sistine AI 账户,立即使用我们强大的工具开始构建您的 AI SaaS 产品。",
-    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+    "title": "注册 - Find My Bridal Look",
+    "description": "创建账户以保存并访问您的婚纱风格报告。",
+    "ogImage": "/banner.png"
   },
   "terms": {
-    "title": "服务条款 - Sistine AI",
-    "description": "阅读我们的服务条款,了解使用 Sistine AI 平台的规则和指南。",
-    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+    "title": "服务条款 - Find My Bridal Look",
+    "description": "阅读使用 Find My Bridal Look 的服务条款。",
+    "ogImage": "/banner.png"
   },
   "privacy": {
-    "title": "隐私政策 - Sistine AI",
-    "description": "了解 Sistine AI 如何收集、使用和保护您的个人信息和数据。",
-    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+    "title": "隐私政策 - Find My Bridal Look",
+    "description": "了解 Find My Bridal Look 如何处理测验答案、上传照片和报告数据。",
+    "ogImage": "/banner.png"
   },
   "cookies": {
-    "title": "Cookie 政策 - Sistine AI",
-    "description": "了解 Sistine AI 如何在我们的平台上使用 cookies 和类似的跟踪技术。",
-    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+    "title": "Cookie 政策 - Find My Bridal Look",
+    "description": "了解 Find My Bridal Look 如何使用 cookies 和类似技术。",
+    "ogImage": "/banner.png"
   },
   "refund": {
-    "title": "退款政策 - Sistine AI",
+    "title": "退款政策 - Find My Bridal Look",
     "description": "查看我们的退款政策,了解申请退款的条件和流程。",
-    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+    "ogImage": "/banner.png"
   }
 }

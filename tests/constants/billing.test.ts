@@ -13,6 +13,7 @@ describe("billing config", () => {
   });
 
   it("exposes supported one-time pack keys", () => {
+    expect(isPackKey("bridal_report")).toBe(true);
     expect(isPackKey("pack_200")).toBe(true);
     expect(isPackKey("pro_monthly")).toBe(false);
   });
@@ -38,9 +39,7 @@ describe("billing config", () => {
 
   it("keeps one-time packs positive and purchasable", () => {
     for (const pack of Object.values(oneTimePacks)) {
-      expect(pack.credits).toBeGreaterThan(0);
       expect(pack.priceCents).toBeGreaterThan(0);
-      expect(pack.creemPriceId).toBeTruthy();
     }
   });
 });

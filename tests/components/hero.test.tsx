@@ -99,29 +99,20 @@ describe("Hero", () => {
     vi.clearAllMocks();
   });
 
-  it("opens the course-community modal and keeps the link as a new-tab external url", () => {
+  it("routes the primary bridal CTAs to quiz and pricing", () => {
     render(<Hero />);
 
-    expect(
-      screen.queryByRole("dialog", {
-        name: "Get the source code from our course community",
-      })
-    ).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: "Get Code" }));
-
-    expect(
-      screen.getByRole("dialog", {
-        name: "Get the source code from our course community",
-      })
-    ).toBeInTheDocument();
-
-    const courseLink = screen.getByRole("link", { name: "Open the course community" });
-    expect(courseLink).toHaveAttribute(
+    expect(screen.getByRole("heading", { name: "Find My Bridal Look" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Start the Style Quiz" })).toHaveAttribute(
       "href",
-      "https://scys.com/deepsea/2001/course"
+      "/en/quiz"
     );
-    expect(courseLink).toHaveAttribute("target", "_blank");
-    expect(courseLink).toHaveAttribute("rel", "noopener noreferrer");
+    expect(screen.getByRole("link", { name: "See What's Included" })).toHaveAttribute(
+      "href",
+      "/en/pricing"
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Bridal Style Report · $19.90 one-time" }));
+    expect(routerPushMock).toHaveBeenCalledWith("/en/pricing");
   });
 });
