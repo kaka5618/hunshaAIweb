@@ -67,7 +67,7 @@
   "hero": {
     "badge": "Bridal Style Report · $19.90 one-time",
     "title": "Find My Bridal Look",
-    "description": "Get a personal bridal style report before your salon appointment: three dress directions, AI visuals, budget guardrails, and consultant scripts you can bring with you.",
+    "description": "Get a personal bridal style report before your salon appointment: three dress directions, styled visuals, budget guardrails, and consultant scripts you can bring with you.",
     "cta": {
       "primary": "Start the Style Quiz",
       "secondary": "See What's Included"
@@ -75,7 +75,7 @@
     "modal": {
       "eyebrow": "Report Preview",
       "title": "A practical bridal report before your appointment",
-      "description": "Your report combines quiz answers, AI copy, visual look directions, and shopping guardrails.",
+      "description": "Your report combines quiz answers, visual look directions, and shopping guardrails.",
       "instruction": "Start with the style quiz, upload a reference photo, then unlock the full report when the preview is ready.",
       "linkLabel": "Start the style quiz",
       "linkHint": "Your photo and report data are stored temporarily.",
@@ -91,8 +91,8 @@
         "description": "Compare romantic, modern, classic, or venue-led dress directions before you step into a salon."
       },
       "zeroPipeline": {
-        "title": "AI Bridal Visuals",
-        "description": "See full-body concepts plus neckline, waist, sleeve, and venue detail images for each direction."
+        "title": "Bridal Look Visuals",
+        "description": "See full-body concepts plus neckline, waist, and sleeve detail images for each direction."
       },
       "nonTechnical": {
         "title": "Budget Guardrails",
@@ -174,7 +174,7 @@
         "cta": "Unlock My Full Report",
         "features": [
           "3 recommended bridal style directions",
-          "15 AI-generated bridal and detail images",
+          "12 bridal look and detail images",
           "Budget guardrails and consultant talking points"
         ]
       }
@@ -1199,7 +1199,7 @@
       "loading": "Opening checkout...",
       "error": "We could not start checkout. Please sign in and try again.",
       "includes": {
-        "visuals": "AI visual directions and detail cards",
+        "visuals": "Look visuals and detail cards",
         "details": "Budget guardrails and avoid-first notes",
         "scripts": "Consultant scripts for your appointment"
       }
@@ -1207,13 +1207,13 @@
     "recommendation": {
       "sectionTitle": "3 directions to try on",
       "sectionPreview": "The preview shows the key decision points first, so you can decide whether to continue into the full visual report.",
-      "sectionPaid": "The full report includes images, try-first priorities, avoid-first notes, budget guardrails, and appointment-ready language for each direction.",
+      "sectionPaid": "The full report is organized as three complete plans, each with look images, detail images, try-first notes, budget guardrails, and appointment-ready language.",
       "previewBadge": "Preview content",
       "rank": "Direction {rank}",
       "planButton": "Direction {rank}",
       "detailEyebrow": "Detailed plan for direction one",
       "detailTitle": "{name} fitting plan",
-      "visualReportIntro": "This preview uses your uploaded photo as the visual baseline, so the silhouette, neckline, waist, and coverage notes stay grounded in your own reference instead of another person's image.",
+      "visualReportIntro": "This preview uses your uploaded photo as the visual baseline and opens the upper portion of the silhouette, neckline, waist, and coverage notes.",
       "textPlan": "Specific written plan",
       "silhouette": "Silhouette",
       "neckline": "Neckline",
@@ -1232,11 +1232,11 @@
       "lockedDirectionDescription": "Unlock to view this full direction, detail guidance, and appointment script.",
       "fullDeliverables": "Full deliverables",
       "fullDeliverablesDescription": "Unlock to export a print-ready report and create a share link for friends, family, or your bridal consultant.",
-      "imageAlt": "Generated bridal visual for {name}"
+      "imageAlt": "Bridal look visual for {name}"
     },
     "locked": {
       "title": "Full visual report is locked",
-      "description": "The preview shows your three style directions. Unlock to continue into AI bridal visuals, detail captions, consultant scripts, PDF export, and share tools."
+      "description": "The preview opens the upper portion of the first plan. Unlock to view all 3 plans, 12 visuals, PDF export, and sharing tools."
     },
     "paymentConfirming": {
       "title": "Confirming your payment",
@@ -1263,7 +1263,7 @@
     },
     "deliverables": {
       "title": "Export and share",
-      "description": "Open a print-ready report in a new tab, or create a public read-only share link for visual feedback.",
+      "description": "Open a print-ready report in a new tab, or create a public read-only share link for friends, family, or your bridal consultant.",
       "pdf": "Open printable report",
       "share": "Copy share link",
       "shareLoading": "Creating link...",
@@ -1277,26 +1277,14 @@
       "description": "View a shared bridal style report preview."
     },
     "eyebrow": "Shared bridal report",
-    "description": "This public page shows the visual style directions and high-level shopping guidance. Private budget guardrails and appointment scripts stay inside the owner's full report.",
+    "description": "This is a read-only shared report with three bridal directions, look visuals, and high-level fitting guidance. Private budget guardrails and appointment scripts stay inside the owner's full report.",
     "rank": "Direction {rank}",
     "neckline": "Neckline",
     "fabric": "Fabric",
     "venueMatch": "Venue fit",
     "whyItWorks": "Why it works",
     "tryFirst": "Try first",
-    "imageAlt": "Generated bridal visual for {name}",
-    "votes": {
-      "title": "Leave quick feedback",
-      "saving": "Saving...",
-      "saved": "Feedback saved.",
-      "error": "We could not save your vote. Please try again.",
-      "types": {
-        "best_overall": "Best overall",
-        "best_for_venue": "Best for the venue",
-        "most_elegant": "Most elegant",
-        "most_you": "Most like her"
-      }
-    }
+    "imageAlt": "Bridal look visual for {name}"
   },
   "footer": {
     "tagline": "Transform your SaaS ideas into reality with the power of AI.",

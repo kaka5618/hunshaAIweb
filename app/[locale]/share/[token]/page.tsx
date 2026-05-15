@@ -14,7 +14,6 @@ import {
 import { generatePageMetadata } from "@/lib/metadata";
 import type { Locale } from "@/i18n.config";
 import type { ElementType } from "react";
-import { BridalShareVoteButtons } from "./vote-buttons";
 
 export async function generateMetadata(
   props: {
@@ -74,55 +73,56 @@ export default async function BridalSharePage(
 
   const imageByRecommendationId = new Map(
     generatedImages
-      .filter(image => image.generationStatus === "success" && image.r2Key)
+      .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key && image.type === "full_body")
       .map(image => [image.recommendationId, image.r2Key as string]),
   );
 
   return (
-    <main className="min-h-screen bg-background px-6 py-24">
+    <main className="min-h-screen bg-[#f7f2ea] px-6 py-16 text-[#1f1b16]">
       <div className="mx-auto max-w-6xl">
-        <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-          {t("eyebrow")}
-        </p>
-        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-foreground md:text-6xl">
-          {share.title}
-        </h1>
-        <p className="mt-5 max-w-3xl text-base leading-8 text-muted-foreground">
-          {t("description")}
-        </p>
+        <header className="rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-8 shadow-sm md:p-10">
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-[#756a5c]">
+            {t("eyebrow")}
+          </p>
+          <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-tight md:text-6xl">
+            {share.title}
+          </h1>
+          <p className="mt-5 max-w-3xl text-base leading-8 text-[#655d52]">
+            {t("description")}
+          </p>
+        </header>
 
-        <section className="mt-12 grid gap-5 lg:grid-cols-3">
+        <section className="mt-8 grid gap-5 lg:grid-cols-3">
           {recommendations.map((recommendation) => {
             const imageUrl = imageByRecommendationId.get(recommendation.id);
 
             return (
-              <article key={recommendation.id} className="rounded-lg border border-border bg-card p-6">
+              <article key={recommendation.id} className="overflow-hidden rounded-lg border border-[#d8cdbd] bg-[#fffaf3] shadow-sm">
+                {imageUrl && (
+                  <Image
+                    src={imageUrl}
+                    alt={t("imageAlt", { name: recommendation.styleName })}
+                    width={900}
+                    height={1100}
+                    className="h-[420px] w-full object-cover object-top"
+                    unoptimized
+                  />
+                )}
+
+                <div className="p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#756a5c]">
                       {t("rank", { rank: recommendation.rank })}
                     </p>
-                    <h2 className="mt-3 text-2xl font-semibold text-foreground">
+                    <h2 className="mt-3 text-2xl font-semibold">
                       {recommendation.styleName}
                     </h2>
                   </div>
-                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  <span className="rounded-full border border-[#d8cdbd] px-3 py-1 text-xs font-medium text-[#5f694c]">
                     {recommendation.silhouette}
                   </span>
                 </div>
-
-                {imageUrl && (
-                  <div className="mt-6 overflow-hidden rounded-lg border border-border">
-                    <Image
-                      src={imageUrl}
-                      alt={t("imageAlt", { name: recommendation.styleName })}
-                      width={900}
-                      height={900}
-                      className="aspect-square w-full object-cover object-top"
-                      unoptimized
-                    />
-                  </div>
-                )}
 
                 <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
                   <Fact icon={Shirt} label={t("neckline")} value={recommendation.neckline} />
@@ -145,8 +145,7 @@ export default async function BridalSharePage(
                     ))}
                   </ul>
                 </div>
-
-                <BridalShareVoteButtons token={token} recommendationId={recommendation.id} />
+                </div>
               </article>
             );
           })}
@@ -166,12 +165,12 @@ function Fact({
   value: string;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-background p-3">
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+    <div className="rounded-lg border border-[#e4dacb] bg-white/60 p-3">
+      <div className="flex items-center gap-2 text-xs text-[#756a5c]">
         <Icon className="h-3.5 w-3.5" />
         <span>{label}</span>
       </div>
-      <p className="mt-2 text-sm font-medium text-foreground">{value}</p>
+      <p className="mt-2 text-sm font-medium">{value}</p>
     </div>
   );
 }
@@ -179,8 +178,8 @@ function Fact({
 function Section({ title, body }: { title: string; body: string }) {
   return (
     <div>
-      <p className="text-sm font-medium text-foreground">{title}</p>
-      <p className="mt-2 text-sm leading-6 text-foreground/80">{body}</p>
+      <p className="text-sm font-medium">{title}</p>
+      <p className="mt-2 text-sm leading-6 text-[#655d52]">{body}</p>
     </div>
   );
 }

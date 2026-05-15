@@ -2,7 +2,7 @@
   "common": {
     "brand": {
       "name": "Find My Bridal Look",
-      "tagline": "AI 婚纱风格决策报告",
+    "tagline": "婚纱风格决策报告",
       "copyright": "版权所有 © 2026 Find My Bridal Look",
       "allRightsReserved": "保留所有权利"
     },
@@ -67,7 +67,7 @@
   "hero": {
     "badge": "婚纱风格报告 · 一次性 $19.90",
     "title": "Find My Bridal Look",
-    "description": "在试纱预约前拿到一份个人婚纱风格报告：3 个风格方向、AI 视觉图、预算边界和可直接带去婚纱店的话术。",
+    "description": "在试纱预约前拿到一份个人婚纱风格报告：3 个风格方向、造型视觉图、预算边界和可直接带去婚纱店的话术。",
     "cta": {
       "primary": "开始风格测验",
       "secondary": "查看报告内容"
@@ -75,7 +75,7 @@
     "modal": {
       "eyebrow": "报告预览",
       "title": "试纱预约前先拿到可执行的婚纱报告",
-      "description": "报告会结合测验答案、AI 文案、视觉风格方向和试纱购物边界。",
+      "description": "报告会结合测验答案、视觉风格方向和试纱购物边界。",
       "instruction": "先完成风格测验，上传参考照片，预览生成后即可解锁完整报告。",
       "linkLabel": "开始风格测验",
       "linkHint": "你的照片和报告数据会临时保存。",
@@ -91,8 +91,8 @@
         "description": "在进店前比较浪漫、现代、经典或场地适配型婚纱方向。"
       },
       "zeroPipeline": {
-        "title": "AI 婚纱视觉图",
-        "description": "每个方向包含全身效果图，以及领口、腰部、袖口和婚礼场景细节图。"
+        "title": "婚纱造型视觉图",
+        "description": "每个方向包含全身效果图，以及领口、腰线和袖型细节图。"
       },
       "nonTechnical": {
         "title": "预算边界建议",
@@ -174,7 +174,7 @@
         "cta": "解锁完整报告",
         "features": [
           "3 个推荐婚纱风格方向",
-          "15 张 AI 婚纱与细节图",
+          "12 张婚纱造型与细节图",
           "预算边界和顾问沟通话术"
         ]
       }
@@ -1198,7 +1198,7 @@
       "loading": "正在打开支付...",
       "error": "无法启动支付，请登录后重试。",
       "includes": {
-        "visuals": "AI 视觉方向和细节图",
+        "visuals": "造型视觉图和细节图",
         "details": "预算边界和优先避开的选项",
         "scripts": "可直接带去婚纱店的话术"
       }
@@ -1206,13 +1206,13 @@
     "recommendation": {
       "sectionTitle": "3 个可试穿方向",
       "sectionPreview": "预览版先展示关键判断点，帮助你决定是否继续生成完整视觉报告。",
-      "sectionPaid": "完整版包含每个方向的图像、试穿优先级、避坑项、预算边界和可直接对顾问说的话。",
+      "sectionPaid": "完整版按 3 份完整方案呈现，每份都包含造型图、细节图、试穿清单、预算边界和沟通话术。",
       "previewBadge": "预览内容",
       "rank": "方向 {rank}",
       "planButton": "第 {rank} 份方案",
       "detailEyebrow": "第一份报告的详细方案",
       "detailTitle": "{name} 详细试纱方案",
-      "visualReportIntro": "这份试阅报告使用你上传的照片作为视觉基准，先展示廓形、领口、腰线和遮盖细节，避免用其他人物照片误导判断。",
+      "visualReportIntro": "试阅报告使用你上传的照片作为视觉基准，先开放上半部分的廓形、领口、腰线和遮盖细节。",
       "textPlan": "具体的文字方案",
       "silhouette": "廓形",
       "neckline": "领口",
@@ -1231,11 +1231,11 @@
       "lockedDirectionDescription": "点击解锁后查看这套完整方案、细节建议和试纱话术。",
       "fullDeliverables": "完整交付内容",
       "fullDeliverablesDescription": "解锁后可导出可打印报告，并生成分享链接给朋友、家人或婚纱顾问查看。",
-      "imageAlt": "{name} 的 AI 婚纱视觉图"
+      "imageAlt": "{name} 的婚纱造型图"
     },
     "locked": {
       "title": "完整视觉报告尚未解锁",
-      "description": "预览页会展示三套风格方向。解锁后可继续查看 AI 婚纱视觉图、细节说明、试纱话术、PDF 导出和分享功能。"
+      "description": "预览页会展示第一份方案的上半部分。解锁后可继续查看全部 3 份方案、12 张视觉图、PDF 导出和分享功能。"
     },
     "paymentConfirming": {
       "title": "正在确认支付",
@@ -1262,7 +1262,7 @@
     },
     "deliverables": {
       "title": "导出和分享",
-      "description": "在新标签页打开可打印报告，或生成公开只读分享链接用于收集视觉反馈。",
+      "description": "在新标签页打开可打印报告，或生成公开只读分享链接给朋友、家人或婚纱顾问查看。",
       "pdf": "打开可打印报告",
       "share": "复制分享链接",
       "shareLoading": "正在创建链接...",
@@ -1276,26 +1276,14 @@
       "description": "查看共享的婚纱风格报告预览。"
     },
     "eyebrow": "共享婚纱报告",
-    "description": "这个公开页面只展示视觉风格方向和高层试纱建议。私密预算边界和预约话术只保留在报告拥有者的完整报告中。",
+    "description": "这是一份只读分享报告，展示 3 个婚纱方向、造型图和高层试纱建议。私密预算边界和预约话术只保留在报告拥有者的完整报告中。",
     "rank": "方向 {rank}",
     "neckline": "领口",
     "fabric": "面料",
     "venueMatch": "场地匹配",
     "whyItWorks": "为什么适合",
     "tryFirst": "优先试穿",
-    "imageAlt": "{name} 的 AI 婚纱视觉图",
-    "votes": {
-      "title": "留下快速反馈",
-      "saving": "保存中...",
-      "saved": "反馈已保存。",
-      "error": "无法保存投票，请重试。",
-      "types": {
-        "best_overall": "整体最佳",
-        "best_for_venue": "最适合场地",
-        "most_elegant": "最优雅",
-        "most_you": "最像她"
-      }
-    }
+    "imageAlt": "{name} 的婚纱造型图"
   },
   "footer": {
     "tagline": "利用 AI 的力量，将您的 SaaS 创意转化为现实。",

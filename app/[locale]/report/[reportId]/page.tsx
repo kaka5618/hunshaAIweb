@@ -120,17 +120,17 @@ export default async function BridalReportPage(
     : null;
 
   return (
-    <main className="min-h-screen bg-background px-6 py-20">
+    <main className="min-h-screen bg-[#f7f2ea] px-6 py-16 text-[#1f1b16]">
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
           <section>
-            <p className="text-sm font-medium uppercase text-muted-foreground">
+            <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#756a5c]">
               {t("eyebrow")}
             </p>
-            <h1 className="mt-4 text-4xl font-semibold text-foreground md:text-6xl">
+            <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-tight md:text-6xl">
               {t("title")}
             </h1>
-            <p className="mt-5 max-w-3xl text-base leading-8 text-muted-foreground">
+            <p className="mt-5 max-w-3xl text-base leading-8 text-[#655d52]">
               {t("description")}
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -146,16 +146,16 @@ export default async function BridalReportPage(
             </div>
           </section>
 
-          <aside className="rounded-lg border border-border bg-card p-6">
+          <aside className="rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-6 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
                 {report.isPaid ? <Check className="h-5 w-5" /> : <LockKeyhole className="h-5 w-5" />}
               </div>
               <div>
-                <p className="font-semibold text-foreground">
+                <p className="font-semibold">
                   {report.isPaid ? t("unlock.paidTitle") : t("unlock.title")}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-[#655d52]">
                   {report.isPaid ? t("unlock.paidDescription") : t("unlock.description", { price })}
                 </p>
               </div>
@@ -165,7 +165,7 @@ export default async function BridalReportPage(
               <BridalUnlockButton reportId={report.id} price={price} className="mt-6" />
             )}
 
-            <div className="mt-6 space-y-3 text-sm text-muted-foreground">
+            <div className="mt-6 space-y-3 text-sm text-[#655d52]">
               {["visuals", "details", "scripts"].map(key => (
                 <div key={key} className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
@@ -176,17 +176,17 @@ export default async function BridalReportPage(
           </aside>
         </div>
 
-        {leadingRecommendation && (
-          <section className="mt-10 rounded-lg border border-border bg-card p-6">
+        {!report.isPaid && leadingRecommendation && (
+          <section className="mt-10 rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-6 shadow-sm">
             <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-[#756a5c]">
                   {t("snapshot.label")}
                 </p>
-                <h2 className="mt-2 text-2xl font-semibold text-foreground">
+                <h2 className="mt-2 text-2xl font-semibold">
                   {t("snapshot.title", { name: leadingRecommendation.styleName })}
                 </h2>
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                <p className="mt-3 text-sm leading-7 text-[#655d52]">
                   {t("snapshot.description")}
                 </p>
               </div>
@@ -212,9 +212,9 @@ export default async function BridalReportPage(
         )}
 
         {!report.isPaid && leadingRecommendation && (
-          <section className="mt-8 rounded-lg border border-border bg-card p-5 md:p-8">
+          <section className="mt-8 rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-5 shadow-sm md:p-8">
             <div className="grid gap-5 lg:grid-cols-[1.25fr_0.75fr]">
-              <div className="overflow-hidden rounded-lg border border-border bg-background">
+              <div className="overflow-hidden rounded-lg border border-[#d8cdbd] bg-white">
                 <div className="grid gap-0 md:grid-cols-[0.85fr_1.15fr]">
                   <Image
                     src={referenceImageUrl ?? getPlaceholderBridalImageUrl(leadingRecommendation.rank)}
@@ -225,13 +225,13 @@ export default async function BridalReportPage(
                     unoptimized
                   />
                   <div className="p-6">
-                    <p className="text-sm font-medium text-muted-foreground">
+                    <p className="text-sm font-medium text-[#756a5c]">
                       {t("recommendation.rank", { rank: leadingRecommendation.rank })}
                     </p>
-                    <h2 className="mt-3 text-3xl font-semibold text-foreground">
+                    <h2 className="mt-3 text-3xl font-semibold">
                       {leadingRecommendation.styleName}
                     </h2>
-                    <p className="mt-4 text-sm leading-7 text-muted-foreground">
+                    <p className="mt-4 text-sm leading-7 text-[#655d52]">
                       {leadingRecommendation.whyItWorks}
                     </p>
                     <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
@@ -248,12 +248,12 @@ export default async function BridalReportPage(
                 </div>
               </div>
 
-              <aside className="rounded-lg border border-border bg-background p-6">
+              <aside className="rounded-lg border border-[#d8cdbd] bg-white/70 p-6">
                 <LockKeyhole className="h-6 w-6 text-primary" />
-                <h2 className="mt-4 text-2xl font-semibold text-foreground">
+                <h2 className="mt-4 text-2xl font-semibold">
                   {t("previewUnlock.title")}
                 </h2>
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                <p className="mt-3 text-sm leading-7 text-[#655d52]">
                   {t("previewUnlock.description")}
                 </p>
                 <BridalUnlockButton reportId={report.id} price={price} className="mt-6" />
@@ -277,15 +277,15 @@ export default async function BridalReportPage(
               ))}
             </div>
 
-            <div className="mt-5 rounded-lg border border-border bg-background p-6 md:p-8">
+              <div className="mt-5 rounded-lg border border-[#d8cdbd] bg-white/70 p-6 md:p-8">
               <div className="mx-auto max-w-4xl">
-                <p className="text-sm font-medium uppercase text-muted-foreground">
+                  <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#756a5c]">
                   {t("recommendation.detailEyebrow")}
                 </p>
-                <h2 className="mt-3 text-3xl font-semibold text-foreground">
+                  <h2 className="mt-3 text-3xl font-semibold">
                   {t("recommendation.detailTitle", { name: leadingRecommendation.styleName })}
                 </h2>
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                  <p className="mt-3 text-sm leading-7 text-[#655d52]">
                   {t("recommendation.visualReportIntro")}
                 </p>
 
@@ -340,7 +340,7 @@ export default async function BridalReportPage(
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3 rounded-lg border border-border bg-card p-3">
+          <div className="flex flex-wrap gap-3 rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-3 shadow-sm">
             {recommendations.map(recommendation => (
               <Button
                 key={recommendation.id}
@@ -399,13 +399,13 @@ export default async function BridalReportPage(
         )}
 
         {report.isPaid && hasSuccessfulImages && (
-          <section className="mt-8 rounded-lg border border-border bg-card p-8">
+          <section className="mt-8 rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-8 shadow-sm">
             <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
-                <h2 className="text-2xl font-semibold text-foreground">
+                <h2 className="text-2xl font-semibold">
                   {t("deliverables.title")}
                 </h2>
-                <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground">
+                <p className="mt-3 max-w-2xl text-sm leading-7 text-[#655d52]">
                   {t("deliverables.description")}
                 </p>
               </div>
@@ -423,12 +423,12 @@ export default async function BridalReportPage(
         {!report.isPaid && returnedFromPayment && <PaymentConfirmationRefresh />}
 
         {report.isPaid && !hasSuccessfulImages && (
-          <section className="mt-8 rounded-lg border border-border bg-card p-8 text-center">
+          <section className="mt-8 rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-8 text-center shadow-sm">
             <Sparkles className="mx-auto h-8 w-8 text-primary" />
-            <h2 className="mt-4 text-2xl font-semibold text-foreground">
+            <h2 className="mt-4 text-2xl font-semibold">
               {t("fullGeneration.title")}
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-muted-foreground">
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[#655d52]">
               {t("fullGeneration.description")}
             </p>
             <div className="mt-6 flex justify-center">
@@ -451,21 +451,21 @@ function Fact({
   value: string;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-background p-3">
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+    <div className="rounded-lg border border-[#e4dacb] bg-white/60 p-3">
+      <div className="flex items-center gap-2 text-xs text-[#756a5c]">
         <Icon className="h-3.5 w-3.5" />
         <span>{label}</span>
       </div>
-      <p className="mt-2 text-sm font-medium text-foreground">{value}</p>
+      <p className="mt-2 text-sm font-medium">{value}</p>
     </div>
   );
 }
 
 function SummaryMetric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-4">
-      <p className="text-xs font-medium uppercase text-muted-foreground">{label}</p>
-      <p className="mt-2 text-xl font-semibold text-foreground">{value}</p>
+    <div className="rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-4 shadow-sm">
+      <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#756a5c]">{label}</p>
+      <p className="mt-2 text-xl font-semibold">{value}</p>
     </div>
   );
 }
@@ -480,12 +480,12 @@ function DecisionTile({
   value: string;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-background p-4">
-      <div className="flex items-center gap-2 text-xs font-medium uppercase text-muted-foreground">
+    <div className="rounded-lg border border-[#e4dacb] bg-white/60 p-4">
+      <div className="flex items-center gap-2 text-xs font-medium uppercase text-[#756a5c]">
         <Icon className="h-4 w-4" />
         <span>{label}</span>
       </div>
-      <div className="mt-3 flex items-center gap-2 text-sm font-medium text-foreground">
+      <div className="mt-3 flex items-center gap-2 text-sm font-medium">
         <ArrowRight className="h-4 w-4 text-primary" />
         <span>{value}</span>
       </div>
@@ -551,9 +551,9 @@ function FullRecommendationReport({
   };
 }) {
   return (
-    <article id={`direction-${recommendation.rank}`} className="scroll-mt-24 overflow-hidden rounded-lg border border-border bg-card">
+    <article id={`direction-${recommendation.rank}`} className="scroll-mt-24 overflow-hidden rounded-lg border border-[#d8cdbd] bg-[#fffaf3] shadow-sm">
       <div className="grid gap-0 lg:grid-cols-[0.88fr_1.12fr]">
-        <div className="border-b border-border bg-background lg:border-b-0 lg:border-r">
+        <div className="border-b border-[#d8cdbd] bg-white lg:border-b-0 lg:border-r">
           <div className="overflow-hidden">
             <Image
               src={imageUrl}
@@ -569,14 +569,14 @@ function FullRecommendationReport({
         <div className="p-6 md:p-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p className="text-xs font-medium uppercase text-muted-foreground">
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#756a5c]">
                 {labels.rank}
               </p>
-              <h3 className="mt-3 text-3xl font-semibold text-foreground">
+              <h3 className="mt-3 text-3xl font-semibold">
                 {recommendation.styleName}
               </h3>
             </div>
-            <span className="w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+            <span className="w-fit rounded-full border border-[#d8cdbd] px-3 py-1 text-xs font-medium text-[#5f694c]">
               {recommendation.silhouette}
             </span>
           </div>
@@ -593,18 +593,18 @@ function FullRecommendationReport({
           </div>
 
           <div className="mt-7 grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-            <div className="space-y-5 rounded-lg border border-border bg-background p-5">
+            <div className="space-y-5 rounded-lg border border-[#e4dacb] bg-white/60 p-5">
               <Section title={labels.venueMatch} body={recommendation.venueMatch} />
               <Section title={labels.whyItWorks} body={recommendation.whyItWorks} />
               <Section title={labels.whatToAvoid} body={recommendation.whatToAvoid} muted />
             </div>
 
             <div className="space-y-5">
-              <div className="rounded-lg border border-border bg-background p-5">
-                <p className="text-sm font-medium text-foreground">
+              <div className="rounded-lg border border-[#e4dacb] bg-white/60 p-5">
+                <p className="text-sm font-medium">
                   {labels.tryFirst}
                 </p>
-                <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                <ul className="mt-3 space-y-2 text-sm text-[#655d52]">
                   {recommendation.tryFirst.map(item => (
                     <li key={item} className="flex gap-2">
                       <Check className="mt-0.5 h-4 w-4 flex-none text-primary" />
@@ -614,11 +614,11 @@ function FullRecommendationReport({
                 </ul>
               </div>
 
-              <div className="rounded-lg border border-border bg-background p-5">
-                <p className="text-sm font-medium text-foreground">
+              <div className="rounded-lg border border-[#e4dacb] bg-white/60 p-5">
+                <p className="text-sm font-medium">
                   {labels.skipFirst}
                 </p>
-                <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                <ul className="mt-3 space-y-2 text-sm text-[#655d52]">
                   {recommendation.skipFirst.map(item => (
                     <li key={item} className="flex gap-2">
                       <X className="mt-0.5 h-4 w-4 flex-none text-muted-foreground" />
@@ -633,7 +633,7 @@ function FullRecommendationReport({
           <div className="mt-7">
             <div className="flex items-center gap-2">
               <FileText className="h-5 w-5 text-primary" />
-              <h4 className="text-xl font-semibold text-foreground">
+              <h4 className="text-xl font-semibold">
                 {labels.detailTitle}
               </h4>
             </div>
@@ -657,24 +657,24 @@ function FullRecommendationReport({
           </div>
 
           <div className="mt-7 grid gap-5 lg:grid-cols-2">
-            <div className="rounded-lg border border-border bg-background p-5">
-              <p className="text-sm font-medium text-foreground">
+            <div className="rounded-lg border border-[#e4dacb] bg-white/60 p-5">
+              <p className="text-sm font-medium">
                 {labels.budgetTitle}
               </p>
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+              <p className="mt-3 text-sm leading-6 text-[#655d52]">
                 {recommendation.budgetGuardrail}
               </p>
             </div>
 
-            <div className="rounded-lg border border-border bg-primary/5 p-5">
-              <p className="text-sm font-medium text-foreground">
+            <div className="rounded-lg border border-[#d8cdbd] bg-[#f3eadc] p-5">
+              <p className="text-sm font-medium">
                 {labels.storeScript}
               </p>
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+              <p className="mt-3 text-sm leading-6 text-[#655d52]">
                 &ldquo;{recommendation.consultantScript}&rdquo;
               </p>
-              <p className="mt-3 border-t border-border pt-3 text-sm leading-6 text-muted-foreground">
-                <span className="font-medium text-foreground">{labels.salesPressure}: </span>
+              <p className="mt-3 border-t border-[#d8cdbd] pt-3 text-sm leading-6 text-[#655d52]">
+                <span className="font-medium text-[#1f1b16]">{labels.salesPressure}: </span>
                 {recommendation.salesPressureReminder}
               </p>
             </div>
