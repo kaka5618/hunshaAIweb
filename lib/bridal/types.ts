@@ -18,6 +18,7 @@ export type BridalSessionStatus = "active" | "bound" | "expired";
 export type BridalUploadStatus = "uploaded" | "processing" | "failed";
 export type BridalModerationStatus = "pending" | "approved" | "rejected";
 export type BridalGeneratedImageStatus = "pending" | "generating" | "success" | "failed";
+export type BridalReportLanguage = "en" | "zh";
 
 export type BridalQuizAnswers = {
   venue: string;
@@ -54,4 +55,3 @@ export type BridalRecommendationDraft = {
     sleeve: string;
   };
 };
-

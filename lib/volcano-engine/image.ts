@@ -28,10 +28,16 @@ export async function generateImage(
     image: images && images.length > 0 ? images : undefined,
     response_format: 'url',
     size,
+    sequential_image_generation: 'disabled',
+    stream: false,
     watermark: options?.watermark !== undefined ? options.watermark : true,
   };
 
-  const response = await fetch(`${volcanoEngineConfig.apiUrl}/images/generations`, {
+  const endpoint = volcanoEngineConfig.apiUrl.endsWith('/images/generations')
+    ? volcanoEngineConfig.apiUrl
+    : `${volcanoEngineConfig.apiUrl.replace(/\/$/, '')}/images/generations`;
+
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify(request),

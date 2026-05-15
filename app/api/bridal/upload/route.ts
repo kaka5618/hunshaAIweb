@@ -66,9 +66,18 @@ export async function POST(request: NextRequest) {
       contentType: file.type,
     });
 
-    const url = isR2Configured()
-      ? await uploadToR2(r2Key, buffer, file.type)
-      : createFallbackDataUrl(buffer, file.type);
+    let usedFallback = !isR2Configured();
+    let url = createFallbackDataUrl(buffer, file.type);
+
+    if (isR2Configured()) {
+      try {
+        url = await uploadToR2(r2Key, buffer, file.type);
+        usedFallback = false;
+      } catch (storageError) {
+        console.error("Bridal photo R2 upload failed, using data URL fallback:", storageError);
+        usedFallback = true;
+      }
+    }
 
     await db.insert(bridalUploadedPhoto).values({
       id: photoId,
@@ -85,7 +94,7 @@ export async function POST(request: NextRequest) {
       sessionId,
       url,
       r2Key,
-      fallback: !isR2Configured(),
+      fallback: usedFallback,
     });
   } catch (error) {
     console.error("Failed to upload bridal photo:", error);
@@ -95,4 +104,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

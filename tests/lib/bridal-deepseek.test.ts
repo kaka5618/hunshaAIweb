@@ -30,8 +30,8 @@ const recommendation = {
   budgetMin: 1200,
   budgetMax: 2400,
   budgetGuardrail: "Ask to start under your stated limit.",
-  tryFirst: ["A-line lace overlay"],
-  skipFirst: ["Heavy cathedral train"],
+  tryFirst: ["A-line lace overlay", "Supportive bodice", "Light skirt movement"],
+  skipFirst: ["Heavy cathedral train", "Scratchy sleeve trim"],
   consultantScript: "Can we start with romantic A-line gowns?",
   salesPressureReminder: "You can ask to return to your original brief.",
   detailCaptions: {
@@ -56,9 +56,18 @@ describe("bridal DeepSeek generation", () => {
     const prompt = buildBridalRecommendationPrompt(answers);
 
     expect(prompt).toContain("Return only valid JSON");
+    expect(prompt).toContain("Write every user-facing value in English");
     expect(prompt).toContain("Venue: garden");
     expect(prompt).toContain("Style words: romantic, classic");
     expect(prompt).toContain("Appointment goal: stay on budget");
+  });
+
+  it("builds a Simplified Chinese recommendation prompt when requested", () => {
+    const prompt = buildBridalRecommendationPrompt(answers, "zh");
+
+    expect(prompt).toContain("Write every user-facing value in Simplified Chinese");
+    expect(prompt).toContain("Do not use generic filler");
+    expect(prompt).toContain("tryFirst must contain 3 concrete items");
   });
 
   it("parses valid recommendation JSON", () => {
@@ -84,6 +93,7 @@ describe("bridal DeepSeek generation", () => {
     });
 
     const requestBody = JSON.parse(fetcher.mock.calls[0][1].body);
+    const userMessage = requestBody.messages.find((message: { role: string }) => message.role === "user");
 
     expect(result).toHaveLength(3);
     expect(fetcher).toHaveBeenCalledWith(
@@ -94,6 +104,26 @@ describe("bridal DeepSeek generation", () => {
     );
     expect(requestBody.model).toBe("deepseek-v4-flash");
     expect(requestBody.response_format).toEqual({ type: "json_object" });
+    expect(userMessage.content).toContain("Write every user-facing value in English");
+  });
+
+  it("uses the configured DeepSeek API base URL", async () => {
+    const originalApiUrl = process.env.DEEPSEEK_API_URL;
+    process.env.DEEPSEEK_API_URL = "https://api.deepseek.com/";
+    const fetcher = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        choices: [{ message: { content: responseContent() } }],
+      }),
+    });
+
+    await generateBridalRecommendations(answers, {
+      apiKey: "test-key",
+      fetcher,
+    });
+
+    expect(fetcher.mock.calls[0][0]).toBe("https://api.deepseek.com/chat/completions");
+    process.env.DEEPSEEK_API_URL = originalApiUrl;
   });
 
   it("uses deterministic fallback recommendations without an API key", async () => {
@@ -101,5 +131,27 @@ describe("bridal DeepSeek generation", () => {
 
     expect(result).toHaveLength(3);
     expect(result[0].styleName).toBe("Clean Venue-Ready Romance");
+  });
+
+  it("uses localized fallback recommendations for Chinese reports", async () => {
+    const result = await generateBridalRecommendations(answers, { apiKey: "", locale: "zh" });
+
+    expect(result).toHaveLength(3);
+    expect(result[0].styleName).toBe("清爽场地浪漫");
+    expect(result[0].consultantScript).toContain("我想先试");
+  });
+
+  it("uses fallback recommendations when DeepSeek fails", async () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const fetcher = vi.fn().mockRejectedValue(new Error("SSL handshake failed"));
+
+    const result = await generateBridalRecommendations(answers, {
+      apiKey: "test-key",
+      fetcher,
+    });
+
+    expect(result).toHaveLength(3);
+    expect(result[0].styleName).toBe("Clean Venue-Ready Romance");
+    consoleError.mockRestore();
   });
 });

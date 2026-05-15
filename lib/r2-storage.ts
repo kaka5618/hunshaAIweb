@@ -139,3 +139,11 @@ function getExtensionFromContentType(contentType: string): string {
 export function isR2Configured(): boolean {
   return !!(STORAGE_ACCESS_KEY_ID && STORAGE_SECRET_ACCESS_KEY && STORAGE_PUBLIC_URL);
 }
+
+export function getR2PublicUrl(keyOrUrl: string): string {
+  if (keyOrUrl.startsWith("http") || keyOrUrl.startsWith("data:")) {
+    return keyOrUrl;
+  }
+
+  return `${STORAGE_PUBLIC_URL.replace(/\/$/, "")}/${keyOrUrl.replace(/^\//, "")}`;
+}

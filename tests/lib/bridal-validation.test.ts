@@ -15,8 +15,8 @@ const recommendation = {
   budgetMin: 1200,
   budgetMax: 2400,
   budgetGuardrail: "Ask to start under your stated limit.",
-  tryFirst: ["A-line lace overlay"],
-  skipFirst: ["Heavy cathedral train"],
+  tryFirst: ["A-line lace overlay", "Supportive bodice", "Light skirt movement"],
+  skipFirst: ["Heavy cathedral train", "Scratchy sleeve trim"],
   consultantScript: "Can we start with romantic A-line gowns?",
   salesPressureReminder: "You can ask to return to your original brief.",
   detailCaptions: {
@@ -44,6 +44,18 @@ describe("bridalRecommendationsResponseSchema", () => {
       recommendations: [
         recommendation,
         { ...recommendation, styleName: "Modern Chapel Bride" },
+        { ...recommendation, rank: 3, styleName: "Coastal Minimal Bride" },
+      ],
+    });
+
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects thin shopping guidance", () => {
+    const result = bridalRecommendationsResponseSchema.safeParse({
+      recommendations: [
+        { ...recommendation, tryFirst: ["A-line lace overlay"], skipFirst: ["Heavy cathedral train"] },
+        { ...recommendation, rank: 2, styleName: "Modern Chapel Bride" },
         { ...recommendation, rank: 3, styleName: "Coastal Minimal Bride" },
       ],
     });

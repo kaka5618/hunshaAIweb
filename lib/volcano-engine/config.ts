@@ -3,10 +3,9 @@ import { VolcanoEngineConfig } from './types';
 export const volcanoEngineConfig: VolcanoEngineConfig = {
   apiKey: process.env.VOLCANO_ENGINE_API_KEY || '',
   apiUrl: process.env.VOLCANO_ENGINE_API_URL || 'https://ark.cn-beijing.volces.com/api/v3',
-  // 使用豆包模型名称，无需创建端点
-  textModel: 'doubao-1-5-thinking-pro-250415',  // 豆包 1.5 Thinking Pro 版本（正确的模型名）
-  imageModel: 'doubao-seededit-3-0-i2i-250628',  // 豆包 SeedEdit 3.0 图生图模型
-  videoModel: 'doubao-seedance-1-0-pro-250528',  // Seedance Pro 视频生成模型
+  textModel: process.env.VOLCANO_ENGINE_TEXT_MODEL || 'doubao-1-5-thinking-pro-250415',
+  imageModel: process.env.VOLCANO_ENGINE_IMAGE_MODEL || process.env.SEEDREAM_MODEL || 'doubao-seededit-3-0-i2i-250628',
+  videoModel: process.env.VOLCANO_ENGINE_VIDEO_MODEL || 'doubao-seedance-1-0-pro-250528',
 };
 
 export function validateConfig(): void {

@@ -1174,6 +1174,22 @@
     "eyebrow": "Bridal style preview",
     "title": "Your bridal look directions are ready",
     "description": "Use these first recommendations to understand which silhouettes, necklines, fabrics, and budget boundaries are worth trying first.",
+    "summary": {
+      "directions": "Directions",
+      "budgetRange": "Budget range",
+      "status": "Report status",
+      "preview": "Preview",
+      "unlocked": "Unlocked"
+    },
+    "snapshot": {
+      "label": "Appointment decision brief",
+      "title": "Start with {name}",
+      "description": "Use the first direction as your fitting baseline, then compare the other two against it. This gives you a faster way to reject poor silhouettes and sales-driven suggestions."
+    },
+    "previewUnlock": {
+      "title": "Unlock every direction",
+      "description": "The first direction is open for preview. Unlock to read the other two directions, avoid-first notes, appointment scripts, detail captions, export, and sharing tools."
+    },
     "unlock": {
       "title": "Unlock the full report",
       "description": "Get the complete visual report, shopping scripts, and detail guidance for {price}.",
@@ -1189,7 +1205,17 @@
       }
     },
     "recommendation": {
+      "sectionTitle": "3 directions to try on",
+      "sectionPreview": "The preview shows the key decision points first, so you can decide whether to continue into the full visual report.",
+      "sectionPaid": "The full report includes images, try-first priorities, avoid-first notes, budget guardrails, and appointment-ready language for each direction.",
+      "previewBadge": "Preview content",
       "rank": "Direction {rank}",
+      "planButton": "Direction {rank}",
+      "detailEyebrow": "Detailed plan for direction one",
+      "detailTitle": "{name} fitting plan",
+      "visualReportIntro": "This preview uses your uploaded photo as the visual baseline, so the silhouette, neckline, waist, and coverage notes stay grounded in your own reference instead of another person's image.",
+      "textPlan": "Specific written plan",
+      "silhouette": "Silhouette",
       "neckline": "Neckline",
       "fabric": "Fabric",
       "budget": "Budget",
@@ -1198,6 +1224,14 @@
       "whatToAvoid": "Avoid first",
       "tryFirst": "Try first",
       "skipFirst": "Skip first",
+      "storeScript": "Consultant script",
+      "salesPressureReminder": "Sales pressure reminder",
+      "lockedPreviewTitle": "Unlock the lower report",
+      "lockedPreviewDescription": "Avoid-first notes and appointment language are ready. Unlock to read the full content.",
+      "lockedDirectionTitle": "Direction {rank} is ready",
+      "lockedDirectionDescription": "Unlock to view this full direction, detail guidance, and appointment script.",
+      "fullDeliverables": "Full deliverables",
+      "fullDeliverablesDescription": "Unlock to export a print-ready report and create a share link for friends, family, or your bridal consultant.",
       "imageAlt": "Generated bridal visual for {name}"
     },
     "locked": {
@@ -1210,7 +1244,7 @@
     },
     "fullGeneration": {
       "title": "Generate your full visual report",
-      "description": "Your payment is confirmed. Generate the full report visuals now. If image provider keys are not configured yet, local placeholder visuals will be used so the flow stays testable.",
+      "description": "Your payment is confirmed. Generate the full report visuals now. A working image-to-image model is required; uploaded photos will not be treated as generated results.",
       "cta": "Generate full report",
       "loading": "Generating...",
       "error": "We could not generate the full report. Please try again."
@@ -1229,9 +1263,39 @@
     },
     "deliverables": {
       "title": "Export and share",
-      "description": "Open a print-ready report in a new tab. Use your browser print dialog to save it as a PDF. Share links are reserved for the next delivery layer.",
+      "description": "Open a print-ready report in a new tab, or create a public read-only share link for visual feedback.",
       "pdf": "Open printable report",
-      "share": "Share coming next"
+      "share": "Copy share link",
+      "shareLoading": "Creating link...",
+      "shareCopied": "Share link copied.",
+      "shareError": "We could not create a share link. Please try again."
+    }
+  },
+  "bridalShare": {
+    "meta": {
+      "title": "Shared Bridal Style Report",
+      "description": "View a shared bridal style report preview."
+    },
+    "eyebrow": "Shared bridal report",
+    "description": "This public page shows the visual style directions and high-level shopping guidance. Private budget guardrails and appointment scripts stay inside the owner's full report.",
+    "rank": "Direction {rank}",
+    "neckline": "Neckline",
+    "fabric": "Fabric",
+    "venueMatch": "Venue fit",
+    "whyItWorks": "Why it works",
+    "tryFirst": "Try first",
+    "imageAlt": "Generated bridal visual for {name}",
+    "votes": {
+      "title": "Leave quick feedback",
+      "saving": "Saving...",
+      "saved": "Feedback saved.",
+      "error": "We could not save your vote. Please try again.",
+      "types": {
+        "best_overall": "Best overall",
+        "best_for_venue": "Best for the venue",
+        "most_elegant": "Most elegant",
+        "most_you": "Most like her"
+      }
     }
   },
   "footer": {

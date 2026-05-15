@@ -17,11 +17,18 @@ import { getBridalReportExpiry } from "@/lib/bridal/report";
 import { getBridalSessionIdFromCookies } from "@/lib/bridal/session";
 import { bridalQuizAnswersSchema } from "@/lib/bridal/validation";
 import { getErrorMessage } from "@/lib/error-utils";
+import type { BridalReportLanguage } from "@/lib/bridal/types";
 
-export async function POST() {
+function parseReportLanguage(value: unknown): BridalReportLanguage {
+  return value === "zh" ? "zh" : "en";
+}
+
+export async function POST(request: Request) {
   let reportId: string | null = null;
 
   try {
+    const body = (await request.json().catch(() => null)) as { locale?: unknown } | null;
+    const locale = parseReportLanguage(body?.locale);
     const sessionId = await getBridalSessionIdFromCookies();
 
     if (!sessionId) {
@@ -95,7 +102,7 @@ export async function POST() {
       expiresAt: getBridalReportExpiry(),
     });
 
-    const recommendations = await generateBridalRecommendations(answers);
+    const recommendations = await generateBridalRecommendations(answers, { locale });
 
     await db.insert(bridalRecommendation).values(
       recommendations.map(recommendation => ({

@@ -58,6 +58,8 @@ export interface ImageGenerationRequest {
   seed?: number;
   guidance_scale?: number;
   watermark?: boolean;
+  sequential_image_generation?: 'disabled' | 'auto';
+  stream?: boolean;
 }
 
 export interface ImageGenerationResponse {

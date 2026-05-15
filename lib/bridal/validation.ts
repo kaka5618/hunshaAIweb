@@ -40,8 +40,8 @@ export const bridalRecommendationDraftSchema = z.object({
   budgetMin: z.number().int().nonnegative(),
   budgetMax: z.number().int().nonnegative(),
   budgetGuardrail: z.string().min(1),
-  tryFirst: z.array(z.string().min(1)).min(1),
-  skipFirst: z.array(z.string().min(1)),
+  tryFirst: z.array(z.string().min(1)).min(3).max(4),
+  skipFirst: z.array(z.string().min(1)).min(2).max(3),
   consultantScript: z.string().min(1),
   salesPressureReminder: z.string().min(1),
   detailCaptions: z.object({
@@ -60,4 +60,3 @@ export const bridalRecommendationsResponseSchema = z.object({
       "Recommendations must include ranks 1, 2, and 3",
     ),
 });
-

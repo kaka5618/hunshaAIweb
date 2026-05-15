@@ -110,6 +110,10 @@ export function BridalUploadClient() {
 
       const generateResponse = await fetch("/api/bridal/generate-preview", {
         method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ locale }),
       });
 
       if (!generateResponse.ok) {

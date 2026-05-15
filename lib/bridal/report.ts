@@ -20,6 +20,10 @@ export function getBridalReportExpiry(now = new Date()) {
   return addDays(now, BRIDAL_REPORT_TTL_DAYS);
 }
 
+export function getBridalShareExpiry(now = new Date()) {
+  return addDays(now, BRIDAL_REPORT_TTL_DAYS);
+}
+
 export function isBridalReportPaidStatus(status: BridalReportStatus) {
   return paidStatuses.includes(status);
 }
@@ -27,4 +31,3 @@ export function isBridalReportPaidStatus(status: BridalReportStatus) {
 export function resolvePaidReportStatus(hasPendingImages: boolean): BridalReportStatus {
   return hasPendingImages ? "generating" : "ready";
 }
-
