@@ -34,7 +34,7 @@ export const auth = betterAuth({
     provider: "pg",
   }),
 
-  baseURL: process.env.BETTER_AUTH_URL || "https://yourbridalstyle.com",
+  baseURL: process.env.BETTER_AUTH_URL || "https://www.yourbridalstyle.com",
   secret: process.env.BETTER_AUTH_SECRET,
 
   emailAndPassword: {

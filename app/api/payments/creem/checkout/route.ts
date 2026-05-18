@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     const userId = access.user.id;
 
     let creemPriceId: string | undefined;
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://yourbridalstyle.com";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.yourbridalstyle.com";
     let successUrl = `${appUrl}/dashboard?success=1&product=${key}`;
     let cancelUrl = `${appUrl}/pricing`;
     const checkoutMetadata: Record<string, string> = {};

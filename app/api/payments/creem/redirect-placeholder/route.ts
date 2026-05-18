@@ -87,7 +87,7 @@ export async function GET(req: NextRequest) {
   }
 
   const url = new URL(req.url);
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://yourbridalstyle.com";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.yourbridalstyle.com";
   const success = url.searchParams.get("success") || "1";
   const fallback = `${appUrl}/dashboard?success=${success}`;
   const successUrl = getSafeRedirectUrl(url.searchParams.get("successUrl"), fallback, appUrl);

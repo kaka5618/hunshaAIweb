@@ -1,7 +1,7 @@
 const toBoolean = (value: string | undefined): boolean =>
   value?.toLowerCase() === "true";
 
-const DEFAULT_APP_URL = "https://yourbridalstyle.com";
+const DEFAULT_APP_URL = "https://www.yourbridalstyle.com";
 
 export const analyticsConfig = {
   enableInDevelopment: toBoolean(process.env.NEXT_PUBLIC_ANALYTICS_ENABLE_IN_DEVELOPMENT),

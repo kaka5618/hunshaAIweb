@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://yourbridalstyle.com'
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.yourbridalstyle.com'
 
   // Static routes
   const staticRoutes = [
