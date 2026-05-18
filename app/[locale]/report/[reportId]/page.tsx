@@ -112,7 +112,9 @@ export default async function BridalReportPage(
       .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key)
       .map(image => [`${image.recommendationId}:${image.type}`, image.r2Key as string]),
   );
-  const hasSuccessfulImages = imageByRecommendationId.size > 0;
+  const paidVisualsIncomplete = report.isPaid && generatedImages
+    .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key)
+    .length < 12;
 
   const price = `$${(report.priceCents / 100).toFixed(2)}`;
   const budgetMin = Math.min(...recommendations.map(recommendation => recommendation.budgetMin));
@@ -333,7 +335,7 @@ export default async function BridalReportPage(
           </section>
         )}
 
-        {report.isPaid && hasSuccessfulImages && (
+        {report.isPaid && (
           <section className="mt-10">
             <div className="rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-6 shadow-sm md:p-8">
               <div className="grid gap-6 lg:grid-cols-[1fr_360px] lg:items-end">
@@ -426,7 +428,7 @@ export default async function BridalReportPage(
           </section>
         )}
 
-        {report.isPaid && hasSuccessfulImages && (
+        {report.isPaid && (
           <section className="mt-8 rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-8 shadow-sm">
             <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
@@ -450,7 +452,7 @@ export default async function BridalReportPage(
 
         {!report.isPaid && returnedFromPayment && <PaymentConfirmationRefresh />}
 
-        {report.isPaid && !hasSuccessfulImages && (
+        {paidVisualsIncomplete && (
           <section className="mt-8 rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-8 text-center shadow-sm">
             <Sparkles className="mx-auto h-8 w-8 text-primary" />
             <h2 className="mt-4 text-2xl font-semibold">

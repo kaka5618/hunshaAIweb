@@ -47,6 +47,8 @@ async function getProviderInputImage(imageUrl: string) {
 }
 
 const EXPECTED_IMAGE_COUNT = 12;
+const PRIMARY_IMAGE_TYPES = ["full_body"] as const;
+const DETAIL_IMAGE_TYPES = BRIDAL_REPORT_IMAGE_TYPES.filter(type => type !== "full_body");
 
 function recommendationsExpectedCount(
   images: Array<{ recommendationId: string; type: string; generationStatus: string; errorMessage: string | null }>,
@@ -221,8 +223,16 @@ async function generateFullBridalReport(reportId: string) {
       .map(image => `${image.recommendationId}:${image.type}`),
   );
 
-  for (const recommendation of recommendations.slice(0, 3)) {
-    for (const imageType of BRIDAL_REPORT_IMAGE_TYPES) {
+  const generationQueue = [
+    ...recommendations.slice(0, 3).flatMap(recommendation =>
+      PRIMARY_IMAGE_TYPES.map(imageType => ({ recommendation, imageType })),
+    ),
+    ...recommendations.slice(0, 3).flatMap(recommendation =>
+      DETAIL_IMAGE_TYPES.map(imageType => ({ recommendation, imageType })),
+    ),
+  ];
+
+  for (const { recommendation, imageType } of generationQueue) {
       if (successfulImageKeys.has(`${recommendation.id}:${imageType}`)) {
         continue;
       }
@@ -336,7 +346,6 @@ async function generateFullBridalReport(reportId: string) {
             },
           });
       }
-    }
   }
 
   const finalImages = await db
