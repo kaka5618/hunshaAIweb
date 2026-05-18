@@ -5,6 +5,10 @@ describe("email client", () => {
     expect(getResendClient(undefined)).toBeNull();
   });
 
+  it("does not construct a resend client for the placeholder API key", () => {
+    expect(getResendClient("re_your_api_key")).toBeNull();
+  });
+
   it("returns a controlled error instead of throwing when email is disabled", async () => {
     const originalKey = process.env.RESEND_API_KEY;
     delete process.env.RESEND_API_KEY;

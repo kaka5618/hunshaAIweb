@@ -3,7 +3,7 @@ import { Resend } from 'resend';
 // 获取默认发件邮箱的函数
 const getDefaultFromEmail = () => {
   // 1. 优先使用用户配置的完整发件地址
-  if (process.env.RESEND_FROM_EMAIL) {
+  if (process.env.RESEND_FROM_EMAIL && !process.env.RESEND_FROM_EMAIL.includes("yourdomain.com")) {
     return process.env.RESEND_FROM_EMAIL;
   }
   
@@ -28,7 +28,7 @@ const getDefaultFromEmail = () => {
 };
 
 export function getResendClient(apiKey = process.env.RESEND_API_KEY) {
-  if (!apiKey) {
+  if (!apiKey || apiKey === "re_your_api_key") {
     return null;
   }
 
@@ -89,14 +89,15 @@ export async function sendEmail({
 
 // 发送验证邮件
 export async function sendVerificationEmail(email: string, token: string) {
-  const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${token}`;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.yourbridalstyle.com";
+  const verificationUrl = `${appUrl}/verify-email?token=${token}`;
   
   return sendEmail({
     to: email,
-    subject: 'Verify your email - Sistine AI',
+    subject: 'Verify your email - Find My Bridal Look',
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h1 style="color: #333;">Welcome to Sistine AI!</h1>
+        <h1 style="color: #333;">Welcome to Find My Bridal Look!</h1>
         <p>Please click the link below to verify your email address:</p>
         <a href="${verificationUrl}" style="display: inline-block; padding: 12px 24px; background-color: #000; color: #fff; text-decoration: none; border-radius: 6px; margin: 20px 0;">
           Verify Email
@@ -104,7 +105,7 @@ export async function sendVerificationEmail(email: string, token: string) {
         <p>Or copy this link to your browser:</p>
         <p style="color: #666; word-break: break-all;">${verificationUrl}</p>
         <p style="color: #999; font-size: 14px; margin-top: 30px;">
-          If you didn't sign up for Sistine AI, you can safely ignore this email.
+          If you didn't sign up for Find My Bridal Look, you can safely ignore this email.
         </p>
       </div>
     `,
