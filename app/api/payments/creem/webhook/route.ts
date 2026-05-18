@@ -98,6 +98,23 @@ type CreemWebhookEvent = {
   data?: CreemWebhookObject | { object?: CreemWebhookObject | null } | null;
 };
 
+function resolveCreemWebhookObject(event: CreemWebhookEvent): CreemWebhookObject {
+  if (event.object) {
+    return event.object;
+  }
+
+  const data = event.data;
+  if (!data) {
+    return {};
+  }
+
+  if ("object" in data) {
+    return data.object ?? {};
+  }
+
+  return data;
+}
+
 function getErrorMessage(error: unknown, fallback = "Unknown error") {
   return error instanceof Error ? error.message : fallback;
 }
@@ -139,15 +156,7 @@ export async function POST(req: NextRequest) {
     }
     
     // Get the main object
-    const eventData = event.data;
-    const mainObject: CreemWebhookObject =
-      event.object ??
-      (
-        eventData && typeof eventData === "object" && "object" in eventData
-          ? eventData.object
-          : eventData
-      ) ??
-      {};
+    const mainObject = resolveCreemWebhookObject(event);
     
     // Extract metadata from the correct location based on event type
     let metadata: CreemMetadata = {};
