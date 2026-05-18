@@ -98,6 +98,23 @@ type CreemWebhookEvent = {
   data?: CreemWebhookObject | { object?: CreemWebhookObject | null } | null;
 };
 
+function isCreemWebhookObject(value: unknown): value is CreemWebhookObject {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  return (
+    "id" in value ||
+    "metadata" in value ||
+    "checkout" in value ||
+    "order" in value ||
+    "subscription" in value ||
+    "subscriptionId" in value ||
+    "last_transaction" in value ||
+    "product" in value
+  );
+}
+
 function resolveCreemWebhookObject(event: CreemWebhookEvent): CreemWebhookObject {
   if (event.object) {
     return event.object;
@@ -112,7 +129,7 @@ function resolveCreemWebhookObject(event: CreemWebhookEvent): CreemWebhookObject
     return data.object ?? {};
   }
 
-  return data;
+  return isCreemWebhookObject(data) ? data : {};
 }
 
 function getErrorMessage(error: unknown, fallback = "Unknown error") {
