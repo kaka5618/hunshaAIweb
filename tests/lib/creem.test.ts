@@ -76,7 +76,6 @@ describe("Creem payments", () => {
     expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({
       product_id: "prod_test_123",
       success_url: "https://yourbridalstyle.com/report/report_1?success=1",
-      cancel_url: "https://yourbridalstyle.com/report/report_1",
       request_id: "bridal-report:report_1",
       customer: {
         email: "buyer@example.com",
