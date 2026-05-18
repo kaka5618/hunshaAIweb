@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     const userId = access.user.id;
 
     let creemPriceId: string | undefined;
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://yourbridalstyle.com";
     let successUrl = `${appUrl}/dashboard?success=1&product=${key}`;
     let cancelUrl = `${appUrl}/pricing`;
     const checkoutMetadata: Record<string, string> = {};
@@ -89,7 +89,9 @@ export async function POST(req: NextRequest) {
       successUrl,
       cancelUrl,
       creemPriceId,
+      customerEmail: access.user.email,
       metadata: Object.keys(checkoutMetadata).length > 0 ? checkoutMetadata : undefined,
+      requestId: reportId ? `bridal-report:${reportId}` : undefined,
     });
 
     return NextResponse.json({ url });

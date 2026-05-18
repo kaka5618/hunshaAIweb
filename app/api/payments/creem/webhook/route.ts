@@ -39,7 +39,9 @@ type CreemPeriodInfo = {
 
 type CreemOrderObject = {
   id?: string;
-  amount?: number;
+  amount?: number | string;
+  amount_paid?: number | string;
+  total_amount?: number | string;
   currency?: string;
   subscription_id?: string;
   subscription?: {
@@ -59,6 +61,9 @@ type CreemOrderObject = {
 type CreemWebhookObject = {
   id?: string;
   metadata?: CreemMetadata;
+  checkout?: {
+    id?: string;
+  };
   order?: CreemOrderObject;
   subscription?: {
     id?: string;
@@ -68,7 +73,7 @@ type CreemWebhookObject = {
     order?: string;
   };
   product?: {
-    price?: number;
+    price?: number | string;
     currency?: string;
   };
   current_period_end?: CreemDateValue;
@@ -87,8 +92,10 @@ type CreemWebhookObject = {
 
 type CreemWebhookEvent = {
   id?: string;
+  type?: string;
   eventType?: string;
   object?: CreemWebhookObject | null;
+  data?: CreemWebhookObject | { object?: CreemWebhookObject | null } | null;
 };
 
 function getErrorMessage(error: unknown, fallback = "Unknown error") {
@@ -124,7 +131,7 @@ export async function POST(req: NextRequest) {
 
   try {
     // Handle Creem webhook structure
-    const type = event.eventType;
+    const type = event.eventType ?? event.type;
     
     // Only log important events
     if (type === "checkout.completed" || type === "subscription.paid") {
@@ -132,18 +139,37 @@ export async function POST(req: NextRequest) {
     }
     
     // Get the main object
-    const mainObject: CreemWebhookObject = event.object ?? {};
+    const eventData = event.data;
+    const mainObject: CreemWebhookObject =
+      event.object ??
+      (
+        eventData && typeof eventData === "object" && "object" in eventData
+          ? eventData.object
+          : eventData
+      ) ??
+      {};
     
     // Extract metadata from the correct location based on event type
     let metadata: CreemMetadata = {};
     let paymentId: string | undefined;
+    let checkoutId: string | undefined;
     let subscriptionId: string | undefined;
     let amountCents = 0;
     let currency = "usd";
+
+    const parseAmount = (value: unknown): number => {
+      if (typeof value === "number" && Number.isFinite(value)) return Math.round(value);
+      if (typeof value === "string") {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? Math.round(parsed) : 0;
+      }
+      return 0;
+    };
     
     if (type === "checkout.completed") {
       // For checkout.completed, metadata is in the checkout object
       metadata = mainObject?.metadata || {};
+      checkoutId = mainObject?.checkout?.id ?? mainObject?.id;
       paymentId = mainObject?.order?.id || mainObject?.id;
       subscriptionId =
         mainObject?.order?.subscription_id ??
@@ -152,7 +178,11 @@ export async function POST(req: NextRequest) {
         mainObject?.order?.subscriptionId ??
         mainObject?.subscriptionId ??
         metadata?.subscriptionId;
-      amountCents = mainObject?.order?.amount || 0;
+      amountCents = parseAmount(
+        mainObject?.order?.amount_paid ??
+        mainObject?.order?.total_amount ??
+        mainObject?.order?.amount,
+      );
       currency = mainObject?.order?.currency || "USD";
     } else if (type === "subscription.paid" || type === "subscription.active") {
       // For subscription events, metadata should be in the subscription object
@@ -161,7 +191,7 @@ export async function POST(req: NextRequest) {
       const transactionOrderId = mainObject?.last_transaction?.order;
       // Use transaction order id when available so checkout.completed and subscription.paid dedupe correctly
       paymentId = transactionOrderId || eventId;
-      amountCents = mainObject?.product?.price || 0;
+      amountCents = parseAmount(mainObject?.product?.price);
       currency = mainObject?.product?.currency || "USD";
     }
     
@@ -440,6 +470,7 @@ export async function POST(req: NextRequest) {
             amountCents,
             currency: currency.toLowerCase(),
             status: "paid",
+            creemCheckoutId: checkoutId,
             creemPaymentId: paymentId,
             raw: JSON.stringify(event).slice(0, 65000),
             paidAt: new Date(),
@@ -448,6 +479,7 @@ export async function POST(req: NextRequest) {
             target: bridalPayment.creemPaymentId,
             set: {
               status: "paid",
+              creemCheckoutId: checkoutId,
               paidAt: new Date(),
               raw: JSON.stringify(event).slice(0, 65000),
             },

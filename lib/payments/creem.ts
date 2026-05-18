@@ -1,4 +1,3 @@
-// Minimal Creem client wrapper. Replace endpoints/fields with the official API when IDs are provided.
 import crypto from "node:crypto";
 
 type CreateCheckoutParams = {
@@ -7,13 +6,15 @@ type CreateCheckoutParams = {
   kind: "subscription" | "one_time";
   successUrl: string;
   cancelUrl: string;
-  // Provider identifiers to be filled later
   creemPriceId?: string;
+  customerEmail?: string;
   metadata?: Record<string, string>;
+  requestId?: string;
 };
 
 export type CreateCheckoutResult = {
   url: string;
+  id?: string;
 };
 
 function getEnv(name: string) {
@@ -22,8 +23,22 @@ function getEnv(name: string) {
   return v;
 }
 
+export function getCreemApiBase() {
+  if (process.env.CREEM_API_BASE) {
+    return process.env.CREEM_API_BASE.replace(/\/$/, "");
+  }
+
+  return process.env.CREEM_TEST_MODE === "true"
+    ? "https://test-api.creem.io"
+    : "https://api.creem.io";
+}
+
+function getCheckoutPath() {
+  const path = process.env.CREEM_CHECKOUT_PATH || "/v1/checkouts";
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
 export async function createCheckoutSession(params: CreateCheckoutParams): Promise<CreateCheckoutResult> {
-  const apiKey = getEnv("CREEM_API_KEY");
   const simulate = process.env.CREEM_SIMULATE === "true";
 
   if (simulate) {
@@ -43,11 +58,17 @@ export async function createCheckoutSession(params: CreateCheckoutParams): Promi
     return { url: `/api/payments/creem/redirect-placeholder?${searchParams.toString()}` };
   }
 
-  // Create payload according to Creem API documentation
+  const apiKey = getEnv("CREEM_API_KEY");
+  if (!params.creemPriceId) {
+    throw new Error("Creem product id is not configured for this checkout item");
+  }
+
   const payload: Record<string, unknown> = {
-    product_id: params.creemPriceId, // Creem expects product_id
+    product_id: params.creemPriceId,
     success_url: params.successUrl,
     cancel_url: params.cancelUrl,
+    request_id: params.requestId,
+    customer: params.customerEmail ? { email: params.customerEmail } : undefined,
     metadata: {
       userId: params.userId,
       key: params.key,
@@ -56,8 +77,7 @@ export async function createCheckoutSession(params: CreateCheckoutParams): Promi
     },
   };
 
-  const base = process.env.CREEM_API_BASE || "https://api.creem.io";
-  const endpointUrl = `${base}/v1/checkouts`; // Correct endpoint path from docs
+  const endpointUrl = `${getCreemApiBase()}${getCheckoutPath()}`;
 
   try {
     const res = await fetch(endpointUrl, {
@@ -74,14 +94,19 @@ export async function createCheckoutSession(params: CreateCheckoutParams): Promi
       throw new Error(`Creem checkout create failed: ${res.status} ${errorText}`);
     }
 
-    const data = (await res.json()) as { url?: string; checkout_url?: string; id?: string };
-    const redirectUrl = data.checkout_url || data.url; // Creem returns checkout_url
+    const data = (await res.json()) as {
+      id?: string;
+      url?: string;
+      checkout_url?: string;
+      checkoutUrl?: string;
+    };
+    const redirectUrl = data.checkout_url || data.checkoutUrl || data.url;
     
     if (!redirectUrl) {
       throw new Error("Creem checkout response missing checkout_url");
     }
     
-    return { url: redirectUrl };
+    return { url: redirectUrl, id: data.id };
   } catch (error) {
     console.error("Error creating Creem checkout session:", error);
     throw error;
@@ -89,7 +114,6 @@ export async function createCheckoutSession(params: CreateCheckoutParams): Promi
 }
 
 export function verifyWebhookSignature(headers: Headers, rawBody: string): boolean {
-  // Support official header name; also allow x-creem-signature if provider uses x- prefix
   const signature = headers.get("creem-signature") || headers.get("x-creem-signature");
   if (!signature) {
     console.error("Missing creem-signature header");
@@ -122,4 +146,37 @@ export function verifyWebhookSignature(headers: Headers, rawBody: string): boole
   }
 
   return isValid;
+}
+
+export function verifyReturnUrlSignature(
+  params: URLSearchParams | Record<string, string | string[] | undefined>,
+): boolean {
+  const apiKey = process.env.CREEM_API_KEY;
+  if (!apiKey) return false;
+
+  const entries =
+    params instanceof URLSearchParams
+      ? Array.from(params.entries())
+      : Object.entries(params).flatMap(([key, value]) => {
+          if (Array.isArray(value)) return value.map(item => [key, item] as const);
+          return value === undefined ? [] : ([[key, value]] as const);
+        });
+
+  const signature = entries.find(([key]) => key === "signature")?.[1];
+  if (!signature) return false;
+
+  const signedPayload = entries
+    .filter(([key]) => key !== "signature")
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, value]) => `${key}=${value}`)
+    .join("|");
+
+  const computedSignature = crypto
+    .createHmac("sha256", apiKey)
+    .update(signedPayload)
+    .digest("hex");
+
+  const sigBuf = Buffer.from(signature);
+  const compBuf = Buffer.from(computedSignature);
+  return sigBuf.length === compBuf.length && crypto.timingSafeEqual(sigBuf, compBuf);
 }

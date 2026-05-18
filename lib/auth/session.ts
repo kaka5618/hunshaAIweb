@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 type AccessUser = {
   banExpires: Date | null;
   banned: boolean;
+  email: string;
   emailVerified: boolean;
   id: string;
   role: string;
@@ -87,6 +88,7 @@ export async function getActiveSessionUser(
   const dbUsers = await db
     .select({
       id: user.id,
+      email: user.email,
       emailVerified: user.emailVerified,
       banned: user.banned,
       banExpires: user.banExpires,

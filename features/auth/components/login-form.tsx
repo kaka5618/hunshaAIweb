@@ -49,8 +49,8 @@ export function LoginForm({ showGoogleAuth = true }: LoginFormProps) {
       }
 
       router.push(`/${locale}/`);
-    } catch {
-      setError(t('errors.loginFailed'));
+    } catch (loginError) {
+      setError(loginError instanceof Error ? loginError.message : t('errors.loginFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -63,8 +63,8 @@ export function LoginForm({ showGoogleAuth = true }: LoginFormProps) {
         provider: "google",
         callbackURL: "/",
       });
-    } catch {
-      setError(t('errors.googleLoginFailed'));
+    } catch (loginError) {
+      setError(loginError instanceof Error ? loginError.message : t('errors.googleLoginFailed'));
     } finally {
       setIsLoading(false);
     }

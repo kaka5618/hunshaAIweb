@@ -5,7 +5,7 @@ import { db } from "./db";
 import { refundCredits } from "./credits";
 import { getGoogleAuthProvider } from "./auth/google-auth";
 
-const defaultTrustedOrigins = ["http://localhost:3000"];
+const defaultTrustedOrigins = ["http://localhost:3000", "https://yourbridalstyle.com"];
 
 const trustedOrigins = process.env.BETTER_AUTH_TRUSTED_ORIGINS
   ? process.env.BETTER_AUTH_TRUSTED_ORIGINS.split(",")
@@ -20,7 +20,7 @@ export const auth = betterAuth({
     provider: "pg",
   }),
 
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+  baseURL: process.env.BETTER_AUTH_URL || "https://yourbridalstyle.com",
   secret: process.env.BETTER_AUTH_SECRET,
 
   emailAndPassword: {

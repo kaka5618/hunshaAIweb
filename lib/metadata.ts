@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://yourbridalstyle.com'
 
 interface GenerateMetadataProps {
   locale: string
@@ -23,9 +23,9 @@ export function generatePageMetadata({
   const alternates = {
     canonical: canonicalUrl,
     languages: {
-      'zh-CN': `${baseUrl}/zh${path}`,
       'en-US': `${baseUrl}/en${path}`,
-      'x-default': `${baseUrl}/zh${path}`, // Default to Chinese
+      'zh-CN': `${baseUrl}/zh${path}`,
+      'x-default': `${baseUrl}${path}`,
     },
   }
 
@@ -37,7 +37,7 @@ export function generatePageMetadata({
       title,
       description,
       url: canonicalUrl,
-      siteName: 'SISTINE AI',
+      siteName: 'Find My Bridal Look',
       images: [
         {
           url: ogImage,

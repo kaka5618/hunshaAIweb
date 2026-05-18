@@ -28,6 +28,7 @@ import { canAccessBridalResource } from "@/lib/bridal/permissions";
 import { getBridalSessionIdFromCookies } from "@/lib/bridal/session";
 import { generatePageMetadata } from "@/lib/metadata";
 import { getR2PublicUrl } from "@/lib/r2-storage";
+import { verifyReturnUrlSignature } from "@/lib/payments/creem";
 import type { Locale } from "@/i18n.config";
 import type { ElementType } from "react";
 import { BridalUnlockButton } from "./unlock-button";
@@ -55,12 +56,14 @@ export async function generateMetadata(
 export default async function BridalReportPage(
   props: {
     params: Promise<{ locale: Locale; reportId: string }>;
-    searchParams?: Promise<{ success?: string }>;
+    searchParams?: Promise<Record<string, string | string[] | undefined>>;
   },
 ) {
   const { reportId } = await props.params;
   const searchParams = props.searchParams ? await props.searchParams : {};
-  const returnedFromPayment = searchParams.success === "1";
+  const returnedFromPayment =
+    searchParams.success === "1" ||
+    (typeof searchParams.signature === "string" && verifyReturnUrlSignature(searchParams));
   const t = await getTranslations("bridalReport");
   const sessionId = await getBridalSessionIdFromCookies();
 

@@ -64,8 +64,8 @@ export function SignupForm({ showGoogleAuth = true }: SignupFormProps) {
 
       // 跳转到邮箱验证提示页面，而不是直接登录
       router.push(`/${locale}/check-email`);
-    } catch {
-      setError(t('errors.signupFailed'));
+    } catch (signupError) {
+      setError(signupError instanceof Error ? signupError.message : t('errors.signupFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -78,8 +78,8 @@ export function SignupForm({ showGoogleAuth = true }: SignupFormProps) {
         provider: "google",
         callbackURL: "/",
       });
-    } catch {
-      setError(t('errors.googleSignupFailed'));
+    } catch (signupError) {
+      setError(signupError instanceof Error ? signupError.message : t('errors.googleSignupFailed'));
     } finally {
       setIsLoading(false);
     }

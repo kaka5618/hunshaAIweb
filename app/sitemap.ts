@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://yourbridalstyle.com'
 
   // Static routes
   const staticRoutes = [
@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   // Generate sitemap entries for both languages
-  const locales = ['zh', 'en']
+  const locales = ['en', 'zh']
   const sitemapEntries: MetadataRoute.Sitemap = []
 
   locales.forEach((locale) => {
