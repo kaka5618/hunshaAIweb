@@ -349,6 +349,19 @@
       "googleSignIn": "Continue with Google",
       "or": "Or continue with"
     },
+    "sidePanel": {
+      "eyebrow": "Personal bridal styling preview",
+      "title": "See three dress directions before your salon visit.",
+      "description": "Upload one photo, answer a few fit questions, and receive a visual report designed around your shape, venue, and budget.",
+      "previewLabel": "Preview what matters",
+      "previewText": "Your report focuses on silhouette, neckline, waist, sleeve coverage, and practical talking points for the fitting room.",
+      "includesLabel": "Includes",
+      "includes": {
+        "visuals": "AI bridal visuals",
+        "fitNotes": "Detailed fit notes",
+        "salonScript": "Salon-ready script"
+      }
+    },
     "checkEmail": {
       "title": "Check Your Email",
       "description": "We've sent a verification link to your email address. Please click the link to verify your account and get started.",
@@ -1314,12 +1327,18 @@
     "imageAlt": "Bridal look visual for {name}"
   },
   "footer": {
-    "tagline": "Transform your SaaS ideas into reality with the power of AI.",
+    "tagline": "AI bridal styling reports for brides who want a clear plan before trying on dresses.",
     "product": {
       "title": "Product",
+      "quiz": "Style quiz",
+      "sampleReport": "Sample report",
       "features": "Features",
       "pricing": "Pricing",
       "documentation": "Documentation"
+    },
+    "resources": {
+      "title": "Resources",
+      "salonPrep": "Salon prep guide"
     },
     "company": {
       "title": "Company",
@@ -1335,13 +1354,15 @@
     },
     "social": {
       "title": "Social",
+      "instagram": "Instagram",
+      "pinterest": "Pinterest",
       "twitter": "Twitter",
       "linkedin": "LinkedIn",
       "github": "GitHub"
     },
     "newsletter": {
-      "title": "Subscribe to Newsletter",
-      "description": "Get the latest updates and news directly in your inbox.",
+      "title": "Get salon prep tips",
+      "description": "A short email with bridal styling ideas and product updates.",
       "placeholder": "Enter your email",
       "subscribe": "Subscribe"
     }

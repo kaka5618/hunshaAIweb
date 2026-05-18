@@ -8,13 +8,28 @@ import { NewsletterInline } from './newsletter-inline';
 export const Footer = () => {
   const t = useTranslations();
   
-  const links = [
+  const productLinks = [
+    {
+      name: t('footer.product.quiz'),
+      href: "/quiz",
+    },
+    {
+      name: t('footer.product.sampleReport'),
+      href: "/",
+    },
     {
       name: t('navigation.main.pricing'),
       href: "/pricing",
     },
+  ];
+
+  const resourceLinks = [
     {
       name: t('navigation.main.blog'),
+      href: "/blog",
+    },
+    {
+      name: t('footer.resources.salonPrep'),
       href: "/blog",
     },
     {
@@ -22,6 +37,7 @@ export const Footer = () => {
       href: "/contact",
     },
   ];
+
   const legal = [
     {
       name: t('navigation.footer.legal.terms'),
@@ -42,65 +58,82 @@ export const Footer = () => {
   ];
   const socials = [
     {
-      name: t('footer.social.twitter'),
-      href: "https://x.com/bourneliu66",
+      name: t('footer.social.instagram'),
+      href: "https://www.instagram.com/",
       external: true,
     },
     {
-      name: t('footer.social.github'),
-      href: "https://github.com/Idea-To-Business/sistine-starter-vibe-to-production",
+      name: t('footer.social.pinterest'),
+      href: "https://www.pinterest.com/",
       external: true,
     },
   ];
   return (
-    <div className="relative">
-      <div className="border-t border-border px-8 pt-20 pb-32 relative bg-background">
-        <div className="max-w-7xl mx-auto">
-          {/* Footer Links Section */}
-          <div className="text-sm text-muted-foreground flex sm:flex-row flex-col justify-between items-start">
-            <div>
-              <div className="mr-4 md:flex mb-4">
+    <div className="relative overflow-hidden border-t border-border bg-[#fffaf4]">
+      <div className="relative px-8 pb-24 pt-16 md:pb-28 md:pt-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-12 text-sm text-muted-foreground md:grid-cols-[1.45fr_0.75fr_0.75fr_0.75fr_0.65fr]">
+            <div className="max-w-md">
+              <div className="mb-5 flex">
                 <Logo />
               </div>
-              <div>{t('common.brand.copyright')}</div>
-              <div className="mt-2">{t('common.brand.allRightsReserved')}</div>
-              {/* Newsletter Inline */}
+              <p className="text-base leading-7 text-muted-foreground">
+                {t('footer.tagline')}
+              </p>
+              <div className="mt-5 text-xs text-muted-foreground/80">
+                {t('common.brand.copyright')}
+              </div>
               <div className="mt-6">
                 <NewsletterInline />
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-10 items-start mt-10 md:mt-0">
-              <div className="flex justify-center space-y-4 flex-col mt-4">
-                {links.map((link) => (
-                  <LocaleLink
-                    key={link.name}
-                    className="transition-colors hover:text-foreground text-muted-foreground text-xs sm:text-sm"
-                    href={link.href}
-                  >
+
+            <div>
+              <h3 className="mb-5 text-sm font-semibold text-foreground">
+                {t('footer.product.title')}
+              </h3>
+              <div className="flex flex-col space-y-4">
+                {productLinks.map((link) => (
+                  <LocaleLink key={link.name} className="transition-colors hover:text-foreground" href={link.href}>
                     {link.name}
                   </LocaleLink>
                 ))}
               </div>
-              <div className="flex justify-center space-y-4 flex-col mt-4">
+            </div>
+
+            <div>
+              <h3 className="mb-5 text-sm font-semibold text-foreground">
+                {t('footer.resources.title')}
+              </h3>
+              <div className="flex flex-col space-y-4">
+                {resourceLinks.map((link) => (
+                  <LocaleLink key={link.name} className="transition-colors hover:text-foreground" href={link.href}>
+                    {link.name}
+                  </LocaleLink>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="mb-5 text-sm font-semibold text-foreground">
+                {t('footer.legal.title')}
+              </h3>
+              <div className="flex flex-col space-y-4">
                 {legal.map((link) => (
-                  <LocaleLink
-                    key={link.name}
-                    className="transition-colors hover:text-foreground text-muted-foreground text-xs sm:text-sm"
-                    href={link.href}
-                  >
+                  <LocaleLink key={link.name} className="transition-colors hover:text-foreground" href={link.href}>
                     {link.name}
                   </LocaleLink>
                 ))}
               </div>
-              <div className="flex justify-center space-y-4 flex-col mt-4">
+            </div>
+
+            <div>
+              <h3 className="mb-5 text-sm font-semibold text-foreground">
+                {t('footer.social.title')}
+              </h3>
+              <div className="flex flex-col space-y-4">
                 {socials.map((link) => (
-                  <a
-                    key={link.name}
-                    className="transition-colors hover:text-foreground text-muted-foreground text-xs sm:text-sm"
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a key={link.name} className="transition-colors hover:text-foreground" href={link.href} target="_blank" rel="noopener noreferrer">
                     {link.name}
                   </a>
                 ))}
@@ -108,10 +141,10 @@ export const Footer = () => {
             </div>
           </div>
         </div>
+        <p className="pointer-events-none absolute bottom-[-2rem] right-4 select-none text-[18vw] font-black leading-none tracking-normal text-foreground/[0.035]">
+          BRIDAL
+        </p>
       </div>
-      <p className="text-center text-5xl md:text-9xl lg:text-[18rem] font-bold bg-clip-text text-transparent bg-gradient-to-b from-muted to-border inset-x-0">
-        SISTINE
-      </p>
     </div>
   );
 };

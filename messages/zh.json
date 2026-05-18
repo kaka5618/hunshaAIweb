@@ -349,6 +349,19 @@
       "googleSignIn": "使用 Google 继续",
       "or": "或者继续使用"
     },
+    "sidePanel": {
+      "eyebrow": "个人婚纱风格预览",
+      "title": "在试纱前先看到 3 个适合你的婚纱方向。",
+      "description": "上传一张照片，回答几个版型问题，获取围绕身形、场地和预算生成的可视化婚纱报告。",
+      "previewLabel": "预览关键内容",
+      "previewText": "报告会聚焦轮廓、领口、腰线、袖型遮盖和试纱时可以直接沟通的话术。",
+      "includesLabel": "包含内容",
+      "includes": {
+        "visuals": "AI 婚纱视觉图",
+        "fitNotes": "详细版型说明",
+        "salonScript": "试纱沟通脚本"
+      }
+    },
     "checkEmail": {
       "title": "请查收您的邮件",
       "description": "我们已向您的邮箱发送了验证链接。请点击链接验证您的账户并开始使用。",
@@ -1313,12 +1326,18 @@
     "imageAlt": "{name} 的婚纱造型图"
   },
   "footer": {
-    "tagline": "利用 AI 的力量，将您的 SaaS 创意转化为现实。",
+    "tagline": "为准备试纱的新娘生成清晰、可分享的 AI 婚纱风格报告。",
     "product": {
       "title": "产品",
+      "quiz": "风格测验",
+      "sampleReport": "报告样例",
       "features": "功能",
       "pricing": "定价",
       "documentation": "文档"
+    },
+    "resources": {
+      "title": "资源",
+      "salonPrep": "试纱准备指南"
     },
     "company": {
       "title": "公司",
@@ -1334,13 +1353,15 @@
     },
     "social": {
       "title": "社交",
+      "instagram": "Instagram",
+      "pinterest": "Pinterest",
       "twitter": "Twitter",
       "linkedin": "领英",
       "github": "GitHub"
     },
     "newsletter": {
-      "title": "订阅邮件",
-      "description": "获取最新动态和资讯，直接发送到您的邮箱。",
+      "title": "获取试纱准备建议",
+      "description": "接收婚纱风格灵感和产品更新。",
       "placeholder": "输入您的邮箱",
       "subscribe": "订阅"
     }

@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="2100" viewBox="0 0 1800 2100">
+  <defs>
+    <linearGradient id="pageBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8f3ed"/>
+      <stop offset="1" stop-color="#efe7dc"/>
+    </linearGradient>
+    <linearGradient id="dressWarm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c6b09a"/>
+      <stop offset=".48" stop-color="#f5efe7"/>
+      <stop offset="1" stop-color="#5f4f42"/>
+    </linearGradient>
+    <linearGradient id="dressClean" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4eee7"/>
+      <stop offset=".55" stop-color="#d9c9b7"/>
+      <stop offset="1" stop-color="#9f8973"/>
+    </linearGradient>
+    <linearGradient id="dressSage" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ebe5dd"/>
+      <stop offset=".52" stop-color="#f8f2ea"/>
+      <stop offset="1" stop-color="#7f8a74"/>
+    </linearGradient>
+    <linearGradient id="darkFooter" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#211d19"/>
+      <stop offset="1" stop-color="#8b7764"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="24" stdDeviation="30" flood-color="#3d3022" flood-opacity=".12"/>
+    </filter>
+    <style>
+      .title { font: 800 52px Inter, Arial, sans-serif; fill: #171717; }
+      .sub { font: 400 22px Inter, Arial, sans-serif; fill: #6b6258; }
+      .optionTitle { font: 800 34px Inter, Arial, sans-serif; fill: #171717; }
+      .optionNote { font: 500 18px Inter, Arial, sans-serif; fill: #766d62; }
+      .brand { font: 800 20px Inter, Arial, sans-serif; fill: #171717; }
+      .h1 { font: 850 44px Inter, Arial, sans-serif; fill: #171717; }
+      .label { font: 800 17px Inter, Arial, sans-serif; fill: #171717; }
+      .copy { font: 500 20px Inter, Arial, sans-serif; fill: #675f56; }
+      .whiteH { font: 850 44px Inter, Arial, sans-serif; fill: #fff; }
+      .whiteP { font: 500 21px Inter, Arial, sans-serif; fill: rgba(255,255,255,.84); }
+      .small { font: 600 17px Inter, Arial, sans-serif; fill: #72685d; }
+      .footerHead { font: 800 20px Inter, Arial, sans-serif; fill: #171717; }
+      .footerLink { font: 500 17px Inter, Arial, sans-serif; fill: #6f665c; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="2100" fill="url(#pageBg)"/>
+  <text x="72" y="95" class="title">Auth page and footer UI options</text>
+  <text x="72" y="138" class="sub">Three bridal-specific directions for the login/signup right panel and site footer. Choose A, B, or C, then I will implement it in the app.</text>
+
+  <!-- Option A -->
+  <g transform="translate(72 210)" filter="url(#shadow)">
+    <rect width="1656" height="550" rx="34" fill="#fffdf9" stroke="#e0d8cf"/>
+    <rect width="1656" height="78" rx="34" fill="#fffdf9"/>
+    <line x1="0" y1="78" x2="1656" y2="78" stroke="#e5ddd4"/>
+    <text x="36" y="51" class="optionTitle">A. Editorial Bridal Studio</text>
+    <text x="1040" y="49" class="optionNote">Warm, premium, image-led conversion page</text>
+    <g transform="translate(0 78)">
+      <rect x="0" y="0" width="690" height="472" fill="#fffaf4"/>
+      <line x1="690" y1="0" x2="690" y2="472" stroke="#e5ddd4"/>
+      <circle cx="76" cy="62" r="18" fill="#171717"/><text x="70" y="70" font-size="18" font-family="Inter, Arial" font-weight="800" fill="#fff">B</text>
+      <text x="106" y="70" class="brand">Find My Bridal Look</text>
+      <text x="76" y="176" class="h1">Create your bridal</text>
+      <text x="76" y="226" class="h1">style report</text>
+      <text x="76" y="292" class="label">Email address</text>
+      <rect x="76" y="312" width="430" height="54" rx="14" fill="#ece7e0"/>
+      <rect x="76" y="394" width="430" height="60" rx="30" fill="#171717"/>
+      <text x="226" y="432" font-size="22" font-family="Inter, Arial" font-weight="800" fill="#fff">Create account</text>
+      <rect x="690" y="0" width="966" height="472" fill="url(#dressWarm)"/>
+      <circle cx="1162" cy="145" r="58" fill="#fff" opacity=".55"/>
+      <ellipse cx="1162" cy="328" rx="150" ry="210" fill="#fff" opacity=".36"/>
+      <rect x="790" y="268" width="330" height="34" rx="17" fill="none" stroke="#fff" opacity=".55"/>
+      <text x="812" y="291" font-size="17" font-family="Inter, Arial" font-weight="700" fill="#fff">Personal bridal styling preview</text>
+      <text x="790" y="356" class="whiteH">See three dress directions</text>
+      <text x="790" y="406" class="whiteH">before your salon visit.</text>
+      <rect x="1268" y="304" width="310" height="116" rx="20" fill="#ffffff" opacity=".18" stroke="#fff"/>
+      <text x="1296" y="342" font-size="20" font-family="Inter, Arial" font-weight="800" fill="#fff">Preview what matters</text>
+      <text x="1296" y="374" font-size="16" font-family="Inter, Arial" fill="#fff" opacity=".82">Silhouette, neckline, waist,</text>
+      <text x="1296" y="398" font-size="16" font-family="Inter, Arial" fill="#fff" opacity=".82">sleeves and salon script.</text>
+    </g>
+  </g>
+  <g transform="translate(72 790)" filter="url(#shadow)">
+    <rect width="1656" height="250" rx="26" fill="#fffaf4" stroke="#e3d9ce"/>
+    <text x="42" y="62" class="footerHead">Find My Bridal Look</text>
+    <text x="42" y="98" class="footerLink">AI bridal styling reports for brides who want a clear plan before trying on dresses.</text>
+    <rect x="42" y="138" width="360" height="46" rx="0" fill="none" stroke="#b9afa4" stroke-width="0 0 1 0"/>
+    <line x1="42" y1="184" x2="402" y2="184" stroke="#d6ccc1"/>
+    <text x="42" y="170" class="footerLink">Get salon prep tips</text><text x="372" y="170" class="footerHead">→</text>
+    <text x="910" y="62" class="footerHead">Product</text><text x="910" y="100" class="footerLink">Style quiz</text><text x="910" y="136" class="footerLink">Sample report</text><text x="910" y="172" class="footerLink">Pricing</text>
+    <text x="1180" y="62" class="footerHead">Support</text><text x="1180" y="100" class="footerLink">Contact</text><text x="1180" y="136" class="footerLink">Refund policy</text><text x="1180" y="172" class="footerLink">Privacy</text>
+    <text x="1450" y="62" class="footerHead">Social</text><text x="1450" y="100" class="footerLink">Instagram</text><text x="1450" y="136" class="footerLink">Pinterest</text>
+    <text x="780" y="247" font-size="150" font-family="Inter, Arial" font-weight="900" fill="#171717" opacity=".035">BRIDAL</text>
+  </g>
+
+  <!-- Option B -->
+  <g transform="translate(72 1100)" filter="url(#shadow)">
+    <rect width="1656" height="420" rx="34" fill="#fffdf9" stroke="#e0d8cf"/>
+    <rect width="1656" height="78" rx="34" fill="#fffdf9"/>
+    <line x1="0" y1="78" x2="1656" y2="78" stroke="#e5ddd4"/>
+    <text x="36" y="51" class="optionTitle">B. Clean Planning Desk</text>
+    <text x="1050" y="49" class="optionNote">Calm, trustworthy, report-first</text>
+    <g transform="translate(0 78)">
+      <rect x="0" y="0" width="690" height="342" fill="#fffaf4"/>
+      <line x1="690" y1="0" x2="690" y2="342" stroke="#e5ddd4"/>
+      <circle cx="76" cy="58" r="18" fill="#171717"/><text x="70" y="66" font-size="18" font-family="Inter, Arial" font-weight="800" fill="#fff">B</text>
+      <text x="106" y="66" class="brand">Find My Bridal Look</text>
+      <text x="76" y="166" class="h1">Start with a plan,</text>
+      <text x="76" y="216" class="h1">not a guess.</text>
+      <rect x="76" y="258" width="430" height="58" rx="29" fill="#171717"/>
+      <text x="236" y="295" font-size="22" font-family="Inter, Arial" font-weight="800" fill="#fff">Sign in</text>
+      <rect x="690" y="0" width="966" height="342" fill="url(#dressClean)"/>
+      <rect x="835" y="62" width="560" height="170" rx="24" fill="#fff" opacity=".72"/>
+      <text x="875" y="116" font-size="34" font-family="Inter, Arial" font-weight="850" fill="#1b1916">Your visual references,</text>
+      <text x="875" y="156" font-size="34" font-family="Inter, Arial" font-weight="850" fill="#1b1916">fit notes and salon script.</text>
+      <text x="875" y="198" class="copy">A quieter planning surface that feels useful, not promotional.</text>
+      <rect x="835" y="254" width="160" height="58" rx="16" fill="#fff" opacity=".7"/><text x="863" y="290" class="small">Modern satin</text>
+      <rect x="1016" y="254" width="160" height="58" rx="16" fill="#fff" opacity=".7"/><text x="1042" y="290" class="small">Soft lace</text>
+      <rect x="1197" y="254" width="160" height="58" rx="16" fill="#fff" opacity=".7"/><text x="1220" y="290" class="small">Classic veil</text>
+    </g>
+  </g>
+  <g transform="translate(72 1550)" filter="url(#shadow)">
+    <rect width="1656" height="230" rx="26" fill="url(#darkFooter)"/>
+    <text x="42" y="62" font-size="20" font-family="Inter, Arial" font-weight="800" fill="#fff">Find My Bridal Look</text>
+    <text x="42" y="98" font-size="17" font-family="Inter, Arial" fill="#fff" opacity=".72">Turn inspiration and concerns into a salon-ready bridal styling report.</text>
+    <line x1="42" y1="166" x2="392" y2="166" stroke="#fff" opacity=".25"/>
+    <text x="42" y="152" font-size="17" font-family="Inter, Arial" fill="#fff" opacity=".72">Email for product updates</text><text x="366" y="152" font-size="20" font-family="Inter, Arial" font-weight="800" fill="#fff">→</text>
+    <text x="910" y="62" font-size="20" font-family="Inter, Arial" font-weight="800" fill="#fff">Plan</text><text x="910" y="100" font-size="17" font-family="Inter, Arial" fill="#fff" opacity=".72">Take the quiz</text><text x="910" y="136" font-size="17" font-family="Inter, Arial" fill="#fff" opacity=".72">View sample</text>
+    <text x="1180" y="62" font-size="20" font-family="Inter, Arial" font-weight="800" fill="#fff">Company</text><text x="1180" y="100" font-size="17" font-family="Inter, Arial" fill="#fff" opacity=".72">Blog</text><text x="1180" y="136" font-size="17" font-family="Inter, Arial" fill="#fff" opacity=".72">Contact</text>
+    <text x="1450" y="62" font-size="20" font-family="Inter, Arial" font-weight="800" fill="#fff">Legal</text><text x="1450" y="100" font-size="17" font-family="Inter, Arial" fill="#fff" opacity=".72">Privacy</text><text x="1450" y="136" font-size="17" font-family="Inter, Arial" fill="#fff" opacity=".72">Refunds</text>
+    <text x="930" y="235" font-size="140" font-family="Inter, Arial" font-weight="900" fill="#fff" opacity=".08">STYLE</text>
+  </g>
+
+  <!-- Option C -->
+  <g transform="translate(72 1810)" filter="url(#shadow)">
+    <rect width="1656" height="230" rx="34" fill="#fffdf9" stroke="#e0d8cf"/>
+    <text x="36" y="55" class="optionTitle">C. Magazine Report Preview</text>
+    <text x="1045" y="53" class="optionNote">Most distinctive and shareable</text>
+    <rect x="40" y="90" width="530" height="104" rx="24" fill="#fffaf4" stroke="#e2d8ce"/>
+    <text x="78" y="130" font-size="30" font-family="Inter, Arial" font-weight="850" fill="#171717">Build a report you can bring</text>
+    <text x="78" y="168" font-size="30" font-family="Inter, Arial" font-weight="850" fill="#171717">to the bridal salon.</text>
+    <rect x="640" y="62" width="360" height="132" rx="22" fill="#fff" stroke="#e0d8cf"/>
+    <text x="675" y="112" class="footerHead">Know what to ask for</text>
+    <text x="675" y="150" class="footerLink">Three bridal directions and concise appointment language.</text>
+    <rect x="1080" y="48" width="260" height="160" rx="26" fill="url(#dressSage)"/>
+    <circle cx="1210" cy="94" r="24" fill="#fff" opacity=".75"/>
+    <ellipse cx="1210" cy="156" rx="72" ry="80" fill="#fff" opacity=".58"/>
+    <rect x="1410" y="64" width="190" height="58" rx="29" fill="#171717"/>
+    <text x="1456" y="101" font-size="20" font-family="Inter, Arial" font-weight="800" fill="#fff">Sign in</text>
+  </g>
+</svg>

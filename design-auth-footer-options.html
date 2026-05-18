@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Find My Bridal Look - Auth & Footer UI Options</title>
+    <style>
+      :root {
+        color: #171717;
+        background: #f6f2ec;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 32px;
+      }
+
+      .page {
+        max-width: 1440px;
+        margin: 0 auto;
+      }
+
+      .intro {
+        margin-bottom: 28px;
+      }
+
+      .intro h1 {
+        margin: 0 0 8px;
+        font-size: 34px;
+        line-height: 1.1;
+      }
+
+      .intro p {
+        max-width: 900px;
+        margin: 0;
+        color: #665f57;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .option {
+        overflow: hidden;
+        margin-bottom: 36px;
+        border: 1px solid rgba(25, 24, 22, 0.12);
+        border-radius: 28px;
+        background: #fffdf9;
+        box-shadow: 0 24px 80px rgba(30, 23, 15, 0.1);
+      }
+
+      .label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 22px 28px;
+        border-bottom: 1px solid rgba(25, 24, 22, 0.1);
+      }
+
+      .label h2 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .label span {
+        color: #706a62;
+        font-size: 14px;
+      }
+
+      .auth {
+        display: grid;
+        min-height: 560px;
+        grid-template-columns: 48% 52%;
+      }
+
+      .form {
+        padding: 56px 64px;
+        border-right: 1px solid rgba(25, 24, 22, 0.1);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 70px;
+        font-weight: 700;
+      }
+
+      .mark {
+        display: grid;
+        width: 28px;
+        height: 28px;
+        place-items: center;
+        border-radius: 50%;
+        background: #171717;
+        color: #fff;
+        font-size: 14px;
+      }
+
+      .form h3 {
+        margin: 0 0 34px;
+        font-size: 42px;
+        line-height: 1.08;
+        letter-spacing: 0;
+      }
+
+      .field {
+        margin-bottom: 24px;
+      }
+
+      .field strong {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 15px;
+      }
+
+      .input {
+        height: 58px;
+        border-radius: 13px;
+        background: #ece8e2;
+      }
+
+      .button {
+        display: grid;
+        height: 62px;
+        margin-top: 30px;
+        place-items: center;
+        border-radius: 999px;
+        background: #171717;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .switch {
+        margin-top: 28px;
+        color: #6b655e;
+        text-align: center;
+      }
+
+      .visual {
+        position: relative;
+        display: flex;
+        min-height: 560px;
+        align-items: stretch;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .visual h4 {
+        margin: 0;
+        font-size: 40px;
+        line-height: 1.06;
+        letter-spacing: 0;
+      }
+
+      .visual p {
+        margin: 18px 0 0;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 18px;
+        line-height: 1.55;
+      }
+
+      .photo {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.62)),
+          radial-gradient(circle at 48% 30%, #fff 0 8%, transparent 9%),
+          radial-gradient(ellipse at 50% 66%, #f7f2eb 0 18%, transparent 19%),
+          radial-gradient(ellipse at 50% 72%, #f0e6d9 0 29%, transparent 30%),
+          linear-gradient(120deg, #d2c2b0, #f5efe6 36%, #a98f78 70%, #2a2621);
+      }
+
+      .photo.two {
+        background:
+          linear-gradient(180deg, rgba(17, 15, 13, 0.1), rgba(17, 15, 13, 0.6)),
+          radial-gradient(circle at 57% 27%, #fff8ef 0 7%, transparent 8%),
+          radial-gradient(ellipse at 56% 64%, #fff 0 17%, transparent 18%),
+          radial-gradient(ellipse at 56% 73%, #efe2d1 0 30%, transparent 31%),
+          linear-gradient(120deg, #f3ece1, #c9aa8a 45%, #68564a);
+      }
+
+      .photo.three {
+        background:
+          linear-gradient(180deg, rgba(17, 15, 13, 0.05), rgba(17, 15, 13, 0.45)),
+          radial-gradient(circle at 46% 28%, #fff 0 7%, transparent 8%),
+          radial-gradient(ellipse at 46% 65%, #f9f3ec 0 18%, transparent 19%),
+          radial-gradient(ellipse at 47% 76%, #f7efe7 0 31%, transparent 32%),
+          linear-gradient(120deg, #e9e1d8, #b9c1b0 44%, #667060);
+      }
+
+      .caption {
+        position: relative;
+        z-index: 2;
+        align-self: end;
+        width: 100%;
+        padding: 56px;
+        color: #fff;
+      }
+
+      .caption .pill {
+        display: inline-flex;
+        margin-bottom: 18px;
+        padding: 8px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 13px;
+        backdrop-filter: blur(12px);
+      }
+
+      .panel {
+        position: absolute;
+        right: 42px;
+        bottom: 42px;
+        z-index: 3;
+        width: 295px;
+        padding: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.18);
+        color: #fff;
+        backdrop-filter: blur(18px);
+      }
+
+      .panel strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 15px;
+      }
+
+      .panel span {
+        display: block;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .mood {
+        display: grid;
+        width: min(530px, 78%);
+        align-self: center;
+        gap: 18px;
+        z-index: 2;
+        color: #201d1a;
+      }
+
+      .mood-card {
+        padding: 24px;
+        border: 1px solid rgba(35, 31, 27, 0.11);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 18px 60px rgba(38, 29, 20, 0.12);
+        backdrop-filter: blur(20px);
+      }
+
+      .mood-card h4 {
+        color: #1c1a18;
+        font-size: 30px;
+      }
+
+      .mood-card p {
+        color: #5f5850;
+        font-size: 16px;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .mini {
+        min-height: 154px;
+        padding: 16px;
+        border-radius: 16px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0), #fff),
+          radial-gradient(ellipse at 50% 45%, #f7efe8 0 34%, transparent 35%),
+          linear-gradient(135deg, #cdb9a4, #f5eee7);
+        color: #2a251f;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .editorial {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        width: 84%;
+        align-self: center;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: 28px;
+      }
+
+      .quote {
+        align-self: end;
+        padding: 28px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .quote h4 {
+        color: #171717;
+        font-size: 30px;
+      }
+
+      .quote p {
+        color: #5c554c;
+        font-size: 16px;
+      }
+
+      .dress-tile {
+        min-height: 450px;
+        border-radius: 26px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3)),
+          radial-gradient(circle at 50% 22%, #fff 0 8%, transparent 9%),
+          radial-gradient(ellipse at 50% 58%, #fff 0 19%, transparent 20%),
+          radial-gradient(ellipse at 50% 74%, #f8eee4 0 33%, transparent 34%),
+          linear-gradient(135deg, #e4d8cd, #a9917b);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+      }
+
+      .footer {
+        position: relative;
+        overflow: hidden;
+        min-height: 360px;
+        padding: 42px;
+        border-top: 1px solid rgba(25, 24, 22, 0.1);
+      }
+
+      .footer-grid {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 1.25fr 1fr 1fr 1fr;
+        gap: 36px;
+      }
+
+      .footer h5 {
+        margin: 0 0 16px;
+        font-size: 17px;
+      }
+
+      .footer p,
+      .footer a {
+        display: block;
+        margin: 0 0 12px;
+        color: #6c655c;
+        font-size: 15px;
+        line-height: 1.5;
+        text-decoration: none;
+      }
+
+      .newsletter {
+        display: flex;
+        width: 340px;
+        max-width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 22px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(25, 24, 22, 0.2);
+        color: #6c655c;
+      }
+
+      .watermark {
+        position: absolute;
+        right: 28px;
+        bottom: -46px;
+        color: rgba(26, 23, 20, 0.035);
+        font-size: clamp(120px, 18vw, 260px);
+        font-weight: 900;
+        letter-spacing: 0;
+        line-height: 0.8;
+        white-space: nowrap;
+      }
+
+      .option-a .footer {
+        background:
+          radial-gradient(circle at 15% 10%, rgba(225, 195, 164, 0.28), transparent 30%),
+          #fffaf4;
+      }
+
+      .option-b .visual {
+        background: linear-gradient(135deg, #f3eee7, #dfd2c4);
+      }
+
+      .option-b .footer {
+        color: #fff;
+        background:
+          linear-gradient(90deg, rgba(17, 17, 17, 0.78), rgba(17, 17, 17, 0.48)),
+          radial-gradient(circle at 70% 72%, rgba(250, 239, 226, 0.3), transparent 28%),
+          linear-gradient(135deg, #2a241f, #8a7867);
+      }
+
+      .option-b .footer p,
+      .option-b .footer a,
+      .option-b .newsletter {
+        color: rgba(255, 255, 255, 0.72);
+        border-color: rgba(255, 255, 255, 0.25);
+      }
+
+      .option-b .watermark {
+        color: rgba(255, 255, 255, 0.08);
+      }
+
+      .option-c .visual {
+        background: #f4f1ec;
+      }
+
+      .option-c .footer {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(247, 241, 233, 0.88)),
+          radial-gradient(circle at 82% 28%, rgba(142, 151, 126, 0.26), transparent 28%);
+      }
+
+      @media (max-width: 920px) {
+        body {
+          padding: 16px;
+        }
+
+        .auth,
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .form {
+          border-right: 0;
+          border-bottom: 1px solid rgba(25, 24, 22, 0.1);
+          padding: 36px 28px;
+        }
+
+        .visual {
+          min-height: 480px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="intro">
+        <h1>Auth page and footer direction options</h1>
+        <p>
+          Three design directions for Find My Bridal Look. Each version replaces
+          the generic starter social proof with bridal-specific imagery,
+          persuasive product copy, and a footer that feels aligned with the
+          wedding styling report experience.
+        </p>
+      </section>
+
+      <section class="option option-a">
+        <div class="label">
+          <h2>Version A - Editorial Bridal Studio</h2>
+          <span>Warm, premium, image-led. Best for strong conversion mood.</span>
+        </div>
+        <div class="auth">
+          <div class="form">
+            <div class="brand"><span class="mark">B</span>Find My Bridal Look</div>
+            <h3>Create your bridal style report</h3>
+            <div class="field"><strong>Full name</strong><div class="input"></div></div>
+            <div class="field"><strong>Email address</strong><div class="input"></div></div>
+            <div class="field"><strong>Password</strong><div class="input"></div></div>
+            <div class="button">Create account</div>
+            <div class="switch">Already have an account? Sign in</div>
+          </div>
+          <div class="visual">
+            <div class="photo"></div>
+            <div class="caption">
+              <span class="pill">Personal bridal styling preview</span>
+              <h4>See three dress directions before your salon visit.</h4>
+              <p>
+                Upload one photo, answer a few fit questions, and receive a
+                visual report designed around your shape, venue, and budget.
+              </p>
+            </div>
+            <div class="panel">
+              <strong>Preview what matters</strong>
+              <span>Silhouette, neckline, waist, sleeve coverage, salon script, and printable share page.</span>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <div class="footer-grid">
+            <div>
+              <h5>Find My Bridal Look</h5>
+              <p>AI bridal styling reports for brides who want a clear plan before trying on dresses.</p>
+              <div class="newsletter"><span>Get salon prep tips</span><strong>→</strong></div>
+            </div>
+            <div><h5>Product</h5><a>Style quiz</a><a>Sample report</a><a>Pricing</a></div>
+            <div><h5>Support</h5><a>Contact</a><a>Refund policy</a><a>Privacy policy</a></div>
+            <div><h5>Social</h5><a>Instagram</a><a>Pinterest</a><a>Twitter</a></div>
+          </div>
+          <div class="watermark">BRIDAL</div>
+        </footer>
+      </section>
+
+      <section class="option option-b">
+        <div class="label">
+          <h2>Version B - Clean Planning Desk</h2>
+          <span>Calmer, practical, report-focused. Best for trust and clarity.</span>
+        </div>
+        <div class="auth">
+          <div class="form">
+            <div class="brand"><span class="mark">B</span>Find My Bridal Look</div>
+            <h3>Start with a plan, not a guess.</h3>
+            <div class="field"><strong>Full name</strong><div class="input"></div></div>
+            <div class="field"><strong>Email address</strong><div class="input"></div></div>
+            <div class="field"><strong>Password</strong><div class="input"></div></div>
+            <div class="button">Create account</div>
+            <div class="switch">Already have an account? Sign in</div>
+          </div>
+          <div class="visual">
+            <div class="mood">
+              <div class="mood-card">
+                <span class="pill" style="color:#6c5f51;border-color:rgba(34,30,25,.15);background:rgba(255,255,255,.7)">Bridal report workspace</span>
+                <h4>Your fit notes, visual references, and salon talking points in one place.</h4>
+                <p>
+                  Designed for comparing real dress directions without feeling
+                  pushed into one trend.
+                </p>
+              </div>
+              <div class="cards">
+                <div class="mini">Romantic lace</div>
+                <div class="mini">Modern satin</div>
+                <div class="mini">Classic ceremony</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <div class="footer-grid">
+            <div>
+              <h5>Find My Bridal Look</h5>
+              <p>Turn your inspiration and concerns into a salon-ready bridal styling report.</p>
+              <div class="newsletter"><span>Email for product updates</span><strong>→</strong></div>
+            </div>
+            <div><h5>Plan</h5><a>Take the quiz</a><a>View sample</a><a>Unlock report</a></div>
+            <div><h5>Company</h5><a>Blog</a><a>Contact</a><a>Terms</a></div>
+            <div><h5>Legal</h5><a>Privacy</a><a>Cookies</a><a>Refunds</a></div>
+          </div>
+          <div class="watermark">STYLE</div>
+        </footer>
+      </section>
+
+      <section class="option option-c">
+        <div class="label">
+          <h2>Version C - Magazine Report Preview</h2>
+          <span>Most distinctive, shareable, less template-like.</span>
+        </div>
+        <div class="auth">
+          <div class="form">
+            <div class="brand"><span class="mark">B</span>Find My Bridal Look</div>
+            <h3>Build a report you can bring to the bridal salon.</h3>
+            <div class="field"><strong>Full name</strong><div class="input"></div></div>
+            <div class="field"><strong>Email address</strong><div class="input"></div></div>
+            <div class="field"><strong>Password</strong><div class="input"></div></div>
+            <div class="button">Create account</div>
+            <div class="switch">Already have an account? Sign in</div>
+          </div>
+          <div class="visual">
+            <div class="photo three"></div>
+            <div class="editorial">
+              <div class="quote">
+                <span class="pill" style="color:#6c5f51;border-color:rgba(34,30,25,.15);background:rgba(255,255,255,.7)">From quiz to report</span>
+                <h4>Know what to ask for before the fitting starts.</h4>
+                <p>Three bridal directions, annotated visuals, and a concise script for your appointment.</p>
+              </div>
+              <div class="dress-tile"></div>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <div class="footer-grid">
+            <div>
+              <h5>Find My Bridal Look</h5>
+              <p>Personalized dress direction, visual fit notes, and appointment language for modern brides.</p>
+              <div class="newsletter"><span>Join the bridal styling list</span><strong>→</strong></div>
+            </div>
+            <div><h5>Explore</h5><a>Quiz</a><a>Reports</a><a>Pricing</a></div>
+            <div><h5>Resources</h5><a>Fit guide</a><a>Salon prep</a><a>Contact</a></div>
+            <div><h5>Policy</h5><a>Terms</a><a>Privacy</a><a>Refunds</a></div>
+          </div>
+          <div class="watermark">LOOK</div>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>
