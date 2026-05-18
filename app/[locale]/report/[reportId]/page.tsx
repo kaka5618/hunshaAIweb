@@ -295,6 +295,9 @@ export default async function BridalReportPage(
                   reportId={report.id}
                   price={price}
                   labels={{
+                    visualMapTitle: t("recommendation.visualMapTitle"),
+                    openPreview: t("recommendation.openPreview"),
+                    lockedBelow: t("recommendation.lockedBelow"),
                     neckline: t("detailCaptions.neckline"),
                     waist: t("detailCaptions.waist"),
                     sleeve: t("detailCaptions.sleeve"),
@@ -328,74 +331,96 @@ export default async function BridalReportPage(
         )}
 
         {report.isPaid && hasSuccessfulImages && (
-        <section className="mt-8">
-          <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold text-foreground">
-                {t("recommendation.sectionTitle")}
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                {t("recommendation.sectionPaid")}
-              </p>
+          <section className="mt-10">
+            <div className="rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-6 shadow-sm md:p-8">
+              <div className="grid gap-6 lg:grid-cols-[1fr_360px] lg:items-end">
+                <div>
+                  <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#756a5c]">
+                    {t("recommendation.fullReportEyebrow")}
+                  </p>
+                  <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl">
+                    {t("recommendation.sectionTitle")}
+                  </h2>
+                  <p className="mt-4 max-w-3xl text-sm leading-7 text-[#655d52] md:text-base">
+                    {t("recommendation.sectionPaid")}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <SummaryMetric label={t("recommendation.summaryPlans")} value="3" />
+                  <SummaryMetric label={t("recommendation.summaryVisuals")} value="12" />
+                  <SummaryMetric label={t("recommendation.summaryTools")} value={t("recommendation.summaryToolsValue")} />
+                </div>
+              </div>
+
+              <div className="mt-8 grid gap-3 md:grid-cols-3">
+                {recommendations.map(recommendation => (
+                  <Button
+                    key={recommendation.id}
+                    as={Link}
+                    href={`#direction-${recommendation.rank}`}
+                    variant="outline"
+                    className="h-auto justify-start rounded-lg border-[#d8cdbd] bg-white/70 p-4 text-left hover:bg-white"
+                  >
+                    <span className="block">
+                      <span className="block text-xs font-medium uppercase tracking-[0.16em] text-[#756a5c]">
+                        {t("recommendation.planButton", { rank: recommendation.rank })}
+                      </span>
+                      <span className="mt-2 block text-sm font-semibold text-[#1f1b16]">
+                        {recommendation.styleName}
+                      </span>
+                      <span className="mt-1 block text-xs font-normal text-[#655d52]">
+                        {recommendation.silhouette}
+                      </span>
+                    </span>
+                  </Button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="flex flex-wrap gap-3 rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-3 shadow-sm">
-            {recommendations.map(recommendation => (
-              <Button
-                key={recommendation.id}
-                as={Link}
-                href={`#direction-${recommendation.rank}`}
-                variant={recommendation.rank === 1 ? "default" : "outline"}
-                className="h-10"
-              >
-                {t("recommendation.planButton", { rank: recommendation.rank })}
-              </Button>
-            ))}
-          </div>
+            <div className="mt-8 space-y-8">
+              {recommendations.map((recommendation) => {
+                const imageUrl =
+                  imageByRecommendationId.get(recommendation.id)?.r2Key ??
+                  referenceImageUrl ??
+                  getPlaceholderBridalImageUrl(recommendation.rank);
 
-          <div className="mt-6 space-y-8">
-            {recommendations.map((recommendation) => {
-              const imageUrl =
-                imageByRecommendationId.get(recommendation.id)?.r2Key ??
-                referenceImageUrl ??
-                getPlaceholderBridalImageUrl(recommendation.rank);
-
-              return (
-                <FullRecommendationReport
-                  key={recommendation.id}
-                  recommendation={recommendation}
-                  imageUrl={imageUrl}
-                  imageAlt={t("recommendation.imageAlt", { name: recommendation.styleName })}
-                  detailImages={{
-                    neckline: imageByRecommendationAndType.get(`${recommendation.id}:neckline_detail`),
-                    waist: imageByRecommendationAndType.get(`${recommendation.id}:waist_detail`),
-                    sleeve: imageByRecommendationAndType.get(`${recommendation.id}:sleeve_detail`),
-                  }}
-                  labels={{
-                    rank: t("recommendation.rank", { rank: recommendation.rank }),
-                    silhouette: t("recommendation.silhouette"),
-                    neckline: t("recommendation.neckline"),
-                    fabric: t("recommendation.fabric"),
-                    budget: t("recommendation.budget"),
-                    venueMatch: t("recommendation.venueMatch"),
-                    whyItWorks: t("recommendation.whyItWorks"),
-                    whatToAvoid: t("recommendation.whatToAvoid"),
-                    tryFirst: t("recommendation.tryFirst"),
-                    skipFirst: t("recommendation.skipFirst"),
-                    storeScript: t("recommendation.storeScript"),
-                    salesPressure: t("recommendation.salesPressureReminder"),
-                    detailTitle: t("detailCaptions.title"),
-                    detailNeckline: t("detailCaptions.neckline"),
-                    detailWaist: t("detailCaptions.waist"),
-                    detailSleeve: t("detailCaptions.sleeve"),
-                    budgetTitle: t("budget.title"),
-                  }}
-                />
-              );
-            })}
-          </div>
-        </section>
+                return (
+                  <FullRecommendationReport
+                    key={recommendation.id}
+                    recommendation={recommendation}
+                    imageUrl={imageUrl}
+                    imageAlt={t("recommendation.imageAlt", { name: recommendation.styleName })}
+                    detailImages={{
+                      neckline: imageByRecommendationAndType.get(`${recommendation.id}:neckline_detail`),
+                      waist: imageByRecommendationAndType.get(`${recommendation.id}:waist_detail`),
+                      sleeve: imageByRecommendationAndType.get(`${recommendation.id}:sleeve_detail`),
+                    }}
+                    labels={{
+                      rank: t("recommendation.rank", { rank: recommendation.rank }),
+                      silhouette: t("recommendation.silhouette"),
+                      neckline: t("recommendation.neckline"),
+                      fabric: t("recommendation.fabric"),
+                      budget: t("recommendation.budget"),
+                      venueMatch: t("recommendation.venueMatch"),
+                      whyItWorks: t("recommendation.whyItWorks"),
+                      whatToAvoid: t("recommendation.whatToAvoid"),
+                      tryFirst: t("recommendation.tryFirst"),
+                      skipFirst: t("recommendation.skipFirst"),
+                      storeScript: t("recommendation.storeScript"),
+                      salesPressure: t("recommendation.salesPressureReminder"),
+                      detailTitle: t("detailCaptions.title"),
+                      atAGlance: t("recommendation.atAGlance"),
+                      detailNeckline: t("detailCaptions.neckline"),
+                      detailWaist: t("detailCaptions.waist"),
+                      detailSleeve: t("detailCaptions.sleeve"),
+                      budgetTitle: t("budget.title"),
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </section>
         )}
 
         {report.isPaid && hasSuccessfulImages && (
@@ -544,6 +569,7 @@ function FullRecommendationReport({
     storeScript: string;
     salesPressure: string;
     detailTitle: string;
+    atAGlance: string;
     detailNeckline: string;
     detailWaist: string;
     detailSleeve: string;
@@ -552,81 +578,94 @@ function FullRecommendationReport({
 }) {
   return (
     <article id={`direction-${recommendation.rank}`} className="scroll-mt-24 overflow-hidden rounded-lg border border-[#d8cdbd] bg-[#fffaf3] shadow-sm">
-      <div className="grid gap-0 lg:grid-cols-[0.88fr_1.12fr]">
-        <div className="border-b border-[#d8cdbd] bg-white lg:border-b-0 lg:border-r">
-          <div className="overflow-hidden">
-            <Image
-              src={imageUrl}
-              alt={imageAlt}
-              width={1000}
-              height={1300}
-              className="h-[520px] w-full object-cover object-top lg:h-full lg:min-h-[760px]"
-              unoptimized
-            />
+      <div className="border-b border-[#d8cdbd] bg-[#f3eadc] px-6 py-5 md:px-8">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#756a5c]">
+              {labels.rank}
+            </p>
+            <h3 className="mt-2 max-w-3xl text-3xl font-semibold tracking-tight md:text-4xl">
+              {recommendation.styleName}
+            </h3>
           </div>
+          <div className="flex flex-wrap gap-2 text-xs font-medium text-[#5f694c]">
+            <span className="rounded-full border border-[#d8cdbd] bg-white/70 px-3 py-1">
+              {recommendation.silhouette}
+            </span>
+            <span className="rounded-full border border-[#d8cdbd] bg-white/70 px-3 py-1">
+              {recommendation.neckline}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-0 xl:grid-cols-[minmax(360px,0.92fr)_1.08fr]">
+        <div className="border-b border-[#d8cdbd] bg-white xl:border-b-0 xl:border-r">
+          <Image
+            src={imageUrl}
+            alt={imageAlt}
+            width={1100}
+            height={1400}
+            className="h-[620px] w-full object-cover object-top xl:h-full xl:min-h-[900px]"
+            unoptimized
+          />
         </div>
 
         <div className="p-6 md:p-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#756a5c]">
-                {labels.rank}
-              </p>
-              <h3 className="mt-3 text-3xl font-semibold">
-                {recommendation.styleName}
-              </h3>
+          <div>
+            <p className="text-sm font-semibold text-[#1f1b16]">
+              {labels.atAGlance}
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              <Fact icon={Scissors} label={labels.silhouette} value={recommendation.silhouette} />
+              <Fact icon={Shirt} label={labels.neckline} value={recommendation.neckline} />
+              <Fact icon={Sparkles} label={labels.fabric} value={recommendation.fabric} />
+              <Fact
+                icon={WalletCards}
+                label={labels.budget}
+                value={`$${recommendation.budgetMin.toLocaleString()}-$${recommendation.budgetMax.toLocaleString()}`}
+              />
             </div>
-            <span className="w-fit rounded-full border border-[#d8cdbd] px-3 py-1 text-xs font-medium text-[#5f694c]">
-              {recommendation.silhouette}
-            </span>
           </div>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <Fact icon={Scissors} label={labels.silhouette} value={recommendation.silhouette} />
-            <Fact icon={Shirt} label={labels.neckline} value={recommendation.neckline} />
-            <Fact icon={Sparkles} label={labels.fabric} value={recommendation.fabric} />
-            <Fact
-              icon={WalletCards}
-              label={labels.budget}
-              value={`$${recommendation.budgetMin.toLocaleString()}-$${recommendation.budgetMax.toLocaleString()}`}
-            />
-          </div>
-
-          <div className="mt-7 grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-            <div className="space-y-5 rounded-lg border border-[#e4dacb] bg-white/60 p-5">
-              <Section title={labels.venueMatch} body={recommendation.venueMatch} />
+          <div className="mt-7 grid gap-5 lg:grid-cols-3">
+            <div className="lg:col-span-2">
               <Section title={labels.whyItWorks} body={recommendation.whyItWorks} />
-              <Section title={labels.whatToAvoid} body={recommendation.whatToAvoid} muted />
+            </div>
+            <Section title={labels.venueMatch} body={recommendation.venueMatch} />
+          </div>
+
+          <div className="mt-7 grid gap-4 lg:grid-cols-3">
+            <div className="rounded-lg border border-[#e4dacb] bg-white/70 p-5">
+              <p className="text-sm font-medium">
+                {labels.tryFirst}
+              </p>
+              <ul className="mt-3 space-y-2 text-sm text-[#655d52]">
+                {recommendation.tryFirst.map(item => (
+                  <li key={item} className="flex gap-2">
+                    <Check className="mt-0.5 h-4 w-4 flex-none text-primary" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            <div className="space-y-5">
-              <div className="rounded-lg border border-[#e4dacb] bg-white/60 p-5">
-                <p className="text-sm font-medium">
-                  {labels.tryFirst}
-                </p>
-                <ul className="mt-3 space-y-2 text-sm text-[#655d52]">
-                  {recommendation.tryFirst.map(item => (
-                    <li key={item} className="flex gap-2">
-                      <Check className="mt-0.5 h-4 w-4 flex-none text-primary" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div className="rounded-lg border border-[#e4dacb] bg-white/70 p-5">
+              <p className="text-sm font-medium">
+                {labels.skipFirst}
+              </p>
+              <ul className="mt-3 space-y-2 text-sm text-[#655d52]">
+                {recommendation.skipFirst.map(item => (
+                  <li key={item} className="flex gap-2">
+                    <X className="mt-0.5 h-4 w-4 flex-none text-muted-foreground" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-              <div className="rounded-lg border border-[#e4dacb] bg-white/60 p-5">
-                <p className="text-sm font-medium">
-                  {labels.skipFirst}
-                </p>
-                <ul className="mt-3 space-y-2 text-sm text-[#655d52]">
-                  {recommendation.skipFirst.map(item => (
-                    <li key={item} className="flex gap-2">
-                      <X className="mt-0.5 h-4 w-4 flex-none text-muted-foreground" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div className="rounded-lg border border-[#e4dacb] bg-white/70 p-5">
+              <Section title={labels.whatToAvoid} body={recommendation.whatToAvoid} muted />
             </div>
           </div>
 
@@ -657,7 +696,7 @@ function FullRecommendationReport({
           </div>
 
           <div className="mt-7 grid gap-5 lg:grid-cols-2">
-            <div className="rounded-lg border border-[#e4dacb] bg-white/60 p-5">
+            <div className="rounded-lg border border-[#e4dacb] bg-white/70 p-5">
               <p className="text-sm font-medium">
                 {labels.budgetTitle}
               </p>
@@ -699,6 +738,9 @@ function VisualAnalysisBoard({
   reportId: string;
   price: string;
   labels: {
+    visualMapTitle: string;
+    openPreview: string;
+    lockedBelow: string;
     neckline: string;
     waist: string;
     sleeve: string;
@@ -731,54 +773,72 @@ function VisualAnalysisBoard({
   };
 }) {
   return (
-    <div className="relative mt-6 overflow-hidden rounded-lg border border-border bg-card p-5 md:p-8">
-      <div className="relative mx-auto max-w-5xl pb-4">
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)_minmax(0,1fr)] lg:items-start">
+    <div className="relative mt-6 overflow-hidden rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-4 shadow-sm md:p-7">
+      <div className="mb-6 flex flex-col gap-3 border-b border-[#e4dacb] pb-5 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-[0.16em] text-[#756a5c]">
+            {labels.openPreview}
+          </p>
+          <h3 className="mt-2 text-2xl font-semibold text-[#1f1b16]">
+            {labels.visualMapTitle}
+          </h3>
+        </div>
+        <p className="max-w-sm text-sm leading-6 text-[#655d52]">
+          {labels.lockedBelow}
+        </p>
+      </div>
+
+      <div className="relative mx-auto max-w-6xl pb-4">
+        <div className="grid gap-5 lg:grid-cols-[minmax(220px,0.82fr)_minmax(280px,390px)_minmax(220px,0.82fr)] lg:items-start">
           <div className="order-2 grid gap-5 lg:order-1">
             <CalloutBox label={labels.neckline} value={captions.neckline} />
-            <CalloutBox label={labels.waist} value={captions.waist} muted />
-            <CalloutBox label={labels.sleeve} value={captions.sleeve} muted />
+            <CalloutBox label={labels.waist} value={captions.waist} />
           </div>
 
-          <div className="order-1 overflow-hidden rounded-lg border border-border bg-background shadow-sm lg:order-2">
+          <div className="order-1 overflow-hidden rounded-lg border border-[#d8cdbd] bg-white shadow-sm lg:order-2">
             <Image
               src={imageUrl}
               alt={imageAlt}
               width={900}
               height={1400}
-              className="h-[520px] w-full object-cover object-top lg:h-[680px]"
+              className="h-[520px] w-full object-cover object-top lg:h-[660px]"
               unoptimized
             />
           </div>
 
           <div className="order-3 grid gap-5">
-            <CalloutBox label={labels.neckline} value={captions.neckline} />
             <CalloutBox label={labels.sleeve} value={captions.sleeve} />
+            <div className="rounded-lg border border-[#e4dacb] bg-white p-4 shadow-sm">
+              <p className="text-sm font-semibold text-[#1f1b16]">
+                {labels.textPlan}
+              </p>
+              <p className="mt-2 text-sm leading-6 text-[#655d52]">
+                {writtenPlan.venue}
+              </p>
+            </div>
           </div>
 
-          <div className="pointer-events-none absolute left-[27%] top-[7rem] hidden h-px w-[16%] rotate-12 border-t border-dashed border-foreground/50 lg:block" />
-          <div className="pointer-events-none absolute left-[27%] top-[21rem] hidden h-px w-[16%] rotate-6 border-t border-dashed border-foreground/50 lg:block" />
-          <div className="pointer-events-none absolute left-[27%] top-[35rem] hidden h-px w-[16%] -rotate-14 border-t border-dashed border-foreground/50 lg:block" />
-          <div className="pointer-events-none absolute right-[27%] top-[11rem] hidden h-px w-[16%] -rotate-12 border-t border-dashed border-foreground/50 lg:block" />
-          <div className="pointer-events-none absolute right-[27%] top-[31rem] hidden h-px w-[16%] rotate-12 border-t border-dashed border-foreground/50 lg:block" />
+          <div className="pointer-events-none absolute left-[23%] top-[6.5rem] hidden h-px w-[18%] rotate-12 border-t border-dashed border-[#756a5c]/60 lg:block" />
+          <div className="pointer-events-none absolute left-[23%] top-[18rem] hidden h-px w-[18%] rotate-6 border-t border-dashed border-[#756a5c]/60 lg:block" />
+          <div className="pointer-events-none absolute right-[23%] top-[12rem] hidden h-px w-[18%] -rotate-12 border-t border-dashed border-[#756a5c]/60 lg:block" />
         </div>
 
         <div className="mt-6">
-          <div className="rounded-lg border border-border bg-background p-5 lg:p-6">
-            <p className="text-center text-sm font-semibold text-foreground">
+          <div className="rounded-lg border border-[#d8cdbd] bg-white p-5 lg:p-6">
+            <p className="text-center text-sm font-semibold text-[#1f1b16]">
               {labels.textPlan}
             </p>
             <div className="mt-5 grid gap-5 lg:grid-cols-2">
-              <div className="space-y-5 rounded-lg border border-border bg-card p-4">
+              <div className="space-y-5 rounded-lg border border-[#e4dacb] bg-[#fffaf3] p-4">
                 <Section title={writtenPlan.venueTitle} body={writtenPlan.venue} />
                 <Section title={writtenPlan.whyTitle} body={writtenPlan.why} />
                 <Section title={writtenPlan.avoidTitle} body={writtenPlan.avoid} muted />
               </div>
-              <div className="rounded-lg border border-border bg-card p-4">
-                <p className="text-sm font-medium text-foreground">
+              <div className="rounded-lg border border-[#e4dacb] bg-[#fffaf3] p-4">
+                <p className="text-sm font-medium text-[#1f1b16]">
                   {writtenPlan.tryTitle}
                 </p>
-                <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                <ul className="mt-3 space-y-2 text-sm text-[#655d52]">
                   {writtenPlan.tryItems.map(item => (
                     <li key={item} className="flex gap-2">
                       <Check className="mt-0.5 h-4 w-4 flex-none text-primary" />
@@ -787,11 +847,11 @@ function VisualAnalysisBoard({
                   ))}
                 </ul>
               </div>
-              <div className="rounded-lg border border-border bg-card p-4">
-                <p className="text-sm font-medium text-foreground">
+              <div className="rounded-lg border border-[#e4dacb] bg-[#fffaf3] p-4">
+                <p className="text-sm font-medium text-[#1f1b16]">
                   {writtenPlan.skipTitle}
                 </p>
-                <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                <ul className="mt-3 space-y-2 text-sm text-[#655d52]">
                   {writtenPlan.skipItems.map(item => (
                     <li key={item} className="flex gap-2">
                       <X className="mt-0.5 h-4 w-4 flex-none text-muted-foreground" />
@@ -800,27 +860,27 @@ function VisualAnalysisBoard({
                   ))}
                 </ul>
               </div>
-              <div className="rounded-lg border border-border bg-card p-4">
-                <p className="text-sm font-medium text-foreground">
+              <div className="rounded-lg border border-[#e4dacb] bg-[#fffaf3] p-4">
+                <p className="text-sm font-medium text-[#1f1b16]">
                   {writtenPlan.budgetTitle}
                 </p>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                <p className="mt-3 text-sm leading-6 text-[#655d52]">
                   {writtenPlan.budget}
                 </p>
               </div>
-              <div className="rounded-lg border border-border bg-primary/5 p-4">
-                <p className="text-sm font-medium text-foreground">
+              <div className="rounded-lg border border-[#d8cdbd] bg-[#f3eadc] p-4">
+                <p className="text-sm font-medium text-[#1f1b16]">
                   {writtenPlan.scriptTitle}
                 </p>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                <p className="mt-3 text-sm leading-6 text-[#655d52]">
                   &ldquo;{writtenPlan.script}&rdquo;
                 </p>
               </div>
-              <div className="rounded-lg border border-border bg-card p-4">
-                <p className="text-sm font-medium text-foreground">
+              <div className="rounded-lg border border-[#e4dacb] bg-[#fffaf3] p-4">
+                <p className="text-sm font-medium text-[#1f1b16]">
                   {writtenPlan.deliverablesTitle}
                 </p>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                <p className="mt-3 text-sm leading-6 text-[#655d52]">
                   {writtenPlan.deliverables}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-3">
@@ -839,8 +899,8 @@ function VisualAnalysisBoard({
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[42%] z-20 bg-background/25 backdrop-blur-md [mask-image:linear-gradient(to_bottom,transparent,black_14%,black)]" />
-      <div className="pointer-events-none absolute inset-x-5 top-[42%] z-30 border-t border-dashed border-foreground/30 md:inset-x-8" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[42%] z-20 bg-[#fffaf3]/35 backdrop-blur-md [mask-image:linear-gradient(to_bottom,transparent,black_14%,black)]" />
+      <div className="pointer-events-none absolute inset-x-5 top-[42%] z-30 border-t border-dashed border-[#756a5c]/45 md:inset-x-8" />
       <div className="absolute left-1/2 top-[42%] z-40 -translate-x-1/2 -translate-y-1/2">
         <BridalUnlockButton reportId={reportId} price={price} />
       </div>
@@ -858,11 +918,11 @@ function CalloutBox({
   muted?: boolean;
 }) {
   return (
-    <div className={muted ? "rounded-lg border border-dashed border-border bg-background/80 p-4" : "rounded-lg border border-border bg-background p-4 shadow-sm"}>
-      <p className="text-sm font-semibold text-foreground">
+    <div className={muted ? "rounded-lg border border-dashed border-[#d8cdbd] bg-white/80 p-4" : "rounded-lg border border-[#e4dacb] bg-white p-4 shadow-sm"}>
+      <p className="text-sm font-semibold text-[#1f1b16]">
         {label}
       </p>
-      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+      <p className="mt-2 text-sm leading-6 text-[#655d52]">
         {value}
       </p>
     </div>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ChangeEvent, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { Check } from "lucide-react";
 import { Button } from "@/components/button";
 import { BRIDAL_UPLOAD_MAX_BYTES } from "@/lib/bridal/upload";
 
@@ -113,7 +114,7 @@ export function BridalUploadClient() {
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify({ locale }),
+        body: JSON.stringify({ locale: "en" }),
       });
 
       if (!generateResponse.ok) {
@@ -148,6 +149,20 @@ export function BridalUploadClient() {
         </div>
 
         <section className="rounded-lg border border-border bg-card p-6 md:p-8">
+          <div className="mb-6 rounded-lg border border-border bg-background p-4">
+            <p className="text-sm font-medium text-foreground">
+              {t("photoTips.title")}
+            </p>
+            <div className="mt-3 grid gap-2 text-sm text-muted-foreground md:grid-cols-3">
+              {(["face", "lighting", "body"] as const).map(key => (
+                <div key={key} className="flex gap-2">
+                  <Check className="mt-0.5 h-4 w-4 flex-none text-primary" />
+                  <span>{t(`photoTips.${key}`)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <label className="block rounded-lg border border-dashed border-border bg-background p-6 text-center transition hover:bg-secondary">
             <input
               type="file"

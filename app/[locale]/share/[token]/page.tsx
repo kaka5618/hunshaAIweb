@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { and, eq, gt } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
-import { Check, Shirt, Sparkles } from "lucide-react";
+import { Check, Scissors, Shirt, Sparkles } from "lucide-react";
 import { db } from "@/lib/db";
 import {
   bridalGeneratedImage,
@@ -76,6 +76,11 @@ export default async function BridalSharePage(
       .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key && image.type === "full_body")
       .map(image => [image.recommendationId, image.r2Key as string]),
   );
+  const imageByRecommendationAndType = new Map(
+    generatedImages
+      .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key)
+      .map(image => [`${image.recommendationId}:${image.type}`, image.r2Key as string]),
+  );
 
   return (
     <main className="min-h-screen bg-[#f7f2ea] px-6 py-16 text-[#1f1b16]">
@@ -90,61 +95,90 @@ export default async function BridalSharePage(
           <p className="mt-5 max-w-3xl text-base leading-8 text-[#655d52]">
             {t("description")}
           </p>
+          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            <SummaryMetric label={t("summaryDirections")} value={recommendations.length.toString()} />
+            <SummaryMetric label={t("summaryVisuals")} value={imageByRecommendationAndType.size.toString()} />
+            <SummaryMetric label={t("summaryType")} value={t("summaryTypeValue")} />
+          </div>
         </header>
 
-        <section className="mt-8 grid gap-5 lg:grid-cols-3">
+        <section className="mt-8 space-y-8">
           {recommendations.map((recommendation) => {
             const imageUrl = imageByRecommendationId.get(recommendation.id);
+            const necklineImage = imageByRecommendationAndType.get(`${recommendation.id}:neckline_detail`);
+            const waistImage = imageByRecommendationAndType.get(`${recommendation.id}:waist_detail`);
+            const sleeveImage = imageByRecommendationAndType.get(`${recommendation.id}:sleeve_detail`);
 
             return (
               <article key={recommendation.id} className="overflow-hidden rounded-lg border border-[#d8cdbd] bg-[#fffaf3] shadow-sm">
-                {imageUrl && (
-                  <Image
-                    src={imageUrl}
-                    alt={t("imageAlt", { name: recommendation.styleName })}
-                    width={900}
-                    height={1100}
-                    className="h-[420px] w-full object-cover object-top"
-                    unoptimized
-                  />
-                )}
-
-                <div className="p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#756a5c]">
-                      {t("rank", { rank: recommendation.rank })}
-                    </p>
-                    <h2 className="mt-3 text-2xl font-semibold">
-                      {recommendation.styleName}
-                    </h2>
+                <div className="border-b border-[#d8cdbd] bg-[#f3eadc] px-6 py-5 md:px-8">
+                  <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#756a5c]">
+                        {t("rank", { rank: recommendation.rank })}
+                      </p>
+                      <h2 className="mt-2 text-3xl font-semibold tracking-tight">
+                        {recommendation.styleName}
+                      </h2>
+                    </div>
+                    <div className="flex flex-wrap gap-2 text-xs font-medium text-[#5f694c]">
+                      <span className="rounded-full border border-[#d8cdbd] bg-white/70 px-3 py-1">
+                        {recommendation.silhouette}
+                      </span>
+                      <span className="rounded-full border border-[#d8cdbd] bg-white/70 px-3 py-1">
+                        {recommendation.neckline}
+                      </span>
+                    </div>
                   </div>
-                  <span className="rounded-full border border-[#d8cdbd] px-3 py-1 text-xs font-medium text-[#5f694c]">
-                    {recommendation.silhouette}
-                  </span>
                 </div>
 
-                <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
-                  <Fact icon={Shirt} label={t("neckline")} value={recommendation.neckline} />
-                  <Fact icon={Sparkles} label={t("fabric")} value={recommendation.fabric} />
-                </div>
+                <div className="grid gap-0 xl:grid-cols-[minmax(360px,0.92fr)_1.08fr]">
+                  {imageUrl && (
+                    <div className="border-b border-[#d8cdbd] bg-white xl:border-b-0 xl:border-r">
+                      <Image
+                        src={imageUrl}
+                        alt={t("imageAlt", { name: recommendation.styleName })}
+                        width={1100}
+                        height={1400}
+                        className="h-[560px] w-full object-cover object-top xl:h-full xl:min-h-[760px]"
+                        unoptimized
+                      />
+                    </div>
+                  )}
 
-                <div className="mt-6 space-y-5">
-                  <Section title={t("venueMatch")} body={recommendation.venueMatch} />
-                  <Section title={t("whyItWorks")} body={recommendation.whyItWorks} />
-                </div>
+                  <div className="p-6 md:p-8">
+                    <div className="grid gap-3 sm:grid-cols-3">
+                      <Fact icon={Scissors} label={t("silhouette")} value={recommendation.silhouette} />
+                      <Fact icon={Shirt} label={t("neckline")} value={recommendation.neckline} />
+                      <Fact icon={Sparkles} label={t("fabric")} value={recommendation.fabric} />
+                    </div>
 
-                <div className="mt-6 rounded-lg border border-border bg-background p-4">
-                  <p className="text-sm font-medium text-foreground">{t("tryFirst")}</p>
-                  <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                    {recommendation.tryFirst.slice(0, 3).map((item) => (
-                      <li key={item} className="flex gap-2">
-                        <Check className="mt-0.5 h-4 w-4 flex-none text-primary" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                    <div className="mt-7 grid gap-5 lg:grid-cols-2">
+                      <Section title={t("whyItWorks")} body={recommendation.whyItWorks} />
+                      <Section title={t("venueMatch")} body={recommendation.venueMatch} />
+                    </div>
+
+                    <div className="mt-7 rounded-lg border border-[#e4dacb] bg-white/70 p-5">
+                      <p className="text-sm font-medium text-foreground">{t("tryFirst")}</p>
+                      <ul className="mt-3 space-y-2 text-sm text-[#655d52]">
+                        {recommendation.tryFirst.slice(0, 3).map((item) => (
+                          <li key={item} className="flex gap-2">
+                            <Check className="mt-0.5 h-4 w-4 flex-none text-primary" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="mt-7">
+                      <h3 className="text-xl font-semibold">{t("detailTitle")}</h3>
+                      <div className="mt-4 grid gap-4 md:grid-cols-3">
+                        <DetailImage imageUrl={necklineImage} label={t("detailNeckline")} value={recommendation.detailCaptions.neckline} />
+                        <DetailImage imageUrl={waistImage} label={t("detailWaist")} value={recommendation.detailCaptions.waist} />
+                        <DetailImage imageUrl={sleeveImage} label={t("detailSleeve")} value={recommendation.detailCaptions.sleeve} />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </article>
             );
@@ -152,6 +186,15 @@ export default async function BridalSharePage(
         </section>
       </div>
     </main>
+  );
+}
+
+function SummaryMetric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-lg border border-[#e4dacb] bg-white/60 p-4">
+      <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#756a5c]">{label}</p>
+      <p className="mt-2 text-xl font-semibold">{value}</p>
+    </div>
   );
 }
 
@@ -180,6 +223,35 @@ function Section({ title, body }: { title: string; body: string }) {
     <div>
       <p className="text-sm font-medium">{title}</p>
       <p className="mt-2 text-sm leading-6 text-[#655d52]">{body}</p>
+    </div>
+  );
+}
+
+function DetailImage({
+  imageUrl,
+  label,
+  value,
+}: {
+  imageUrl?: string;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="overflow-hidden rounded-lg border border-[#e4dacb] bg-white/70">
+      {imageUrl && (
+        <Image
+          src={imageUrl}
+          alt={label}
+          width={720}
+          height={480}
+          className="h-36 w-full object-cover object-top"
+          unoptimized
+        />
+      )}
+      <div className="p-4">
+        <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#756a5c]">{label}</p>
+        <p className="mt-2 text-sm leading-6 text-[#655d52]">{value}</p>
+      </div>
     </div>
   );
 }

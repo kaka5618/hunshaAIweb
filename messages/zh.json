@@ -1111,10 +1111,16 @@
     },
     "eyebrow": "参考照片",
     "title": "上传一张照片用于生成婚纱预览",
-    "description": "请选择清晰的正面照片。原始上传照片仅用于报告生成，并会临时保存。",
+    "description": "请选择脸部完整可见的清晰照片。脸部和身形参考越清楚，生成的婚纱视觉图越容易保持本人一致性。",
     "dropzone": {
       "cta": "点击选择 JPG、PNG 或 WebP 图片",
-      "help": "最大 8MB。建议使用清晰、正面、尽量能看到全身比例的照片。"
+      "help": "最大 8MB。请避免脸部被裁切、重滤镜、墨镜遮挡或看不清脸的照片。"
+    },
+    "photoTips": {
+      "title": "推荐照片要求",
+      "face": "完整脸部可见，不要被裁切",
+      "lighting": "自然光清晰，尽量不要模糊",
+      "body": "尽量包含上半身或全身比例"
     },
     "previewAlt": "已选择的婚纱参考照片预览",
     "consents": {
@@ -1168,7 +1174,7 @@
   "bridalReport": {
     "meta": {
       "title": "你的婚纱风格报告",
-      "description": "查看 AI 生成的婚纱试纱推荐。"
+      "description": "查看你的个性化婚纱试纱推荐。"
     },
     "eyebrow": "婚纱风格预览",
     "title": "你的婚纱风格方向已生成",
@@ -1186,8 +1192,8 @@
       "description": "先用首选方向建立试纱基准，再把另外两个方向作为对照。这样进店时能更快排除不适合的廓形和销售推荐。"
     },
     "previewUnlock": {
-      "title": "付款提醒解锁全部方案",
-      "description": "第一份方案已开放试阅。解锁后可查看剩余两份方案、完整避坑项、进店话术、细节说明和导出分享功能。"
+      "title": "解锁完整报告",
+      "description": "第一份方案已开放试阅。解锁后可比较另外两份方案，查看下半部分试纱细节，并使用导出和分享工具。"
     },
     "unlock": {
       "title": "解锁完整报告",
@@ -1204,16 +1210,25 @@
       }
     },
     "recommendation": {
-      "sectionTitle": "3 个可试穿方向",
+      "fullReportEyebrow": "完整婚纱报告",
+      "sectionTitle": "你的完整试纱顾问报告",
       "sectionPreview": "预览版先展示关键判断点，帮助你决定是否继续生成完整视觉报告。",
-      "sectionPaid": "完整版按 3 份完整方案呈现，每份都包含造型图、细节图、试穿清单、预算边界和沟通话术。",
+      "sectionPaid": "三份可直接带去试纱店的完整方案，包含生成造型图、细节说明、预算边界和沟通话术。",
+      "summaryPlans": "方案",
+      "summaryVisuals": "视觉图",
+      "summaryTools": "导出",
+      "summaryToolsValue": "PDF + 分享",
       "previewBadge": "预览内容",
       "rank": "方向 {rank}",
-      "planButton": "第 {rank} 份方案",
+      "planButton": "方案 {rank}",
       "detailEyebrow": "第一份报告的详细方案",
       "detailTitle": "{name} 详细试纱方案",
-      "visualReportIntro": "试阅报告使用你上传的照片作为视觉基准，先开放上半部分的廓形、领口、腰线和遮盖细节。",
+      "visualReportIntro": "试阅报告使用你上传的照片作为视觉基准，先开放上半部分的试纱视觉地图，让推荐更贴近你自己的参考。",
+      "visualMapTitle": "试纱视觉地图",
+      "openPreview": "开放预览",
+      "lockedBelow": "虚线以下会保持模糊，包含完整书面方案、试纱话术和导出工具。",
       "textPlan": "具体的文字方案",
+      "atAGlance": "快速判断",
       "silhouette": "廓形",
       "neckline": "领口",
       "fabric": "面料",
@@ -1243,10 +1258,13 @@
     },
     "fullGeneration": {
       "title": "生成完整视觉报告",
-      "description": "支付已确认。现在可以生成完整报告视觉图。需要配置可用的图生图模型权限，否则不会用上传照片冒充生成结果。",
+      "description": "支付已确认。系统会基于你上传的参考照片生成 12 张婚纱视觉图，图片完成后自动打开完整报告。",
       "cta": "生成完整报告",
       "loading": "生成中...",
-      "error": "无法生成完整报告，请重试。"
+      "error": "无法生成完整报告，请重试。",
+      "statusError": "无法读取生成进度，请稍后刷新页面。",
+      "progress": "已生成 {success}/{total} 张图片",
+      "progressHint": "生成可能需要几分钟，请保持此页打开。"
     },
     "appointment": {
       "title": "试纱话术"
@@ -1277,12 +1295,21 @@
     },
     "eyebrow": "共享婚纱报告",
     "description": "这是一份只读分享报告，展示 3 个婚纱方向、造型图和高层试纱建议。私密预算边界和预约话术只保留在报告拥有者的完整报告中。",
+    "summaryDirections": "方向",
+    "summaryVisuals": "视觉图",
+    "summaryType": "分享类型",
+    "summaryTypeValue": "只读",
     "rank": "方向 {rank}",
+    "silhouette": "廓形",
     "neckline": "领口",
     "fabric": "面料",
     "venueMatch": "场地匹配",
     "whyItWorks": "为什么适合",
     "tryFirst": "优先试穿",
+    "detailTitle": "视觉细节说明",
+    "detailNeckline": "领口",
+    "detailWaist": "腰线",
+    "detailSleeve": "袖型",
     "imageAlt": "{name} 的婚纱造型图"
   },
   "footer": {

@@ -40,7 +40,10 @@ export async function GET(
     const images = await db
       .select({
         recommendationId: bridalGeneratedImage.recommendationId,
+        type: bridalGeneratedImage.type,
         r2Key: bridalGeneratedImage.r2Key,
+        generationStatus: bridalGeneratedImage.generationStatus,
+        errorMessage: bridalGeneratedImage.errorMessage,
       })
       .from(bridalGeneratedImage)
       .where(eq(bridalGeneratedImage.reportId, report.id));

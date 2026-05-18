@@ -15,16 +15,26 @@ export const BRIDAL_REPORT_IMAGE_TYPES: BridalImageType[] = [
 
 const IMAGE_TYPE_INSTRUCTIONS: Record<BridalImageType, string> = {
   full_body:
-    "Full-body bridal styling image showing the complete dress direction, posture, skirt shape, and overall appointment-ready look.",
+    "Full-length, head-to-toe bridal editorial image showing the same person in the complete wedding dress direction. The full gown, neckline, waist, sleeve or coverage treatment, skirt shape, and shoes area should be visible. Do not crop the head or replace the person with a fashion model.",
   neckline_detail:
-    "Close detail crop focused on neckline and upper bodice. Respect the bride's neckline and coverage preferences.",
+    "Close detail image from face, collarbone, neckline, and upper bodice. Keep enough of the same face and hair visible for identity continuity. Show the recommended neckline and coverage clearly, as if it is a cropped detail from the same dress direction.",
   waist_detail:
-    "Close detail crop focused on waist definition, skirt transition, hip comfort, and silhouette structure.",
+    "Close detail image from upper torso to hip focused on waist definition, bodice fit, skirt transition, hip comfort, and silhouette structure. Keep the same dress direction and person continuity from the full-body look.",
   sleeve_detail:
-    "Close detail crop focused on sleeve, arm coverage, shoulder coverage, fabric texture, and modesty preference.",
+    "Close detail image focused on shoulder, sleeve, arm coverage, neckline edge, fabric texture, and modesty preference. Keep the same dress direction and person continuity from the full-body look.",
   venue_scene:
     "Environmental scene showing the dress direction in the likely wedding venue context.",
 };
+
+const SHARED_IDENTITY_INSTRUCTIONS = [
+  "This is an image-to-image edit using the uploaded photo as the source, not a text-to-image request.",
+  "This is a virtual bridal try-on for the uploaded person, not a fashion editorial casting a similar model.",
+  "Preserve the uploaded person's facial identity, ethnicity, age impression, facial structure, eye shape, nose, mouth, jawline, hairstyle, hair color, body proportions, skin tone, and general pose as much as possible.",
+  "Change the outfit into a wedding dress that matches the recommendation, while keeping the person recognizable as the uploaded bride.",
+  "Do not westernize, asianize, glamorize into a new face, change ethnicity, change age, or introduce a different beauty standard.",
+  "Do not introduce a different model, celebrity face, mannequin, extra person, or unrelated stock-photo bride.",
+  "For detail images, make the crop feel like it belongs to the same bride and same dress direction as the full-body image.",
+].join(" ");
 
 function list(values: string[]) {
   return values.length > 0 ? values.join(", ") : "No preference";
@@ -42,8 +52,8 @@ export function buildBridalImagePrompt(
   answers?: BridalQuizAnswers,
 ) {
   return [
-    "Create a tasteful AI bridal look visualization for a paid style report.",
-    "Use the uploaded person as the reference and transform that same person into the recommended wedding dress look.",
+    "Create a premium bridal styling visualization for a paid wedding dress report.",
+    SHARED_IDENTITY_INSTRUCTIONS,
     IMAGE_TYPE_INSTRUCTIONS[imageType],
     `Style direction: ${recommendation.styleName}.`,
     `Dress silhouette: ${recommendation.silhouette}.`,
@@ -56,12 +66,10 @@ export function buildBridalImagePrompt(
     answers ? `Bride coverage preference: ${answers.coverage}.` : "",
     answers ? `Bride body comfort notes: ${list(answers.bodyComfort)}.` : "",
     answers ? `Bride shopping concerns: ${list(answers.shoppingConcerns)}.` : "",
-    "Photorealistic bridal editorial style, refined ivory dress, soft natural light, elegant boutique or venue setting.",
-    "Preserve the uploaded person's identity, face, body proportions, skin tone, and pose as much as possible.",
-    "Do not introduce a different model or a different person.",
+    "Photorealistic bridal boutique report photography, refined ivory or white wedding dress, soft natural light, clean premium background, realistic fabric texture.",
     "Do not violate the bride's preferred neckline, coverage, or comfort constraints.",
-    "Keep the result modest, polished, commercially usable, and focused on the dress design.",
-    "Avoid logos, readable brand text, distorted anatomy, exaggerated fantasy styling, and overly revealing composition.",
+    "Keep the result modest, polished, commercially usable, shareable, and focused on practical dress design.",
+    "Avoid logos, readable brand text, watermarks, distorted anatomy, exaggerated fantasy styling, unrelated accessories, and overly revealing composition.",
   ].filter(Boolean).join("\n");
 }
 

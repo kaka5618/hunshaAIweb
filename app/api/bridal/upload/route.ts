@@ -6,7 +6,9 @@ import { getBridalSessionIdFromCookies } from "@/lib/bridal/session";
 import { getBridalUploadExpiry } from "@/lib/bridal/report";
 import {
   BRIDAL_UPLOAD_MAX_BYTES,
+  BRIDAL_UPLOAD_MIN_DIMENSION,
   createBridalUploadKey,
+  isBridalImageLargeEnough,
   isAllowedBridalImageType,
 } from "@/lib/bridal/upload";
 import { isR2Configured, uploadToR2 } from "@/lib/r2-storage";
@@ -60,6 +62,14 @@ export async function POST(request: NextRequest) {
 
     const photoId = randomUUID();
     const buffer = Buffer.from(await file.arrayBuffer());
+
+    if (!isBridalImageLargeEnough(buffer, file.type)) {
+      return NextResponse.json(
+        { error: `Image must be at least ${BRIDAL_UPLOAD_MIN_DIMENSION}px wide and tall` },
+        { status: 400 }
+      );
+    }
+
     const r2Key = createBridalUploadKey({
       sessionId,
       photoId,

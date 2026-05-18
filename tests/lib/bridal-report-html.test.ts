@@ -36,13 +36,31 @@ describe("bridal report HTML export", () => {
       title: "Your Bridal Style Report",
       generatedAt: new Date("2026-05-14T00:00:00.000Z"),
       recommendations: [recommendation],
-      images: [{ recommendationId: "recommendation-1", r2Key: "/image.png" }],
+      images: [
+        {
+          recommendationId: "recommendation-1",
+          type: "full_body",
+          r2Key: "/image.png",
+          generationStatus: "success",
+          errorMessage: null,
+        },
+        {
+          recommendationId: "recommendation-1",
+          type: "neckline_detail",
+          r2Key: "/neckline.png",
+          generationStatus: "success",
+          errorMessage: null,
+        },
+      ],
     });
 
     expect(html).toContain("<!doctype html>");
     expect(html).toContain("Your Bridal Style Report");
     expect(html).toContain("Romantic &lt;Garden&gt;");
     expect(html).toContain("/image.png");
+    expect(html).toContain("/neckline.png");
+    expect(html).toContain("Visual detail notes");
+    expect(html).toContain("Printable HTML report");
     expect(html).toContain("Use your browser print dialog");
   });
 });
