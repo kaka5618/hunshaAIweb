@@ -5,13 +5,27 @@ import { db } from "./db";
 import { refundCredits } from "./credits";
 import { getGoogleAuthProvider } from "./auth/google-auth";
 
-const defaultTrustedOrigins = ["http://localhost:3000", "https://yourbridalstyle.com"];
+const defaultTrustedOrigins = [
+  "http://localhost:3000",
+  "https://yourbridalstyle.com",
+  "https://www.yourbridalstyle.com",
+];
 
-const trustedOrigins = process.env.BETTER_AUTH_TRUSTED_ORIGINS
-  ? process.env.BETTER_AUTH_TRUSTED_ORIGINS.split(",")
-      .map((origin) => origin.trim())
-      .filter(Boolean)
-  : defaultTrustedOrigins;
+function parseTrustedOrigins(value: string | undefined) {
+  return value
+    ? value
+        .split(",")
+        .map((origin) => origin.trim())
+        .filter(Boolean)
+    : [];
+}
+
+const trustedOrigins = Array.from(new Set([
+  ...defaultTrustedOrigins,
+  ...parseTrustedOrigins(process.env.BETTER_AUTH_URL),
+  ...parseTrustedOrigins(process.env.NEXT_PUBLIC_APP_URL),
+  ...parseTrustedOrigins(process.env.BETTER_AUTH_TRUSTED_ORIGINS),
+]));
 
 const googleAuthProvider = getGoogleAuthProvider();
 
