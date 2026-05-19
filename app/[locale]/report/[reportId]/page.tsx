@@ -398,7 +398,7 @@ export default async function BridalReportPage(
 
             <div className="mt-8 space-y-8">
               {recommendations.map((recommendation) => {
-                const imageUrl = imageByRecommendationId.get(recommendation.id)?.r2Key;
+                const imageUrl = imageByRecommendationId.get(recommendation.id)?.r2Key ?? undefined;
 
                 return (
                   <FullRecommendationReport
