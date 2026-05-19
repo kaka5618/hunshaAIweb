@@ -38,30 +38,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const [existingReport] = await db
-      .select({
-        id: bridalReport.id,
-        status: bridalReport.status,
-      })
-      .from(bridalReport)
-      .where(
-        and(
-          eq(bridalReport.sessionId, sessionId),
-          ne(bridalReport.status, "failed"),
-          ne(bridalReport.status, "expired"),
-        ),
-      )
-      .orderBy(desc(bridalReport.createdAt))
-      .limit(1);
-
-    if (existingReport) {
-      return NextResponse.json({
-        reportId: existingReport.id,
-        status: existingReport.status,
-        reused: true,
-      });
-    }
-
     const [quiz] = await db
       .select()
       .from(bridalQuizAnswer)
@@ -77,7 +53,10 @@ export async function POST(request: Request) {
     }
 
     const [photo] = await db
-      .select({ id: bridalUploadedPhoto.id })
+      .select({
+        id: bridalUploadedPhoto.id,
+        createdAt: bridalUploadedPhoto.createdAt,
+      })
       .from(bridalUploadedPhoto)
       .where(eq(bridalUploadedPhoto.sessionId, sessionId))
       .orderBy(desc(bridalUploadedPhoto.createdAt))
@@ -88,6 +67,35 @@ export async function POST(request: Request) {
         { error: "A bridal photo is required before generating a report" },
         { status: 400 },
       );
+    }
+
+    const [existingReport] = await db
+      .select({
+        id: bridalReport.id,
+        status: bridalReport.status,
+        createdAt: bridalReport.createdAt,
+      })
+      .from(bridalReport)
+      .where(
+        and(
+          eq(bridalReport.sessionId, sessionId),
+          ne(bridalReport.status, "failed"),
+          ne(bridalReport.status, "expired"),
+        ),
+      )
+      .orderBy(desc(bridalReport.createdAt))
+      .limit(1);
+
+    if (
+      existingReport &&
+      existingReport.createdAt >= quiz.updatedAt &&
+      existingReport.createdAt >= photo.createdAt
+    ) {
+      return NextResponse.json({
+        reportId: existingReport.id,
+        status: existingReport.status,
+        reused: true,
+      });
     }
 
     const answers = bridalQuizAnswersSchema.parse(quiz.answers);

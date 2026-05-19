@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
     await db.insert(bridalUploadedPhoto).values({
       id: photoId,
       sessionId,
-      r2Key,
+      r2Key: usedFallback ? url : r2Key,
       uploadStatus: "uploaded",
       moderationStatus: "approved",
       qualityScore: 1,

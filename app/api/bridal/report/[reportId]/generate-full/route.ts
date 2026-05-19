@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { after, NextResponse } from "next/server";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, lte } from "drizzle-orm";
 import { db } from "@/lib/db";
 import {
   bridalGeneratedImage,
@@ -203,7 +203,12 @@ async function generateFullBridalReport(reportId: string) {
   const [photo] = await db
     .select({ r2Key: bridalUploadedPhoto.r2Key, processedR2Key: bridalUploadedPhoto.processedR2Key })
     .from(bridalUploadedPhoto)
-    .where(eq(bridalUploadedPhoto.sessionId, report.sessionId))
+    .where(
+      and(
+        eq(bridalUploadedPhoto.sessionId, report.sessionId),
+        lte(bridalUploadedPhoto.createdAt, report.createdAt),
+      ),
+    )
     .orderBy(desc(bridalUploadedPhoto.createdAt))
     .limit(1);
 

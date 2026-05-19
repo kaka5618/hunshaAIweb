@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, lte } from "drizzle-orm";
 import {
   ArrowRight,
   Check,
@@ -105,7 +105,12 @@ export default async function BridalReportPage(
       processedR2Key: bridalUploadedPhoto.processedR2Key,
     })
     .from(bridalUploadedPhoto)
-    .where(eq(bridalUploadedPhoto.sessionId, report.sessionId))
+    .where(
+      and(
+        eq(bridalUploadedPhoto.sessionId, report.sessionId),
+        lte(bridalUploadedPhoto.createdAt, report.createdAt),
+      ),
+    )
     .orderBy(desc(bridalUploadedPhoto.createdAt))
     .limit(1);
 
