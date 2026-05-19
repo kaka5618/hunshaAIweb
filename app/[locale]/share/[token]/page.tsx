@@ -140,7 +140,7 @@ export default async function BridalSharePage(
                         alt={t("imageAlt", { name: recommendation.styleName })}
                         width={1100}
                         height={1400}
-                        className="h-[560px] w-full object-cover object-top xl:h-full xl:min-h-[760px]"
+                        className="h-[560px] w-full bg-white object-contain object-center xl:h-full xl:min-h-[760px]"
                         unoptimized
                       />
                     </div>

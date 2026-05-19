@@ -193,7 +193,7 @@ export function buildBridalReportHtml({
       .recommendation-header { display: flex; justify-content: space-between; gap: 20px; align-items: start; }
       .badges { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
       .badges span { border: 1px solid #d8d0c3; border-radius: 999px; padding: 6px 12px; color: #5f694c; }
-      .look-image { display: block; width: 100%; max-height: 520px; object-fit: cover; object-position: top; border-radius: 12px; margin: 22px 0; }
+      .look-image { display: block; width: 100%; max-height: 720px; object-fit: contain; object-position: center; background: #fff; border-radius: 12px; margin: 22px 0; }
       .facts, .captions, .columns, .editorial-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
       .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       .columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }

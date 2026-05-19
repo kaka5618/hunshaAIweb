@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { and, desc, eq, lte } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import {
   ArrowRight,
   Check,
@@ -22,12 +22,10 @@ import {
   bridalGeneratedImage,
   bridalRecommendation,
   bridalReport,
-  bridalUploadedPhoto,
 } from "@/lib/db/schema";
 import { canAccessBridalResource } from "@/lib/bridal/permissions";
 import { getBridalSessionIdFromCookies } from "@/lib/bridal/session";
 import { generatePageMetadata } from "@/lib/metadata";
-import { getR2PublicUrl } from "@/lib/r2-storage";
 import { getVerifiedCreemReturnUrlPayload } from "@/lib/payments/creem";
 import { unlockBridalReportFromCreemReturn } from "@/lib/bridal/payment";
 import type { Locale } from "@/i18n.config";
@@ -99,21 +97,6 @@ export default async function BridalReportPage(
     .from(bridalGeneratedImage)
     .where(eq(bridalGeneratedImage.reportId, report.id));
 
-  const [uploadedPhoto] = await db
-    .select({
-      r2Key: bridalUploadedPhoto.r2Key,
-      processedR2Key: bridalUploadedPhoto.processedR2Key,
-    })
-    .from(bridalUploadedPhoto)
-    .where(
-      and(
-        eq(bridalUploadedPhoto.sessionId, report.sessionId),
-        lte(bridalUploadedPhoto.createdAt, report.createdAt),
-      ),
-    )
-    .orderBy(desc(bridalUploadedPhoto.createdAt))
-    .limit(1);
-
   const imageByRecommendationId = new Map(
     generatedImages
       .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key && image.type === "full_body")
@@ -135,10 +118,6 @@ export default async function BridalReportPage(
   const leadingPreviewImageUrl = leadingRecommendation
     ? imageByRecommendationId.get(leadingRecommendation.id)?.r2Key
     : null;
-  const referenceImageUrl = uploadedPhoto
-    ? getR2PublicUrl(uploadedPhoto.processedR2Key ?? uploadedPhoto.r2Key)
-    : null;
-
   return (
     <main className="min-h-screen bg-[#f7f2ea] px-6 py-16 text-[#1f1b16]">
       <div className="mx-auto max-w-6xl">
@@ -241,7 +220,7 @@ export default async function BridalReportPage(
                     alt={t("recommendation.imageAlt", { name: leadingRecommendation.styleName })}
                     width={900}
                     height={1100}
-                    className="h-full min-h-[360px] w-full object-cover object-top"
+                    className="h-full min-h-[360px] w-full bg-white object-contain object-center"
                     unoptimized
                   />
                   <div className="p-6">
@@ -402,7 +381,6 @@ export default async function BridalReportPage(
               {recommendations.map((recommendation) => {
                 const imageUrl =
                   imageByRecommendationId.get(recommendation.id)?.r2Key ??
-                  referenceImageUrl ??
                   getPlaceholderBridalImageUrl(recommendation.rank);
 
                 return (
@@ -626,7 +604,7 @@ function FullRecommendationReport({
             alt={imageAlt}
             width={1100}
             height={1400}
-            className="h-[620px] w-full object-cover object-top xl:h-full xl:min-h-[900px]"
+            className="h-[620px] w-full bg-white object-contain object-center xl:h-full xl:min-h-[900px]"
             unoptimized
           />
         </div>
@@ -821,7 +799,7 @@ function VisualAnalysisBoard({
               alt={imageAlt}
               width={900}
               height={1400}
-              className="h-[520px] w-full object-cover object-top lg:h-[660px]"
+              className="h-[520px] w-full bg-white object-contain object-center lg:h-[660px]"
               unoptimized
             />
           </div>

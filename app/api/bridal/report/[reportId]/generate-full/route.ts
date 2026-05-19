@@ -244,28 +244,33 @@ async function generateFullBridalReport(reportId: string) {
 
       const prompt = buildBridalImagePrompt(recommendation, imageType, answers);
       const imageId = randomUUID();
-      let imageUrl = referenceImageUrl ?? getPlaceholderBridalImageUrl(recommendation.rank);
+      let imageUrl = getPlaceholderBridalImageUrl(recommendation.rank);
       let fallbackReason: string | null = null;
 
       try {
-        if (
-          process.env.VOLCANO_ENGINE_API_KEY &&
-          providerInputImage &&
-          (providerInputImage.startsWith("http") || providerInputImage.startsWith("data:"))
-        ) {
-          const result = await volcanoEngine.generateImage(prompt, {
-            model: "doubao-seedream-5-0-260128",
-            size: "2K",
-            inputImages: [providerInputImage],
-            watermark: false,
-          });
+        if (!process.env.VOLCANO_ENGINE_API_KEY) {
+          throw new Error("VOLCANO_ENGINE_API_KEY is not configured");
+        }
 
-          const providerUrl = result.data?.[0]?.url;
-          if (providerUrl) {
-            imageUrl = await uploadImageFromUrl(providerUrl, report.userId ?? report.sessionId, "image");
-          } else if (!allowImageFallback) {
-            throw new Error("Image provider response did not include an image URL");
-          }
+        if (
+          !providerInputImage ||
+          (!providerInputImage.startsWith("http") && !providerInputImage.startsWith("data:"))
+        ) {
+          throw new Error("A valid uploaded reference image is required for bridal image generation");
+        }
+
+        const result = await volcanoEngine.generateImage(prompt, {
+          model: "doubao-seedream-5-0-260128",
+          size: "2K",
+          inputImages: [providerInputImage],
+          watermark: false,
+        });
+
+        const providerUrl = result.data?.[0]?.url;
+        if (providerUrl) {
+          imageUrl = await uploadImageFromUrl(providerUrl, report.userId ?? report.sessionId, "image");
+        } else {
+          throw new Error("Image provider response did not include an image URL");
         }
       } catch (providerError) {
         if (!allowImageFallback) {
@@ -296,7 +301,7 @@ async function generateFullBridalReport(reportId: string) {
           continue;
         }
 
-        fallbackReason = getErrorMessage(providerError, "Image provider failed, used uploaded photo fallback");
+        fallbackReason = getErrorMessage(providerError, "Image provider failed, used placeholder fallback");
         console.warn("Bridal image provider failed, using local fallback:", fallbackReason);
       }
 

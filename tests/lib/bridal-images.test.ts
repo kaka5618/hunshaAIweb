@@ -1,6 +1,7 @@
 import {
   buildBridalImagePrompt,
   BRIDAL_REPORT_IMAGE_TYPES,
+  getBridalVisualDirection,
   getPlaceholderBridalImageUrl,
 } from "@/lib/bridal/images";
 
@@ -12,17 +13,18 @@ describe("bridal image helpers", () => {
       neckline: "Sweetheart",
       fabric: "Lace over satin",
       venueMatch: "Works well for a garden ceremony.",
+      rank: 1,
     });
 
     expect(prompt).toContain("Romantic Garden Bride");
     expect(prompt).toContain("A-line");
     expect(prompt).toContain("Sweetheart");
-    expect(prompt).toContain("strict image-to-image clothing edit");
-    expect(prompt).toContain("Use the uploaded image as the canvas");
-    expect(prompt).toContain("Edit only the clothing into a wedding dress");
-    expect(prompt).toContain("Keep the uploaded person's face pixel-level recognizable");
+    expect(prompt).toContain("complete full-body bridal try-on portrait");
+    expect(prompt).toContain("Use the uploaded image as the identity reference");
+    expect(prompt).toContain("Replace casual clothes with a wedding dress");
+    expect(prompt).toContain("Keep the uploaded person's face highly recognizable");
     expect(prompt).toContain("Do not redraw the face");
-    expect(prompt).toContain("do not invent missing body parts");
+    expect(prompt).toContain("entire wedding dress visible");
     expect(prompt).toContain("Avoid logos");
   });
 
@@ -34,6 +36,7 @@ describe("bridal image helpers", () => {
         neckline: "V-neck",
         fabric: "Matte satin",
         venueMatch: "Works well for a hotel ballroom.",
+        rank: 1,
       },
       "neckline_detail",
       {
@@ -50,10 +53,59 @@ describe("bridal image helpers", () => {
       },
     );
 
-    expect(prompt).toContain("Strict outfit-edit detail from face, collarbone, neckline, and upper bodice");
+    expect(prompt).toContain("Create a close detail image from face, collarbone, neckline, shoulders, and upper bodice");
     expect(prompt).toContain("Bride coverage preference: conservative");
-    expect(prompt).toContain("Keep the exact same face and hair from the upload");
+    expect(prompt).toContain('Detail priority: clearly visualize neckline preference "conservative V-neck"');
     expect(prompt).toContain("Do not redraw the face");
+  });
+
+  it("assigns different visual preferences across ranked directions", () => {
+    const answers = {
+      venue: "beach",
+      season: "summer",
+      dressBudget: "3000-5000",
+      styleWords: ["romantic", "minimal"],
+      silhouettes: ["A-line", "mermaid"],
+      necklines: ["V-neck", "strapless"],
+      coverage: "balanced",
+      bodyComfort: ["arm coverage"],
+      shoppingConcerns: ["budget pressure"],
+      appointmentGoal: "compare options",
+    };
+
+    expect(
+      getBridalVisualDirection(
+        {
+          rank: 1,
+          silhouette: "fallback silhouette",
+          neckline: "fallback neckline",
+          fabric: "lace",
+          venueMatch: "outdoor",
+        },
+        answers,
+      ),
+    ).toMatchObject({
+      visualNeckline: "V-neck",
+      visualSilhouette: "A-line",
+      venue: "beach",
+    });
+
+    expect(
+      getBridalVisualDirection(
+        {
+          rank: 2,
+          silhouette: "fallback silhouette",
+          neckline: "fallback neckline",
+          fabric: "lace",
+          venueMatch: "outdoor",
+        },
+        answers,
+      ),
+    ).toMatchObject({
+      visualNeckline: "strapless",
+      visualSilhouette: "mermaid",
+      venue: "beach",
+    });
   });
 
   it("defines four fixed image types for each full report direction", () => {
