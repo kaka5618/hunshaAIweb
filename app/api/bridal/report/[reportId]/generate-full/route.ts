@@ -222,6 +222,16 @@ async function generateFullBridalReport(reportId: string) {
   const providerInputImage = referenceImageUrl ? await getProviderInputImage(referenceImageUrl) : null;
 
   const allowImageFallback = canUseLocalImageFallback();
+  const successfulImageByKey = new Map(
+    existingImages
+      .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key)
+      .map(image => [`${image.recommendationId}:${image.type}`, image.r2Key as string]),
+  );
+  const fullBodyImageByRecommendationId = new Map(
+    existingImages
+      .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key && image.type === "full_body")
+      .map(image => [image.recommendationId, image.r2Key as string]),
+  );
   const successfulImageKeys = new Set(
     existingImages
       .filter(image => image.generationStatus === "success" && !image.errorMessage)
@@ -252,23 +262,40 @@ async function generateFullBridalReport(reportId: string) {
           throw new Error("VOLCANO_ENGINE_API_KEY is not configured");
         }
 
+        let inputImage = providerInputImage;
+        if (imageType !== "full_body") {
+          const fullBodyImageUrl =
+            fullBodyImageByRecommendationId.get(recommendation.id) ??
+            successfulImageByKey.get(`${recommendation.id}:full_body`);
+
+          if (!fullBodyImageUrl) {
+            throw new Error(`Full-body bridal look is required before generating ${imageType}`);
+          }
+
+          inputImage = await getProviderInputImage(getR2PublicUrl(fullBodyImageUrl));
+        }
+
         if (
-          !providerInputImage ||
-          (!providerInputImage.startsWith("http") && !providerInputImage.startsWith("data:"))
+          !inputImage ||
+          (!inputImage.startsWith("http") && !inputImage.startsWith("data:"))
         ) {
-          throw new Error("A valid uploaded reference image is required for bridal image generation");
+          throw new Error("A valid reference image is required for bridal image generation");
         }
 
         const result = await volcanoEngine.generateImage(prompt, {
           model: "doubao-seedream-5-0-260128",
           size: "2K",
-          inputImages: [providerInputImage],
+          inputImages: [inputImage],
           watermark: false,
         });
 
         const providerUrl = result.data?.[0]?.url;
         if (providerUrl) {
           imageUrl = await uploadImageFromUrl(providerUrl, report.userId ?? report.sessionId, "image");
+          if (imageType === "full_body") {
+            fullBodyImageByRecommendationId.set(recommendation.id, imageUrl);
+            successfulImageByKey.set(`${recommendation.id}:full_body`, imageUrl);
+          }
         } else {
           throw new Error("Image provider response did not include an image URL");
         }

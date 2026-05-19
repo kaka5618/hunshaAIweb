@@ -53,9 +53,12 @@ describe("bridal image helpers", () => {
       },
     );
 
-    expect(prompt).toContain("Create a close detail image from face, collarbone, neckline, shoulders, and upper bodice");
+    expect(prompt).toContain("Create a polished close-up detail rendering of the exact neckline");
     expect(prompt).toContain("Bride coverage preference: conservative");
     expect(prompt).toContain('Detail priority: clearly visualize neckline preference "conservative V-neck"');
+    expect(prompt).toContain("use the provided full-body bridal look as the design reference");
+    expect(prompt).toContain("not simply crop or zoom a screenshot");
+    expect(prompt).toContain("tight editorial garment-detail composition");
     expect(prompt).toContain("Do not redraw the face");
   });
 

@@ -17,11 +17,11 @@ const IMAGE_TYPE_INSTRUCTIONS: Record<BridalImageType, string> = {
   full_body:
     "Create a complete full-body bridal try-on portrait. Preserve the uploaded person's face, hair, skin tone, body shape, age impression, and recognizable identity, but you may extend the composition to show the entire body and full wedding dress from head to toe. The dress, shoes, skirt, train, and venue background must be visible. Do not crop the head, waist, hem, hands, or feet.",
   neckline_detail:
-    "Create a close detail image from face, collarbone, neckline, shoulders, and upper bodice. Keep the uploaded person's face and hair recognizable. The image must clearly show the chosen neckline structure and how it frames the face.",
+    "Create a polished close-up detail rendering of the exact neckline and upper bodice from this plan's generated full-body bridal look. Focus on collarbone, neckline edge, bodice construction, lace or fabric texture, and how the neckline frames the upper body. This should look like a dedicated editorial detail image, not a screenshot crop and not a new face portrait.",
   waist_detail:
-    "Create a mid-body detail image from upper torso to hip focused on waist definition, bodice fit, skirt transition, hip comfort, and silhouette structure. Keep body proportions realistic and consistent with the uploaded person.",
+    "Create a polished close-up detail rendering of the exact waist and bodice-to-skirt transition from this plan's generated full-body bridal look. Focus on waist seam, corset or bodice structure, belt or ribbon, fabric tension, hip comfort, and silhouette transition. Do not show a face-focused portrait.",
   sleeve_detail:
-    "Create a shoulder and arm detail image focused on sleeve shape, arm coverage, neckline edge, fabric texture, and modesty preference. Preserve the uploaded person's skin tone, proportions, and identity.",
+    "Create a polished close-up detail rendering of the exact sleeve, shoulder, cuff, and arm-coverage design from this plan's generated full-body bridal look. Focus on sleeve length, cuff edge, lace or fabric texture, shoulder coverage, and how it supports the bride's coverage preference. Do not show a face-focused portrait.",
   venue_scene:
     "Create an environmental full-body bridal scene that makes the venue choice obvious while keeping the uploaded person's face and body identity recognizable.",
 };
@@ -33,6 +33,12 @@ const SHARED_IDENTITY_INSTRUCTIONS = [
   "Replace casual clothes with a wedding dress that matches the recommendation and quiz answers.",
   "Do not redraw the face, beautify into a different person, westernize, asianize, slim the body, change age, change ethnicity, change hairstyle, or replace the uploaded person.",
   "If the source image is cropped or casual, use it as the face and body identity reference, then create a polished bridal visualization with the same person.",
+].join(" ");
+
+const DETAIL_REFERENCE_INSTRUCTIONS = [
+  "For detail images, use the provided full-body bridal look as the design reference, not the original casual upload.",
+  "The close-up must match the same dress design, fabric, neckline, sleeve, waist construction, venue mood, and identity direction as the full-body plan.",
+  "Generate a clean display-ready detail visual of the selected garment area; do not simply crop or zoom a screenshot.",
 ].join(" ");
 
 function list(values: string[]) {
@@ -126,6 +132,7 @@ export function buildBridalImagePrompt(
     "Create a premium bridal styling visualization for a paid wedding dress report.",
     SHARED_IDENTITY_INSTRUCTIONS,
     IMAGE_TYPE_INSTRUCTIONS[imageType],
+    imageType === "full_body" || imageType === "venue_scene" ? "" : DETAIL_REFERENCE_INSTRUCTIONS,
     `Style direction: ${recommendation.styleName}.`,
     `Recommendation silhouette: ${recommendation.silhouette}.`,
     `Recommendation neckline: ${recommendation.neckline}.`,
@@ -146,7 +153,7 @@ export function buildBridalImagePrompt(
     "Photorealistic realistic try-on, refined ivory or white wedding dress, realistic fabric texture, premium bridal boutique report quality.",
     imageType === "full_body" || imageType === "venue_scene"
       ? "Composition requirement: vertical full-body fashion portrait, head-to-toe, entire wedding dress visible, centered person, no crop at head, hem, hands, or feet."
-      : "",
+      : "Composition requirement: tight editorial garment-detail composition, the selected dress area fills most of the frame, avoid head-only portraits, avoid distant full-body framing.",
     "Do not violate the bride's preferred neckline, coverage, or comfort constraints.",
     "If the bride selected multiple preferences, this plan should visibly represent its assigned preference instead of repeating the same design across all plans.",
     "Keep the result modest, polished, commercially usable, shareable, and focused on practical dress design without changing identity.",
