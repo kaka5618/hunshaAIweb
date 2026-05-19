@@ -72,6 +72,49 @@
       "primary": "开始风格测验",
       "secondary": "查看报告内容"
     },
+    "preview": {
+      "unlock": "解锁完整报告 $19.90",
+      "planLabel": "第一份方案预览",
+      "planTitle": "干净整洁的场地浪漫风",
+      "planDescription": "第一份方向会展示清晰的上半部分合身建议，解锁线以下展示更深入的方案但做模糊处理。",
+      "thumb": {
+        "report": "报告看板",
+        "detail": "婚纱细节"
+      },
+      "cards": {
+        "neckline": {
+          "label": "领口",
+          "title": "柔和 V 领",
+          "description": "保持上半身清爽打开，同时保留婚纱感、平衡感和试纱可执行性。"
+        },
+        "waist": {
+          "label": "腰线",
+          "title": "有收腰但不束缚",
+          "description": "略微明确的腰线先建立结构感，再决定是否尝试更重的束腰或蓬裙。"
+        },
+        "sleeve": {
+          "label": "袖型",
+          "title": "可加柔和遮盖",
+          "description": "在不改变主廓形的前提下加入轻盈遮盖，避免整体变得厚重。"
+        },
+        "salon": {
+          "label": "试纱话术",
+          "title": "知道进店怎么说",
+          "description": "直接带着廓形、领口、预算和优先避开的表达去沟通。"
+        }
+      },
+      "writtenPlan": {
+        "label": "书面方案",
+        "title": "这是一份可分享的报告，不是普通 AI 文字",
+        "description": "完整报告会结合标注视觉图、试纱优先级、预算边界、顾问话术、PDF 导出和分享链接。"
+      },
+      "includes": {
+        "label": "完整报告包含",
+        "visuals": "3 个方向共 12 张生成婚纱视觉图",
+        "details": "领口、腰线、袖型、面料、场地和预算说明",
+        "export": "可打印 HTML/PDF 视图和分享按钮"
+      }
+    },
     "modal": {
       "eyebrow": "报告预览",
       "title": "试纱预约前先拿到可执行的婚纱报告",

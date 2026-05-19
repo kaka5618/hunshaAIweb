@@ -72,6 +72,49 @@
       "primary": "Start the Style Quiz",
       "secondary": "See What's Included"
     },
+    "preview": {
+      "unlock": "Unlock full report $19.90",
+      "planLabel": "Direction 1 preview",
+      "planTitle": "Clean venue-ready romance",
+      "planDescription": "A polished first direction with visible fit notes above the unlock line and the deeper styling plan blurred below.",
+      "thumb": {
+        "report": "Report board",
+        "detail": "Dress detail"
+      },
+      "cards": {
+        "neckline": {
+          "label": "Neckline",
+          "title": "Soft V-neck",
+          "description": "Keeps the upper body open while still feeling bridal, balanced, and salon-friendly."
+        },
+        "waist": {
+          "label": "Waist",
+          "title": "Defined without restriction",
+          "description": "A lightly shaped waist gives structure before trying heavier corset or ballgown options."
+        },
+        "sleeve": {
+          "label": "Sleeve",
+          "title": "Optional soft coverage",
+          "description": "Add delicate coverage without changing the main silhouette or making the look feel heavy."
+        },
+        "salon": {
+          "label": "Salon script",
+          "title": "Know what to ask for",
+          "description": "Bring direct language for silhouette, neckline, budget, and what to avoid first."
+        }
+      },
+      "writtenPlan": {
+        "label": "Written plan",
+        "title": "A shareable report, not a generic AI paragraph",
+        "description": "The full report combines annotated visuals, fitting-room priorities, budget guardrails, consultant scripts, PDF export, and a share link."
+      },
+      "includes": {
+        "label": "Full report includes",
+        "visuals": "12 generated bridal visuals across three directions",
+        "details": "Neckline, waist, sleeve, fabric, venue, and budget notes",
+        "export": "Printable HTML/PDF view and share button"
+      }
+    },
     "modal": {
       "eyebrow": "Report Preview",
       "title": "A practical bridal report before your appointment",
