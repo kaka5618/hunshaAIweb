@@ -28,7 +28,8 @@ import { canAccessBridalResource } from "@/lib/bridal/permissions";
 import { getBridalSessionIdFromCookies } from "@/lib/bridal/session";
 import { generatePageMetadata } from "@/lib/metadata";
 import { getR2PublicUrl } from "@/lib/r2-storage";
-import { verifyReturnUrlSignature } from "@/lib/payments/creem";
+import { getVerifiedCreemReturnUrlPayload } from "@/lib/payments/creem";
+import { unlockBridalReportFromCreemReturn } from "@/lib/bridal/payment";
 import type { Locale } from "@/i18n.config";
 import type { ElementType } from "react";
 import { BridalUnlockButton } from "./unlock-button";
@@ -61,21 +62,27 @@ export default async function BridalReportPage(
 ) {
   const { reportId } = await props.params;
   const searchParams = props.searchParams ? await props.searchParams : {};
+  const creemReturnPayload = getVerifiedCreemReturnUrlPayload(searchParams);
   const returnedFromPayment =
     searchParams.success === "1" ||
-    (typeof searchParams.signature === "string" && verifyReturnUrlSignature(searchParams));
+    Boolean(creemReturnPayload);
   const t = await getTranslations("bridalReport");
   const sessionId = await getBridalSessionIdFromCookies();
 
-  const [report] = await db
+  const [initialReport] = await db
     .select()
     .from(bridalReport)
     .where(eq(bridalReport.id, reportId))
     .limit(1);
 
-  if (!report || !canAccessBridalResource({ sessionId, resource: report })) {
+  if (!initialReport || !canAccessBridalResource({ sessionId, resource: initialReport })) {
     notFound();
   }
+
+  const report = await unlockBridalReportFromCreemReturn({
+    report: initialReport,
+    payload: creemReturnPayload,
+  });
 
   const recommendations = await db
     .select()

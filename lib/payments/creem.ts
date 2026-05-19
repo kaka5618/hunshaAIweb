@@ -153,22 +153,24 @@ export function verifyReturnUrlSignature(
   const apiKey = process.env.CREEM_API_KEY;
   if (!apiKey) return false;
 
-  const entries =
-    params instanceof URLSearchParams
-      ? Array.from(params.entries())
-      : Object.entries(params).flatMap(([key, value]) => {
-          if (Array.isArray(value)) return value.map(item => [key, item] as const);
-          return value === undefined ? [] : ([[key, value]] as const);
-        });
-
-  const signature = entries.find(([key]) => key === "signature")?.[1];
+  const signature = getParamValue(params, "signature");
   if (!signature) return false;
 
-  const signedPayload = entries
-    .filter(([key]) => key !== "signature")
+  const signedPayload = [
+    "checkout_id",
+    "customer_id",
+    "order_id",
+    "product_id",
+    "request_id",
+    "subscription_id",
+  ]
+    .map(key => [key, getParamValue(params, key)] as const)
+    .filter(([, value]) => value !== undefined && value !== "" && value !== "null")
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([key, value]) => `${key}=${value}`)
-    .join("|");
+    .join("&");
+
+  if (!signedPayload) return false;
 
   const computedSignature = crypto
     .createHmac("sha256", apiKey)
@@ -178,4 +180,45 @@ export function verifyReturnUrlSignature(
   const sigBuf = Buffer.from(signature);
   const compBuf = Buffer.from(computedSignature);
   return sigBuf.length === compBuf.length && crypto.timingSafeEqual(sigBuf, compBuf);
+}
+
+export type CreemReturnUrlPayload = {
+  checkoutId?: string;
+  customerId?: string;
+  orderId?: string;
+  productId?: string;
+  requestId?: string;
+  subscriptionId?: string;
+};
+
+function getParamValue(
+  params: URLSearchParams | Record<string, string | string[] | undefined>,
+  key: string,
+) {
+  if (params instanceof URLSearchParams) {
+    return params.get(key) ?? undefined;
+  }
+
+  const value = params[key];
+  if (Array.isArray(value)) {
+    return value[0];
+  }
+  return value;
+}
+
+export function getVerifiedCreemReturnUrlPayload(
+  params: URLSearchParams | Record<string, string | string[] | undefined>,
+): CreemReturnUrlPayload | null {
+  if (!verifyReturnUrlSignature(params)) {
+    return null;
+  }
+
+  return {
+    checkoutId: getParamValue(params, "checkout_id"),
+    customerId: getParamValue(params, "customer_id"),
+    orderId: getParamValue(params, "order_id"),
+    productId: getParamValue(params, "product_id"),
+    requestId: getParamValue(params, "request_id"),
+    subscriptionId: getParamValue(params, "subscription_id"),
+  };
 }

@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import {
   createCheckoutSession,
   getCreemApiBase,
+  getVerifiedCreemReturnUrlPayload,
   verifyReturnUrlSignature,
   verifyWebhookSignature,
 } from "@/lib/payments/creem";
@@ -108,7 +109,7 @@ describe("Creem payments", () => {
       "order_id=ord_123",
       "product_id=prod_123",
       "request_id=bridal-report:report_1",
-    ].join("|");
+    ].join("&");
     const signature = crypto
       .createHmac("sha256", "creem_test_key")
       .update(signedPayload)
@@ -122,10 +123,46 @@ describe("Creem payments", () => {
           checkout_id: "ch_123",
           customer_id: "cus_123",
           product_id: "prod_123",
+          success: "1",
           signature,
         }),
       ),
     ).toBe(true);
+  });
+
+  it("extracts verified Creem return URL payment identifiers", () => {
+    const signedPayload = [
+      "checkout_id=ch_123",
+      "customer_id=cus_123",
+      "order_id=ord_123",
+      "product_id=prod_123",
+      "request_id=bridal-report:report_1",
+    ].join("&");
+    const signature = crypto
+      .createHmac("sha256", "creem_test_key")
+      .update(signedPayload)
+      .digest("hex");
+
+    expect(
+      getVerifiedCreemReturnUrlPayload(
+        new URLSearchParams({
+          order_id: "ord_123",
+          request_id: "bridal-report:report_1",
+          checkout_id: "ch_123",
+          customer_id: "cus_123",
+          product_id: "prod_123",
+          success: "1",
+          signature,
+        }),
+      ),
+    ).toEqual({
+      checkoutId: "ch_123",
+      customerId: "cus_123",
+      orderId: "ord_123",
+      productId: "prod_123",
+      requestId: "bridal-report:report_1",
+      subscriptionId: undefined,
+    });
   });
 
   it("does not require a Creem API key when local simulation is enabled", async () => {
