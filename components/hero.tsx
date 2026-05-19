@@ -152,30 +152,7 @@ export const Hero = () => {
                   }}
                 />
               ))}
-              <div className="absolute right-5 top-5 z-10 hidden w-36 overflow-hidden rounded-2xl border border-white/45 bg-white/25 shadow-2xl backdrop-blur-md md:block">
-                <div
-                  className="h-28 bg-cover bg-center"
-                  style={{ backgroundImage: "url('/bridal/home-report-table.png')" }}
-                />
-                <p className="px-3 py-2 text-xs font-semibold text-white drop-shadow">
-                  {t('preview.thumb.report')}
-                </p>
-              </div>
-              <div className="absolute bottom-24 left-5 z-10 hidden w-32 overflow-hidden rounded-2xl border border-white/45 bg-white/25 shadow-2xl backdrop-blur-md md:block">
-                <div
-                  className="h-28 bg-cover bg-center"
-                  style={{ backgroundImage: "url('/bridal/home-dress-detail.png')" }}
-                />
-                <p className="px-3 py-2 text-xs font-semibold text-white drop-shadow">
-                  {t('preview.thumb.detail')}
-                </p>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/95" />
-              <div className="absolute left-0 right-0 top-[43%] border-t border-dashed border-foreground/40" />
-              <div className="absolute inset-x-0 bottom-0 h-[58%] backdrop-blur-md" />
-              <div className="hero-unlock-pulse absolute left-1/2 top-[43%] z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border border-white/40 bg-foreground px-5 py-3 text-sm font-semibold text-background shadow-2xl">
-                {t('preview.unlock')}
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/82" />
               <div className="absolute bottom-6 left-6 right-6 z-10 rounded-2xl border border-border bg-background/85 p-5 backdrop-blur-md">
                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   {t('preview.planLabel')}
@@ -267,10 +244,6 @@ export const Hero = () => {
           animation-delay: 1.8s;
         }
 
-        .hero-unlock-pulse {
-          animation: heroUnlockPulse 2.8s ease-in-out infinite;
-        }
-
         @keyframes heroPreviewFade {
           0%,
           28% {
@@ -298,15 +271,6 @@ export const Hero = () => {
           }
         }
 
-        @keyframes heroUnlockPulse {
-          0%,
-          100% {
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
-          }
-          50% {
-            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
-          }
-        }
       `}</style>
     </div>
   );

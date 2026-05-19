@@ -73,14 +73,9 @@
       "secondary": "查看报告内容"
     },
     "preview": {
-      "unlock": "解锁完整报告 $19.90",
       "planLabel": "第一份方案预览",
       "planTitle": "干净整洁的场地浪漫风",
-      "planDescription": "第一份方向会展示清晰的上半部分合身建议，解锁线以下展示更深入的方案但做模糊处理。",
-      "thumb": {
-        "report": "报告看板",
-        "detail": "婚纱细节"
-      },
+      "planDescription": "第一份方向会完整展示视觉合身建议、试纱优先级和可以直接沟通的婚纱店话术。",
       "cards": {
         "neckline": {
           "label": "领口",
