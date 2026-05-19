@@ -1315,8 +1315,31 @@
       "loading": "Generating...",
       "error": "We could not generate the full report. Please try again.",
       "statusError": "We could not read generation progress. Please refresh this page later.",
+      "progressEyebrow": "Report generation",
+      "progressTitle": "Your visuals are being prepared",
       "progress": "{success}/{total} images generated",
-      "progressHint": "Generation can take a few minutes. Please keep this page open."
+      "progressHint": "Most reports are ready in 2-4 minutes. Keep this page open while the images finish.",
+      "stages": {
+        "fullLooks": "Creating full-body looks",
+        "details": "Rendering detail images",
+        "quality": "Checking visual consistency",
+        "export": "Preparing export tools"
+      },
+      "placeholders": {
+        "fullBody": "Creating full-body bridal look",
+        "detail": "Rendering detail visual",
+        "hint": "Usually ready in 2-4 minutes."
+      },
+      "waitTips": {
+        "title": "While you wait",
+        "items": [
+          "Bridal shops usually ask about the venue first because fabric weight, train length, and formality change by setting.",
+          "For beach weddings, lighter trains and softer skirts usually photograph better than heavy structure.",
+          "Try sitting, walking, and hugging during fittings. Comfort problems show up faster than they do in mirror photos.",
+          "Alterations often matter more than the sample size. Ask what can realistically be changed before you fall in love with a dress.",
+          "If you like two necklines, compare them across different silhouettes instead of judging the neckline alone."
+        ]
+      }
     },
     "appointment": {
       "title": "Appointment scripts"

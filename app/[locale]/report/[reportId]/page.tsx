@@ -107,9 +107,18 @@ export default async function BridalReportPage(
       .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key)
       .map(image => [`${image.recommendationId}:${image.type}`, image.r2Key as string]),
   );
-  const paidVisualsIncomplete = report.isPaid && generatedImages
+  const cleanGeneratedVisualCount = generatedImages
     .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key)
-    .length < 12;
+    .length;
+  const failedGeneratedVisualCount = generatedImages
+    .filter(image => image.generationStatus === "failed")
+    .length;
+  const fullReportImageProgress = {
+    success: cleanGeneratedVisualCount,
+    failed: failedGeneratedVisualCount,
+    total: 12,
+  };
+  const paidVisualsIncomplete = report.isPaid && cleanGeneratedVisualCount < fullReportImageProgress.total;
 
   const price = `$${(report.priceCents / 100).toFixed(2)}`;
   const budgetMin = Math.min(...recommendations.map(recommendation => recommendation.budgetMin));
@@ -375,13 +384,21 @@ export default async function BridalReportPage(
                   </Button>
                 ))}
               </div>
+
+              {paidVisualsIncomplete && (
+                <div className="mt-8">
+                  <GenerateFullReportButton
+                    reportId={report.id}
+                    autoStart={returnedFromPayment || report.status === "generating"}
+                    initialProgress={fullReportImageProgress}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="mt-8 space-y-8">
               {recommendations.map((recommendation) => {
-                const imageUrl =
-                  imageByRecommendationId.get(recommendation.id)?.r2Key ??
-                  getPlaceholderBridalImageUrl(recommendation.rank);
+                const imageUrl = imageByRecommendationId.get(recommendation.id)?.r2Key;
 
                 return (
                   <FullRecommendationReport
@@ -413,6 +430,9 @@ export default async function BridalReportPage(
                       detailWaist: t("detailCaptions.waist"),
                       detailSleeve: t("detailCaptions.sleeve"),
                       budgetTitle: t("budget.title"),
+                      generatingFullBody: t("fullGeneration.placeholders.fullBody"),
+                      generatingDetail: t("fullGeneration.placeholders.detail"),
+                      generatingHint: t("fullGeneration.placeholders.hint"),
                     }}
                   />
                 );
@@ -444,21 +464,6 @@ export default async function BridalReportPage(
         )}
 
         {!report.isPaid && returnedFromPayment && <PaymentConfirmationRefresh />}
-
-        {paidVisualsIncomplete && (
-          <section className="mt-8 rounded-lg border border-[#d8cdbd] bg-[#fffaf3] p-8 text-center shadow-sm">
-            <Sparkles className="mx-auto h-8 w-8 text-primary" />
-            <h2 className="mt-4 text-2xl font-semibold">
-              {t("fullGeneration.title")}
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[#655d52]">
-              {t("fullGeneration.description")}
-            </p>
-            <div className="mt-6 flex justify-center">
-              <GenerateFullReportButton reportId={report.id} autoStart={returnedFromPayment} />
-            </div>
-          </section>
-        )}
       </div>
     </main>
   );
@@ -546,7 +551,7 @@ function FullRecommendationReport({
       sleeve: string;
     };
   };
-  imageUrl: string;
+  imageUrl?: string;
   imageAlt: string;
   detailImages: {
     neckline?: string;
@@ -572,6 +577,9 @@ function FullRecommendationReport({
     detailWaist: string;
     detailSleeve: string;
     budgetTitle: string;
+    generatingFullBody: string;
+    generatingDetail: string;
+    generatingHint: string;
   };
 }) {
   return (
@@ -599,14 +607,22 @@ function FullRecommendationReport({
 
       <div className="grid gap-0 xl:grid-cols-[minmax(360px,0.92fr)_1.08fr]">
         <div className="border-b border-[#d8cdbd] bg-white xl:border-b-0 xl:border-r">
-          <Image
-            src={imageUrl}
-            alt={imageAlt}
-            width={1100}
-            height={1400}
-            className="h-[620px] w-full bg-white object-contain object-center xl:h-full xl:min-h-[900px]"
-            unoptimized
-          />
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={imageAlt}
+              width={1100}
+              height={1400}
+              className="h-[620px] w-full bg-white object-contain object-center xl:h-full xl:min-h-[900px]"
+              unoptimized
+            />
+          ) : (
+            <GeneratingVisualPlaceholder
+              title={labels.generatingFullBody}
+              description={labels.generatingHint}
+              className="h-[620px] xl:h-full xl:min-h-[900px]"
+            />
+          )}
         </div>
 
         <div className="p-6 md:p-8">
@@ -679,16 +695,22 @@ function FullRecommendationReport({
                 imageUrl={detailImages.neckline}
                 label={labels.detailNeckline}
                 value={recommendation.detailCaptions.neckline}
+                placeholderTitle={labels.generatingDetail}
+                placeholderDescription={labels.generatingHint}
               />
               <ImageCaption
                 imageUrl={detailImages.waist}
                 label={labels.detailWaist}
                 value={recommendation.detailCaptions.waist}
+                placeholderTitle={labels.generatingDetail}
+                placeholderDescription={labels.generatingHint}
               />
               <ImageCaption
                 imageUrl={detailImages.sleeve}
                 label={labels.detailSleeve}
                 value={recommendation.detailCaptions.sleeve}
+                placeholderTitle={labels.generatingDetail}
+                placeholderDescription={labels.generatingHint}
               />
             </div>
           </div>
@@ -961,14 +983,18 @@ function ImageCaption({
   imageUrl,
   label,
   value,
+  placeholderTitle,
+  placeholderDescription,
 }: {
   imageUrl?: string;
   label: string;
   value: string;
+  placeholderTitle?: string;
+  placeholderDescription?: string;
 }) {
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-card">
-      {imageUrl && (
+      {imageUrl ? (
         <Image
           src={imageUrl}
           alt={label}
@@ -977,9 +1003,46 @@ function ImageCaption({
           className="h-40 w-full object-cover object-top"
           unoptimized
         />
+      ) : (
+        <GeneratingVisualPlaceholder
+          title={placeholderTitle ?? label}
+          description={placeholderDescription ?? ""}
+          className="h-40"
+          compact
+        />
       )}
       <div className="p-4">
         <Caption label={label} value={value} />
+      </div>
+    </div>
+  );
+}
+
+function GeneratingVisualPlaceholder({
+  title,
+  description,
+  className = "",
+  compact = false,
+}: {
+  title: string;
+  description: string;
+  className?: string;
+  compact?: boolean;
+}) {
+  return (
+    <div className={`relative flex w-full items-center justify-center overflow-hidden bg-[#efe5d6] ${className}`}>
+      <div className="absolute inset-0 animate-pulse bg-[linear-gradient(110deg,rgba(255,250,243,0.2),rgba(255,255,255,0.82),rgba(255,250,243,0.2))]" />
+      <div className="absolute inset-0 backdrop-blur-sm" />
+      <div className={compact ? "relative z-10 px-4 text-center" : "relative z-10 max-w-xs px-6 text-center"}>
+        <Sparkles className={compact ? "mx-auto h-4 w-4 text-[#756a5c]" : "mx-auto h-7 w-7 text-[#756a5c]"} />
+        <p className={compact ? "mt-2 text-xs font-semibold text-[#1f1b16]" : "mt-4 text-lg font-semibold text-[#1f1b16]"}>
+          {title}
+        </p>
+        {description && (
+          <p className={compact ? "mt-1 text-[11px] leading-4 text-[#655d52]" : "mt-2 text-sm leading-6 text-[#655d52]"}>
+            {description}
+          </p>
+        )}
       </div>
     </div>
   );
