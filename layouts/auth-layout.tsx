@@ -84,30 +84,6 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </div>
-      <style jsx>{`
-        .auth-bridal-slide {
-          opacity: 0;
-          animation: bridalFade 12s ease-in-out infinite;
-        }
-
-        .auth-bridal-slide:first-child {
-          opacity: 1;
-        }
-
-        @keyframes bridalFade {
-          0%,
-          28% {
-            opacity: 1;
-          }
-          38%,
-          90% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 1;
-          }
-        }
-      `}</style>
     </>
   );
 }

@@ -225,53 +225,6 @@ export const Hero = () => {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-background" />
         </div>
       </div>
-      <style jsx>{`
-        .hero-preview-slide {
-          opacity: 0;
-          transform: scale(1.03);
-          animation: heroPreviewFade 9.6s ease-in-out infinite;
-        }
-
-        .hero-preview-slide:first-child {
-          opacity: 1;
-        }
-
-        .hero-float-card {
-          animation: heroFloat 6s ease-in-out infinite;
-        }
-
-        .hero-float-delay {
-          animation-delay: 1.8s;
-        }
-
-        @keyframes heroPreviewFade {
-          0%,
-          28% {
-            opacity: 1;
-            transform: scale(1);
-          }
-          38%,
-          90% {
-            opacity: 0;
-            transform: scale(1.035);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes heroFloat {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-8px);
-          }
-        }
-
-      `}</style>
     </div>
   );
 };
