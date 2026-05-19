@@ -28,9 +28,6 @@ function parseReportLanguage(value: unknown): BridalReportLanguage {
   return value === "zh" ? "zh" : "en";
 }
 
-const BRIDAL_IMAGE_EDIT_MODEL =
-  process.env.VOLCANO_ENGINE_IMAGE_EDIT_MODEL || "doubao-seededit-3-0-i2i-250628";
-
 async function getProviderInputImage(imageUrl: string) {
   if (imageUrl.startsWith("data:")) {
     return imageUrl;
@@ -178,7 +175,7 @@ export async function POST(request: Request) {
     const previewPrompt = buildBridalImagePrompt(leadingRecommendation, "full_body", answers);
     const previewImageId = randomUUID();
     const previewResult = await volcanoEngine.generateImage(previewPrompt, {
-      model: BRIDAL_IMAGE_EDIT_MODEL,
+      model: "doubao-seedream-5-0-260128",
       size: "2K",
       inputImages: [providerInputImage],
       watermark: false,

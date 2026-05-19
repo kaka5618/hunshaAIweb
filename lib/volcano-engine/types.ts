@@ -3,7 +3,6 @@ export interface VolcanoEngineConfig {
   apiUrl: string;
   textModel?: string;
   imageModel?: string;
-  imageEditModel?: string;
   videoModel?: string;
 }
 

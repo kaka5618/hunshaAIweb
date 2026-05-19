@@ -23,9 +23,6 @@ function canUseLocalImageFallback() {
   return !process.env.VOLCANO_ENGINE_API_KEY || process.env.BRIDAL_ALLOW_IMAGE_FALLBACK === "true";
 }
 
-const BRIDAL_IMAGE_EDIT_MODEL =
-  process.env.VOLCANO_ENGINE_IMAGE_EDIT_MODEL || "doubao-seededit-3-0-i2i-250628";
-
 async function getProviderInputImage(imageUrl: string) {
   if (imageUrl.startsWith("data:")) {
     return imageUrl;
@@ -257,7 +254,7 @@ async function generateFullBridalReport(reportId: string) {
           (providerInputImage.startsWith("http") || providerInputImage.startsWith("data:"))
         ) {
           const result = await volcanoEngine.generateImage(prompt, {
-            model: BRIDAL_IMAGE_EDIT_MODEL,
+            model: "doubao-seedream-5-0-260128",
             size: "2K",
             inputImages: [providerInputImage],
             watermark: false,

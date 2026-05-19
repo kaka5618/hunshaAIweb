@@ -1,11 +1,12 @@
 import { VolcanoEngineConfig } from './types';
 
+export const DEFAULT_SEEDREAM_IMAGE_MODEL = 'doubao-seedream-5-0-260128';
+
 export const volcanoEngineConfig: VolcanoEngineConfig = {
   apiKey: process.env.VOLCANO_ENGINE_API_KEY || '',
   apiUrl: process.env.VOLCANO_ENGINE_API_URL || 'https://ark.cn-beijing.volces.com/api/v3',
   textModel: process.env.VOLCANO_ENGINE_TEXT_MODEL || 'doubao-1-5-thinking-pro-250415',
-  imageModel: process.env.VOLCANO_ENGINE_IMAGE_MODEL || process.env.SEEDREAM_MODEL || 'doubao-seededit-3-0-i2i-250628',
-  imageEditModel: process.env.VOLCANO_ENGINE_IMAGE_EDIT_MODEL || 'doubao-seededit-3-0-i2i-250628',
+  imageModel: process.env.VOLCANO_ENGINE_IMAGE_MODEL || process.env.SEEDREAM_MODEL || DEFAULT_SEEDREAM_IMAGE_MODEL,
   videoModel: process.env.VOLCANO_ENGINE_VIDEO_MODEL || 'doubao-seedance-1-0-pro-250528',
 };
 
@@ -23,7 +24,6 @@ export function getModelConfig() {
   return {
     text: volcanoEngineConfig.textModel,
     image: volcanoEngineConfig.imageModel,
-    imageEdit: volcanoEngineConfig.imageEditModel,
     video: volcanoEngineConfig.videoModel,
   };
 }

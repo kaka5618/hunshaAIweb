@@ -1,4 +1,4 @@
-import { volcanoEngineConfig, validateConfig, getHeaders } from './config';
+import { DEFAULT_SEEDREAM_IMAGE_MODEL, volcanoEngineConfig, validateConfig, getHeaders } from './config';
 import { 
   ImageGenerationRequest, 
   ImageGenerationResponse,
@@ -18,10 +18,13 @@ export async function generateImage(
 ): Promise<ImageGenerationResponse> {
   validateConfig();
 
-  const model = options?.model || volcanoEngineConfig.imageModel || 'doubao-seededit-3-0-i2i-250628';
-
+  const model = options?.model || volcanoEngineConfig.imageModel || DEFAULT_SEEDREAM_IMAGE_MODEL;
   const size = options?.size || 'adaptive';
   const images = options?.inputImages?.filter(Boolean);
+
+  const endpoint = volcanoEngineConfig.apiUrl.endsWith('/images/generations')
+    ? volcanoEngineConfig.apiUrl
+    : `${volcanoEngineConfig.apiUrl.replace(/\/$/, '')}/images/generations`;
 
   const request: ImageGenerationRequest = {
     model,
@@ -34,22 +37,18 @@ export async function generateImage(
     watermark: options?.watermark !== undefined ? options.watermark : true,
   };
 
-  const endpoint = volcanoEngineConfig.apiUrl.endsWith('/images/generations')
-    ? volcanoEngineConfig.apiUrl
-    : `${volcanoEngineConfig.apiUrl.replace(/\/$/, '')}/images/generations`;
-
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify(request),
   });
 
-  if (!response.ok) {
-    const error: VolcanoEngineError = await response.json();
-    throw new Error(`Volcano Engine API error: ${error.error?.message || 'Unknown error'}`);
+  if (response.ok) {
+    return response.json();
   }
 
-  return response.json();
+  const error = (await response.json().catch(() => null)) as VolcanoEngineError | null;
+  throw new Error(`Volcano Engine API error: ${error?.error?.message || response.statusText || 'Unknown error'}`);
 }
 
 export async function generateImageFromText(
