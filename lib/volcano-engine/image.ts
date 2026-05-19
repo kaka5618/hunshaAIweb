@@ -8,6 +8,7 @@ import {
 type ImageGenerationOptions = {
   size?: 'adaptive' | '1K' | '2K' | '4K';
   inputImages?: string[];
+  model?: string;
   watermark?: boolean;
 };
 
@@ -17,7 +18,7 @@ export async function generateImage(
 ): Promise<ImageGenerationResponse> {
   validateConfig();
 
-  const model = volcanoEngineConfig.imageModel || 'doubao-seededit-3-0-i2i-250628';
+  const model = options?.model || volcanoEngineConfig.imageModel || 'doubao-seededit-3-0-i2i-250628';
 
   const size = options?.size || 'adaptive';
   const images = options?.inputImages?.filter(Boolean);

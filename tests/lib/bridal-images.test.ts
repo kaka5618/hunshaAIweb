@@ -17,12 +17,12 @@ describe("bridal image helpers", () => {
     expect(prompt).toContain("Romantic Garden Bride");
     expect(prompt).toContain("A-line");
     expect(prompt).toContain("Sweetheart");
-    expect(prompt).toContain("image-to-image edit");
-    expect(prompt).toContain("virtual bridal try-on");
-    expect(prompt).toContain("Change the outfit into a wedding dress");
-    expect(prompt).toContain("Preserve the uploaded person's facial identity, ethnicity");
-    expect(prompt).toContain("Do not westernize, asianize");
-    expect(prompt).toContain("Full-length, head-to-toe bridal editorial image");
+    expect(prompt).toContain("strict image-to-image clothing edit");
+    expect(prompt).toContain("Use the uploaded image as the canvas");
+    expect(prompt).toContain("Edit only the clothing into a wedding dress");
+    expect(prompt).toContain("Keep the uploaded person's face pixel-level recognizable");
+    expect(prompt).toContain("Do not redraw the face");
+    expect(prompt).toContain("do not invent missing body parts");
     expect(prompt).toContain("Avoid logos");
   });
 
@@ -50,10 +50,10 @@ describe("bridal image helpers", () => {
       },
     );
 
-    expect(prompt).toContain("Close detail image from face, collarbone, neckline, and upper bodice");
+    expect(prompt).toContain("Strict outfit-edit detail from face, collarbone, neckline, and upper bodice");
     expect(prompt).toContain("Bride coverage preference: conservative");
-    expect(prompt).toContain("same bride and same dress direction");
-    expect(prompt).toContain("Do not introduce a different model");
+    expect(prompt).toContain("Keep the exact same face and hair from the upload");
+    expect(prompt).toContain("Do not redraw the face");
   });
 
   it("defines four fixed image types for each full report direction", () => {
