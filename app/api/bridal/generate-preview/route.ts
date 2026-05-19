@@ -3,24 +3,52 @@ import { NextResponse } from "next/server";
 import { and, desc, eq, ne } from "drizzle-orm";
 import { db } from "@/lib/db";
 import {
+  bridalGeneratedImage,
   bridalQuizAnswer,
   bridalRecommendation,
   bridalReport,
   bridalUploadedPhoto,
 } from "@/lib/db/schema";
 import {
+  BRIDAL_PROMPT_VERSION,
   BRIDAL_REPORT_CURRENCY,
   BRIDAL_REPORT_PRICE_CENTS,
 } from "@/lib/bridal/constants";
 import { generateBridalRecommendations } from "@/lib/bridal/deepseek";
+import { buildBridalImagePrompt } from "@/lib/bridal/images";
 import { getBridalReportExpiry } from "@/lib/bridal/report";
 import { getBridalSessionIdFromCookies } from "@/lib/bridal/session";
 import { bridalQuizAnswersSchema } from "@/lib/bridal/validation";
 import { getErrorMessage } from "@/lib/error-utils";
+import { getR2PublicUrl, uploadImageFromUrl } from "@/lib/r2-storage";
+import { volcanoEngine } from "@/lib/volcano-engine";
 import type { BridalReportLanguage } from "@/lib/bridal/types";
 
 function parseReportLanguage(value: unknown): BridalReportLanguage {
   return value === "zh" ? "zh" : "en";
+}
+
+async function getProviderInputImage(imageUrl: string) {
+  if (imageUrl.startsWith("data:")) {
+    return imageUrl;
+  }
+
+  if (!imageUrl.startsWith("http")) {
+    return imageUrl;
+  }
+
+  const response = await fetch(imageUrl, {
+    signal: AbortSignal.timeout(15000),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to load bridal reference image: ${response.status}`);
+  }
+
+  const contentType = response.headers.get("content-type") || "image/jpeg";
+  const buffer = Buffer.from(await response.arrayBuffer());
+
+  return `data:${contentType};base64,${buffer.toString("base64")}`;
 }
 
 export async function POST(request: Request) {
@@ -55,6 +83,8 @@ export async function POST(request: Request) {
     const [photo] = await db
       .select({
         id: bridalUploadedPhoto.id,
+        r2Key: bridalUploadedPhoto.r2Key,
+        processedR2Key: bridalUploadedPhoto.processedR2Key,
         createdAt: bridalUploadedPhoto.createdAt,
       })
       .from(bridalUploadedPhoto)
@@ -111,30 +141,64 @@ export async function POST(request: Request) {
     });
 
     const recommendations = await generateBridalRecommendations(answers, { locale });
+    const recommendationRows = recommendations.map(recommendation => ({
+      id: randomUUID(),
+      reportId: reportId as string,
+      sessionId,
+      rank: recommendation.rank,
+      styleName: recommendation.styleName,
+      silhouette: recommendation.silhouette,
+      neckline: recommendation.neckline,
+      fabric: recommendation.fabric,
+      venueMatch: recommendation.venueMatch,
+      whyItWorks: recommendation.whyItWorks,
+      whatToAvoid: recommendation.whatToAvoid,
+      budgetMin: recommendation.budgetMin,
+      budgetMax: recommendation.budgetMax,
+      budgetGuardrail: recommendation.budgetGuardrail,
+      tryFirst: recommendation.tryFirst,
+      skipFirst: recommendation.skipFirst,
+      consultantScript: recommendation.consultantScript,
+      salesPressureReminder: recommendation.salesPressureReminder,
+      detailCaptions: recommendation.detailCaptions,
+    }));
 
-    await db.insert(bridalRecommendation).values(
-      recommendations.map(recommendation => ({
-        id: randomUUID(),
-        reportId: reportId as string,
-        sessionId,
-        rank: recommendation.rank,
-        styleName: recommendation.styleName,
-        silhouette: recommendation.silhouette,
-        neckline: recommendation.neckline,
-        fabric: recommendation.fabric,
-        venueMatch: recommendation.venueMatch,
-        whyItWorks: recommendation.whyItWorks,
-        whatToAvoid: recommendation.whatToAvoid,
-        budgetMin: recommendation.budgetMin,
-        budgetMax: recommendation.budgetMax,
-        budgetGuardrail: recommendation.budgetGuardrail,
-        tryFirst: recommendation.tryFirst,
-        skipFirst: recommendation.skipFirst,
-        consultantScript: recommendation.consultantScript,
-        salesPressureReminder: recommendation.salesPressureReminder,
-        detailCaptions: recommendation.detailCaptions,
-      })),
-    );
+    await db.insert(bridalRecommendation).values(recommendationRows);
+
+    const leadingRecommendation = recommendationRows.find(recommendation => recommendation.rank === 1) ?? recommendationRows[0];
+    if (!leadingRecommendation) {
+      throw new Error("At least one bridal recommendation is required");
+    }
+
+    const referenceImageUrl = getR2PublicUrl(photo.processedR2Key ?? photo.r2Key);
+    const providerInputImage = await getProviderInputImage(referenceImageUrl);
+    const previewPrompt = buildBridalImagePrompt(leadingRecommendation, "full_body", answers);
+    const previewImageId = randomUUID();
+    const previewResult = await volcanoEngine.generateImage(previewPrompt, {
+      size: "2K",
+      inputImages: [providerInputImage],
+      watermark: false,
+    });
+
+    const providerUrl = previewResult.data?.[0]?.url;
+    if (!providerUrl) {
+      throw new Error("Preview bridal image provider response did not include an image URL");
+    }
+
+    const previewImageUrl = await uploadImageFromUrl(providerUrl, sessionId, "image");
+
+    await db.insert(bridalGeneratedImage).values({
+      id: previewImageId,
+      reportId: reportId as string,
+      recommendationId: leadingRecommendation.id,
+      sessionId,
+      type: "full_body",
+      r2Key: previewImageUrl,
+      generationStatus: "success",
+      seedreamPrompt: previewPrompt,
+      promptVersion: BRIDAL_PROMPT_VERSION,
+      expiresAt: getBridalReportExpiry(),
+    });
 
     await db
       .update(bridalReport)

@@ -132,6 +132,9 @@ export default async function BridalReportPage(
   const budgetMin = Math.min(...recommendations.map(recommendation => recommendation.budgetMin));
   const budgetMax = Math.max(...recommendations.map(recommendation => recommendation.budgetMax));
   const leadingRecommendation = recommendations[0];
+  const leadingPreviewImageUrl = leadingRecommendation
+    ? imageByRecommendationId.get(leadingRecommendation.id)?.r2Key
+    : null;
   const referenceImageUrl = uploadedPhoto
     ? getR2PublicUrl(uploadedPhoto.processedR2Key ?? uploadedPhoto.r2Key)
     : null;
@@ -234,7 +237,7 @@ export default async function BridalReportPage(
               <div className="overflow-hidden rounded-lg border border-[#d8cdbd] bg-white">
                 <div className="grid gap-0 md:grid-cols-[0.85fr_1.15fr]">
                   <Image
-                    src={referenceImageUrl ?? getPlaceholderBridalImageUrl(leadingRecommendation.rank)}
+                    src={leadingPreviewImageUrl ?? getPlaceholderBridalImageUrl(leadingRecommendation.rank)}
                     alt={t("recommendation.imageAlt", { name: leadingRecommendation.styleName })}
                     width={900}
                     height={1100}
@@ -307,7 +310,7 @@ export default async function BridalReportPage(
                 </p>
 
                 <VisualAnalysisBoard
-                  imageUrl={referenceImageUrl ?? getPlaceholderBridalImageUrl(leadingRecommendation.rank)}
+                  imageUrl={leadingPreviewImageUrl ?? getPlaceholderBridalImageUrl(leadingRecommendation.rank)}
                   imageAlt={t("recommendation.imageAlt", { name: leadingRecommendation.styleName })}
                   reportId={report.id}
                   price={price}
