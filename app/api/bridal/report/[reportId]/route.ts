@@ -6,7 +6,8 @@ import { canAccessBridalResource } from "@/lib/bridal/permissions";
 import { getBridalSessionIdFromCookies } from "@/lib/bridal/session";
 import { getErrorMessage } from "@/lib/error-utils";
 
-const EXPECTED_IMAGE_COUNT = 12;
+const TOTAL_IMAGE_COUNT = 12;
+const REQUIRED_PRIMARY_IMAGE_COUNT = 3;
 
 function countCleanSuccessImages(
   images: Array<{ recommendationId: string; type: string; generationStatus: string; errorMessage: string | null }>,
@@ -18,12 +19,34 @@ function countCleanSuccessImages(
   ).size;
 }
 
+function countCleanSuccessImagesByType(
+  images: Array<{ recommendationId: string; type: string; generationStatus: string; errorMessage: string | null }>,
+  type: string,
+) {
+  return new Set(
+    images
+      .filter(image => image.type === type && image.generationStatus === "success" && !image.errorMessage)
+      .map(image => `${image.recommendationId}:${image.type}`),
+  ).size;
+}
+
 function countFailedImages(
   images: Array<{ recommendationId: string; type: string; generationStatus: string }>,
 ) {
   return new Set(
     images
       .filter(image => image.generationStatus === "failed")
+      .map(image => `${image.recommendationId}:${image.type}`),
+  ).size;
+}
+
+function countFailedImagesByType(
+  images: Array<{ recommendationId: string; type: string; generationStatus: string }>,
+  type: string,
+) {
+  return new Set(
+    images
+      .filter(image => image.type === type && image.generationStatus === "failed")
       .map(image => `${image.recommendationId}:${image.type}`),
   ).size;
 }
@@ -76,18 +99,29 @@ export async function GET(
       .from(bridalGeneratedImage)
       .where(eq(bridalGeneratedImage.reportId, report.id));
 
+    const primarySuccess = countCleanSuccessImagesByType(images, "full_body");
+    const effectiveStatus =
+      report.isPaid && primarySuccess >= REQUIRED_PRIMARY_IMAGE_COUNT && report.status === "generating"
+        ? "ready"
+        : report.status;
+
     return NextResponse.json({
       reportId: report.id,
-      status: report.status,
+      status: effectiveStatus,
       isPaid: report.isPaid,
       priceCents: report.priceCents,
       currency: report.currency,
       expiresAt: report.expiresAt.toISOString(),
       recommendationCount: recommendationCount.length,
       imageProgress: {
-        success: countCleanSuccessImages(images),
-        failed: countFailedImages(images),
-        total: EXPECTED_IMAGE_COUNT,
+        success: primarySuccess,
+        failed: countFailedImagesByType(images, "full_body"),
+        total: REQUIRED_PRIMARY_IMAGE_COUNT,
+      },
+      detailImageProgress: {
+        success: Math.max(0, countCleanSuccessImages(images) - primarySuccess),
+        failed: Math.max(0, countFailedImages(images) - countFailedImagesByType(images, "full_body")),
+        total: TOTAL_IMAGE_COUNT - REQUIRED_PRIMARY_IMAGE_COUNT,
       },
     });
   } catch (error) {

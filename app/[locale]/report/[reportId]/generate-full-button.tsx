@@ -76,7 +76,7 @@ export function GenerateFullReportButton({
   const handleGenerate = useCallback(async () => {
     setIsLoading(true);
     setError(null);
-    setProgress(current => current ?? { success: 0, failed: 0, total: 12 });
+    setProgress(current => current ?? { success: 0, failed: 0, total: 3 });
 
     try {
       const response = await fetch(`/api/bridal/report/${reportId}/generate-full`, {
@@ -124,16 +124,14 @@ export function GenerateFullReportButton({
     void handleGenerate();
   }, [autoStart, handleGenerate]);
 
-  const visibleProgress = progress ?? { success: 0, failed: 0, total: 12 };
+  const visibleProgress = progress ?? { success: 0, failed: 0, total: 3 };
   const percent = Math.min(100, Math.round((visibleProgress.success / visibleProgress.total) * 100));
   const stageKey =
     visibleProgress.success === 0
       ? "fullLooks"
-      : visibleProgress.success < 4
+      : visibleProgress.success < visibleProgress.total
         ? "details"
-        : visibleProgress.success < visibleProgress.total
-          ? "quality"
-          : "export";
+        : "export";
 
   return (
     <div className="w-full text-left">

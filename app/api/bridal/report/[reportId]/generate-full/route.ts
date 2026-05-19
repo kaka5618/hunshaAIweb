@@ -46,7 +46,11 @@ async function getProviderInputImage(imageUrl: string) {
   return `data:${contentType};base64,${buffer.toString("base64")}`;
 }
 
-const EXPECTED_IMAGE_COUNT = 12;
+const TOTAL_IMAGE_COUNT = 12;
+const REQUIRED_PRIMARY_IMAGE_COUNT = 3;
+const PRIMARY_IMAGE_CONCURRENCY = 3;
+const DETAIL_IMAGE_CONCURRENCY = 2;
+const IMAGE_GENERATION_TIMEOUT_MS = 180000;
 const PRIMARY_IMAGE_TYPES = ["full_body"] as const;
 const DETAIL_IMAGE_TYPES = BRIDAL_REPORT_IMAGE_TYPES.filter(type => type !== "full_body");
 
@@ -63,6 +67,23 @@ function recommendationsExpectedCount(
 function countImageProgress(
   images: Array<{ recommendationId: string; type: string; generationStatus: string; errorMessage: string | null }>,
 ) {
+  const success = recommendationsExpectedCount(images.filter(image => image.type === "full_body"));
+  const failed = new Set(
+    images
+      .filter(image => image.type === "full_body" && image.generationStatus === "failed")
+      .map(image => `${image.recommendationId}:${image.type}`),
+  ).size;
+
+  return {
+    success,
+    failed,
+    total: REQUIRED_PRIMARY_IMAGE_COUNT,
+  };
+}
+
+function countAllImageProgress(
+  images: Array<{ recommendationId: string; type: string; generationStatus: string; errorMessage: string | null }>,
+) {
   const success = recommendationsExpectedCount(images);
   const failed = new Set(
     images
@@ -73,8 +94,43 @@ function countImageProgress(
   return {
     success,
     failed,
-    total: EXPECTED_IMAGE_COUNT,
+    total: TOTAL_IMAGE_COUNT,
   };
+}
+
+async function runWithConcurrency<T>(
+  items: T[],
+  concurrency: number,
+  worker: (item: T) => Promise<void>,
+) {
+  let index = 0;
+  const workers = Array.from({ length: Math.min(concurrency, items.length) }, async () => {
+    while (index < items.length) {
+      const item = items[index];
+      index += 1;
+      await worker(item);
+    }
+  });
+
+  await Promise.all(workers);
+}
+
+async function settleReportAfterGenerationError(reportId: string) {
+  const images = await db
+    .select({
+      recommendationId: bridalGeneratedImage.recommendationId,
+      type: bridalGeneratedImage.type,
+      generationStatus: bridalGeneratedImage.generationStatus,
+      errorMessage: bridalGeneratedImage.errorMessage,
+    })
+    .from(bridalGeneratedImage)
+    .where(eq(bridalGeneratedImage.reportId, reportId));
+  const primaryImageCount = recommendationsExpectedCount(images.filter(image => image.type === "full_body"));
+
+  await db
+    .update(bridalReport)
+    .set({ status: primaryImageCount >= REQUIRED_PRIMARY_IMAGE_COUNT ? "ready" : "failed" })
+    .where(eq(bridalReport.id, reportId));
 }
 
 export async function POST(
@@ -106,8 +162,9 @@ export async function POST(
       .from(bridalGeneratedImage)
       .where(eq(bridalGeneratedImage.reportId, report.id));
 
-    const expectedImageCount = recommendationsExpectedCount(existingImages);
-    if (expectedImageCount >= EXPECTED_IMAGE_COUNT) {
+    const primaryImageCount = recommendationsExpectedCount(existingImages.filter(image => image.type === "full_body"));
+    const allImageCount = recommendationsExpectedCount(existingImages);
+    if (primaryImageCount >= REQUIRED_PRIMARY_IMAGE_COUNT && allImageCount >= TOTAL_IMAGE_COUNT) {
       await db
         .update(bridalReport)
         .set({ status: "ready" })
@@ -116,8 +173,32 @@ export async function POST(
       return NextResponse.json({
         reportId: report.id,
         status: "ready",
-        imageCount: expectedImageCount,
+        imageCount: allImageCount,
+        progress: countImageProgress(existingImages),
+        detailProgress: countAllImageProgress(existingImages),
         reused: true,
+      });
+    }
+
+    if (primaryImageCount >= REQUIRED_PRIMARY_IMAGE_COUNT && report.status !== "generating") {
+      await db
+        .update(bridalReport)
+        .set({ status: "generating" })
+        .where(eq(bridalReport.id, report.id));
+
+      after(() => {
+        void generateFullBridalReport(report.id).catch(async error => {
+          console.error("Failed to backfill bridal report detail images in background:", error);
+          await settleReportAfterGenerationError(report.id).catch(() => undefined);
+        });
+      });
+
+      return NextResponse.json({
+        reportId: report.id,
+        status: "ready",
+        imageCount: primaryImageCount,
+        progress: countImageProgress(existingImages),
+        detailProgress: countAllImageProgress(existingImages),
       });
     }
 
@@ -125,10 +206,11 @@ export async function POST(
       return NextResponse.json(
         {
           reportId: report.id,
-          status: "generating",
+          status: primaryImageCount >= REQUIRED_PRIMARY_IMAGE_COUNT ? "ready" : "generating",
           progress: countImageProgress(existingImages),
+          detailProgress: countAllImageProgress(existingImages),
         },
-        { status: 202 },
+        { status: primaryImageCount >= REQUIRED_PRIMARY_IMAGE_COUNT ? 200 : 202 },
       );
     }
 
@@ -140,11 +222,7 @@ export async function POST(
     after(() => {
       void generateFullBridalReport(report.id).catch(async error => {
         console.error("Failed to generate full bridal report in background:", error);
-        await db
-          .update(bridalReport)
-          .set({ status: "failed" })
-          .where(eq(bridalReport.id, report.id))
-          .catch(() => undefined);
+        await settleReportAfterGenerationError(report.id).catch(() => undefined);
       });
     });
 
@@ -181,8 +259,9 @@ async function generateFullBridalReport(reportId: string) {
     .from(bridalGeneratedImage)
     .where(eq(bridalGeneratedImage.reportId, report.id));
 
+  const existingPrimaryImageCount = recommendationsExpectedCount(existingImages.filter(image => image.type === "full_body"));
   const existingImageCount = recommendationsExpectedCount(existingImages);
-  if (existingImageCount >= EXPECTED_IMAGE_COUNT) {
+  if (existingPrimaryImageCount >= REQUIRED_PRIMARY_IMAGE_COUNT && existingImageCount >= TOTAL_IMAGE_COUNT) {
     await db
       .update(bridalReport)
       .set({ status: "ready" })
@@ -238,162 +317,167 @@ async function generateFullBridalReport(reportId: string) {
       .map(image => `${image.recommendationId}:${image.type}`),
   );
 
-  const generationQueue = [
-    ...recommendations.slice(0, 3).flatMap(recommendation =>
-      PRIMARY_IMAGE_TYPES.map(imageType => ({ recommendation, imageType })),
-    ),
-    ...recommendations.slice(0, 3).flatMap(recommendation =>
-      DETAIL_IMAGE_TYPES.map(imageType => ({ recommendation, imageType })),
-    ),
-  ];
+  type GenerationTask = {
+    recommendation: (typeof recommendations)[number];
+    imageType: (typeof BRIDAL_REPORT_IMAGE_TYPES)[number];
+  };
 
-  for (const { recommendation, imageType } of generationQueue) {
-      if (successfulImageKeys.has(`${recommendation.id}:${imageType}`)) {
-        continue;
-      }
-
-      const prompt = buildBridalImagePrompt(recommendation, imageType, answers);
-      const imageId = randomUUID();
-      let imageUrl = getPlaceholderBridalImageUrl(recommendation.rank);
-      let fallbackReason: string | null = null;
-
-      try {
-        if (!process.env.VOLCANO_ENGINE_API_KEY) {
-          throw new Error("VOLCANO_ENGINE_API_KEY is not configured");
-        }
-
-        let inputImage = providerInputImage;
-        if (imageType !== "full_body") {
-          const fullBodyImageUrl =
-            fullBodyImageByRecommendationId.get(recommendation.id) ??
-            successfulImageByKey.get(`${recommendation.id}:full_body`);
-
-          if (!fullBodyImageUrl) {
-            throw new Error(`Full-body bridal look is required before generating ${imageType}`);
-          }
-
-          inputImage = await getProviderInputImage(getR2PublicUrl(fullBodyImageUrl));
-        }
-
-        if (
-          !inputImage ||
-          (!inputImage.startsWith("http") && !inputImage.startsWith("data:"))
-        ) {
-          throw new Error("A valid reference image is required for bridal image generation");
-        }
-
-        const result = await volcanoEngine.generateImage(prompt, {
-          model: "doubao-seedream-5-0-260128",
-          size: "2K",
-          inputImages: [inputImage],
-          watermark: false,
-        });
-
-        const providerUrl = result.data?.[0]?.url;
-        if (providerUrl) {
-          imageUrl = await uploadImageFromUrl(providerUrl, report.userId ?? report.sessionId, "image");
-          if (imageType === "full_body") {
-            fullBodyImageByRecommendationId.set(recommendation.id, imageUrl);
-            successfulImageByKey.set(`${recommendation.id}:full_body`, imageUrl);
-          }
-        } else {
-          throw new Error("Image provider response did not include an image URL");
-        }
-      } catch (providerError) {
-        if (!allowImageFallback) {
-          await db
-            .insert(bridalGeneratedImage)
-            .values({
-              id: imageId,
-              reportId: report.id,
-              recommendationId: recommendation.id,
-              sessionId: report.sessionId,
-              userId: report.userId,
-              type: imageType,
-              generationStatus: "failed",
-              seedreamPrompt: prompt,
-              promptVersion: BRIDAL_PROMPT_VERSION,
-              errorMessage: getErrorMessage(providerError, "Failed to generate bridal image"),
-              expiresAt: getBridalReportExpiry(),
-            })
-            .onConflictDoUpdate({
-              target: [bridalGeneratedImage.recommendationId, bridalGeneratedImage.type],
-              set: {
-                generationStatus: "failed",
-                seedreamPrompt: prompt,
-                errorMessage: getErrorMessage(providerError, "Failed to generate bridal image"),
-                updatedAt: new Date(),
-              },
-            });
-          continue;
-        }
-
-        fallbackReason = getErrorMessage(providerError, "Image provider failed, used placeholder fallback");
-        console.warn("Bridal image provider failed, using local fallback:", fallbackReason);
-      }
-
-      try {
-        await db
-          .insert(bridalGeneratedImage)
-          .values({
-            id: imageId,
-            reportId: report.id,
-            recommendationId: recommendation.id,
-            sessionId: report.sessionId,
-            userId: report.userId,
-            type: imageType,
-            r2Key: imageUrl,
-            generationStatus: "success",
-            seedreamPrompt: prompt,
-            promptVersion: BRIDAL_PROMPT_VERSION,
-            errorMessage: fallbackReason,
-            expiresAt: getBridalReportExpiry(),
-          })
-          .onConflictDoUpdate({
-            target: [bridalGeneratedImage.recommendationId, bridalGeneratedImage.type],
-            set: {
-              r2Key: imageUrl,
-              generationStatus: "success",
-              seedreamPrompt: prompt,
-              errorMessage: fallbackReason,
-              updatedAt: new Date(),
-            },
-          });
-      } catch (imageError) {
-        await db
-          .insert(bridalGeneratedImage)
-          .values({
-            id: imageId,
-            reportId: report.id,
-            recommendationId: recommendation.id,
-            sessionId: report.sessionId,
-            userId: report.userId,
-            type: imageType,
-            generationStatus: "failed",
-            seedreamPrompt: prompt,
-            promptVersion: BRIDAL_PROMPT_VERSION,
-            errorMessage: getErrorMessage(imageError, "Failed to generate bridal image"),
-            expiresAt: getBridalReportExpiry(),
-          })
-          .onConflictDoUpdate({
-            target: [bridalGeneratedImage.recommendationId, bridalGeneratedImage.type],
-            set: {
-              generationStatus: "failed",
-              errorMessage: getErrorMessage(imageError, "Failed to generate bridal image"),
-              updatedAt: new Date(),
-            },
-          });
-      }
+  async function saveFailedImage(task: GenerationTask, prompt: string, error: unknown) {
+    await db
+      .insert(bridalGeneratedImage)
+      .values({
+        id: randomUUID(),
+        reportId: report.id,
+        recommendationId: task.recommendation.id,
+        sessionId: report.sessionId,
+        userId: report.userId,
+        type: task.imageType,
+        generationStatus: "failed",
+        seedreamPrompt: prompt,
+        promptVersion: BRIDAL_PROMPT_VERSION,
+        errorMessage: getErrorMessage(error, "Failed to generate bridal image"),
+        expiresAt: getBridalReportExpiry(),
+      })
+      .onConflictDoUpdate({
+        target: [bridalGeneratedImage.recommendationId, bridalGeneratedImage.type],
+        set: {
+          generationStatus: "failed",
+          seedreamPrompt: prompt,
+          errorMessage: getErrorMessage(error, "Failed to generate bridal image"),
+          updatedAt: new Date(),
+        },
+      });
   }
 
-  const finalImages = await db
+  async function saveSuccessfulImage(task: GenerationTask, imageUrl: string, prompt: string, fallbackReason: string | null) {
+    await db
+      .insert(bridalGeneratedImage)
+      .values({
+        id: randomUUID(),
+        reportId: report.id,
+        recommendationId: task.recommendation.id,
+        sessionId: report.sessionId,
+        userId: report.userId,
+        type: task.imageType,
+        r2Key: imageUrl,
+        generationStatus: "success",
+        seedreamPrompt: prompt,
+        promptVersion: BRIDAL_PROMPT_VERSION,
+        errorMessage: fallbackReason,
+        expiresAt: getBridalReportExpiry(),
+      })
+      .onConflictDoUpdate({
+        target: [bridalGeneratedImage.recommendationId, bridalGeneratedImage.type],
+        set: {
+          r2Key: imageUrl,
+          generationStatus: "success",
+          seedreamPrompt: prompt,
+          errorMessage: fallbackReason,
+          updatedAt: new Date(),
+        },
+      });
+  }
+
+  async function generateImageTask(task: GenerationTask) {
+    const { recommendation, imageType } = task;
+    const imageKey = `${recommendation.id}:${imageType}`;
+    if (successfulImageKeys.has(imageKey)) {
+      return;
+    }
+
+    const prompt = buildBridalImagePrompt(recommendation, imageType, answers);
+    let imageUrl = getPlaceholderBridalImageUrl(recommendation.rank);
+    let fallbackReason: string | null = null;
+
+    try {
+      if (!process.env.VOLCANO_ENGINE_API_KEY) {
+        throw new Error("VOLCANO_ENGINE_API_KEY is not configured");
+      }
+
+      let inputImage = providerInputImage;
+      if (imageType !== "full_body") {
+        const fullBodyImageUrl =
+          fullBodyImageByRecommendationId.get(recommendation.id) ??
+          successfulImageByKey.get(`${recommendation.id}:full_body`);
+
+        if (!fullBodyImageUrl) {
+          throw new Error(`Full-body bridal look is required before generating ${imageType}`);
+        }
+
+        inputImage = await getProviderInputImage(getR2PublicUrl(fullBodyImageUrl));
+      }
+
+      if (
+        !inputImage ||
+        (!inputImage.startsWith("http") && !inputImage.startsWith("data:"))
+      ) {
+        throw new Error("A valid reference image is required for bridal image generation");
+      }
+
+      const result = await volcanoEngine.generateImage(prompt, {
+        model: "doubao-seedream-5-0-260128",
+        size: imageType === "full_body" ? "2K" : "1K",
+        inputImages: [inputImage],
+        watermark: false,
+        timeoutMs: IMAGE_GENERATION_TIMEOUT_MS,
+      });
+
+      const providerUrl = result.data?.[0]?.url;
+      if (!providerUrl) {
+        throw new Error("Image provider response did not include an image URL");
+      }
+
+      imageUrl = await uploadImageFromUrl(providerUrl, report.userId ?? report.sessionId, "image");
+    } catch (providerError) {
+      if (!allowImageFallback) {
+        await saveFailedImage(task, prompt, providerError);
+        return;
+      }
+
+      fallbackReason = getErrorMessage(providerError, "Image provider failed, used placeholder fallback");
+      console.warn("Bridal image provider failed, using local fallback:", fallbackReason);
+    }
+
+    try {
+      await saveSuccessfulImage(task, imageUrl, prompt, fallbackReason);
+      successfulImageKeys.add(imageKey);
+      successfulImageByKey.set(imageKey, imageUrl);
+      if (imageType === "full_body") {
+        fullBodyImageByRecommendationId.set(recommendation.id, imageUrl);
+      }
+    } catch (imageError) {
+      await saveFailedImage(task, prompt, imageError);
+    }
+  }
+
+  const primaryTasks: GenerationTask[] = recommendations.slice(0, 3).flatMap(recommendation =>
+    PRIMARY_IMAGE_TYPES.map(imageType => ({ recommendation, imageType })),
+  );
+  const detailTasks: GenerationTask[] = recommendations.slice(0, 3).flatMap(recommendation =>
+    DETAIL_IMAGE_TYPES.map(imageType => ({ recommendation, imageType })),
+  );
+
+  await runWithConcurrency(primaryTasks, PRIMARY_IMAGE_CONCURRENCY, generateImageTask);
+
+  const primaryImages = await db
     .select()
     .from(bridalGeneratedImage)
     .where(eq(bridalGeneratedImage.reportId, report.id));
-  const finalImageCount = recommendationsExpectedCount(finalImages);
+  const primaryImageCount = recommendationsExpectedCount(primaryImages.filter(image => image.type === "full_body"));
 
   await db
     .update(bridalReport)
-    .set({ status: finalImageCount >= EXPECTED_IMAGE_COUNT ? "ready" : "failed" })
+    .set({ status: primaryImageCount >= REQUIRED_PRIMARY_IMAGE_COUNT ? "ready" : "failed" })
+    .where(eq(bridalReport.id, report.id));
+
+  if (primaryImageCount < REQUIRED_PRIMARY_IMAGE_COUNT) {
+    return;
+  }
+
+  await runWithConcurrency(detailTasks, DETAIL_IMAGE_CONCURRENCY, generateImageTask);
+
+  await db
+    .update(bridalReport)
+    .set({ status: "ready" })
     .where(eq(bridalReport.id, report.id));
 }

@@ -10,6 +10,7 @@ type ImageGenerationOptions = {
   inputImages?: string[];
   model?: string;
   watermark?: boolean;
+  timeoutMs?: number;
 };
 
 export async function generateImage(
@@ -41,6 +42,7 @@ export async function generateImage(
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify(request),
+    signal: AbortSignal.timeout(options?.timeoutMs ?? 240000),
   });
 
   if (response.ok) {

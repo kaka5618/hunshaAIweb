@@ -107,18 +107,18 @@ export default async function BridalReportPage(
       .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key)
       .map(image => [`${image.recommendationId}:${image.type}`, image.r2Key as string]),
   );
-  const cleanGeneratedVisualCount = generatedImages
-    .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key)
+  const cleanPrimaryVisualCount = generatedImages
+    .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key && image.type === "full_body")
     .length;
-  const failedGeneratedVisualCount = generatedImages
-    .filter(image => image.generationStatus === "failed")
+  const failedPrimaryVisualCount = generatedImages
+    .filter(image => image.generationStatus === "failed" && image.type === "full_body")
     .length;
   const fullReportImageProgress = {
-    success: cleanGeneratedVisualCount,
-    failed: failedGeneratedVisualCount,
-    total: 12,
+    success: cleanPrimaryVisualCount,
+    failed: failedPrimaryVisualCount,
+    total: 3,
   };
-  const paidVisualsIncomplete = report.isPaid && cleanGeneratedVisualCount < fullReportImageProgress.total;
+  const paidVisualsIncomplete = report.isPaid && cleanPrimaryVisualCount < fullReportImageProgress.total;
 
   const price = `$${(report.priceCents / 100).toFixed(2)}`;
   const budgetMin = Math.min(...recommendations.map(recommendation => recommendation.budgetMin));
