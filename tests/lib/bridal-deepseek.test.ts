@@ -67,7 +67,7 @@ describe("bridal DeepSeek generation", () => {
 
     expect(prompt).toContain("Write every user-facing value in Simplified Chinese");
     expect(prompt).toContain("Do not use generic filler");
-    expect(prompt).toContain("tryFirst must contain 3 concrete items");
+    expect(prompt).toContain("tryFirst must contain 3 or 4 concrete appointment actions");
   });
 
   it("parses valid recommendation JSON", () => {

@@ -160,8 +160,8 @@ export default async function BridalReportPage(
     ? imageByRecommendationId.get(leadingRecommendation.id)?.r2Key
     : null;
   return (
-    <main className="min-h-screen bg-[#f7f2ea] px-6 py-16 text-[#1f1b16]">
-      <div className="mx-auto max-w-6xl">
+    <main className="min-h-screen bg-[#f7f2ea] px-4 py-12 text-[#1f1b16] md:px-6 md:py-16">
+      <div className="mx-auto max-w-[1500px]">
         <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
           <section>
             <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#756a5c]">
@@ -520,12 +520,12 @@ function Fact({
   value: string;
 }) {
   return (
-    <div className="rounded-lg border border-[#e4dacb] bg-white/60 p-3">
+    <div className="min-w-0 rounded-lg border border-[#e4dacb] bg-white/60 p-3">
       <div className="flex items-center gap-2 text-xs text-[#756a5c]">
         <Icon className="h-3.5 w-3.5" />
-        <span>{label}</span>
+        <span className="min-w-0 break-words">{label}</span>
       </div>
-      <p className="mt-2 text-sm font-medium">{value}</p>
+      <p className="mt-2 break-words text-sm font-medium leading-6">{value}</p>
     </div>
   );
 }
@@ -646,7 +646,7 @@ function FullRecommendationReport({
         </div>
       </div>
 
-      <div className="grid gap-0 xl:grid-cols-[minmax(360px,0.92fr)_1.08fr]">
+      <div className="grid gap-0 xl:grid-cols-[minmax(420px,0.82fr)_minmax(0,1.18fr)]">
         <div className="border-b border-[#d8cdbd] bg-white xl:border-b-0 xl:border-r">
           {imageUrl ? (
             <Image
@@ -654,24 +654,24 @@ function FullRecommendationReport({
               alt={imageAlt}
               width={1100}
               height={1400}
-              className="h-[620px] w-full bg-white object-contain object-center xl:h-full xl:min-h-[900px]"
+              className="h-[560px] w-full bg-white object-cover object-top md:h-[680px] xl:h-[780px]"
               unoptimized
             />
           ) : (
             <GeneratingVisualPlaceholder
               title={labels.generatingFullBody}
               description={labels.generatingHint}
-              className="h-[620px] xl:h-full xl:min-h-[900px]"
+              className="h-[560px] md:h-[680px] xl:h-[780px]"
             />
           )}
         </div>
 
-        <div className="p-6 md:p-8">
+        <div className="min-w-0 p-5 md:p-7 xl:p-8">
           <div>
             <p className="text-sm font-semibold text-[#1f1b16]">
               {labels.atAGlance}
             </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 2xl:grid-cols-4">
               <Fact icon={Scissors} label={labels.silhouette} value={recommendation.silhouette} />
               <Fact icon={Shirt} label={labels.neckline} value={recommendation.neckline} />
               <Fact icon={Sparkles} label={labels.fabric} value={recommendation.fabric} />
@@ -683,14 +683,16 @@ function FullRecommendationReport({
             </div>
           </div>
 
-          <div className="mt-7 grid gap-5 lg:grid-cols-3">
-            <div className="lg:col-span-2">
+          <div className="mt-7 grid gap-4 2xl:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]">
+            <div className="rounded-lg border border-[#e4dacb] bg-white/70 p-5">
               <Section title={labels.whyItWorks} body={recommendation.whyItWorks} />
             </div>
-            <Section title={labels.venueMatch} body={recommendation.venueMatch} />
+            <div className="rounded-lg border border-[#e4dacb] bg-white/70 p-5">
+              <Section title={labels.venueMatch} body={recommendation.venueMatch} />
+            </div>
           </div>
 
-          <div className="mt-7 grid gap-4 lg:grid-cols-3">
+          <div className="mt-5 grid gap-4 lg:grid-cols-3">
             <div className="rounded-lg border border-[#e4dacb] bg-white/70 p-5">
               <p className="text-sm font-medium">
                 {labels.tryFirst}
@@ -724,7 +726,7 @@ function FullRecommendationReport({
             </div>
           </div>
 
-          <div className="mt-7">
+          <div className="mt-6">
             <div className="flex items-center gap-2">
               <FileText className="h-5 w-5 text-primary" />
               <h4 className="text-xl font-semibold">
@@ -756,7 +758,7 @@ function FullRecommendationReport({
             </div>
           </div>
 
-          <div className="mt-7 grid gap-5 lg:grid-cols-2">
+          <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
             <div className="rounded-lg border border-[#e4dacb] bg-white/70 p-5">
               <p className="text-sm font-medium">
                 {labels.budgetTitle}
@@ -1001,8 +1003,8 @@ function Section({
 }) {
   return (
     <div>
-      <p className="text-sm font-medium text-foreground">{title}</p>
-      <p className={muted ? "mt-2 text-sm leading-6 text-muted-foreground" : "mt-2 text-sm leading-6 text-foreground/80"}>
+      <p className="text-sm font-semibold text-[#1f1b16]">{title}</p>
+      <p className={muted ? "mt-3 whitespace-pre-line text-sm leading-7 text-[#756a5c]" : "mt-3 whitespace-pre-line text-sm leading-7 text-[#51493f]"}>
         {body}
       </p>
     </div>

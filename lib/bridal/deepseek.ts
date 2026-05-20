@@ -70,15 +70,15 @@ export async function generateBridalRecommendations(
           {
             role: "system",
             content:
-              "You write concise, concrete bridal styling recommendations for a paid shopping report. You obey the requested output language exactly.",
+              "You are a senior bridal stylist writing a paid shopping report. Be specific, diagnostic, and practical. Explain tradeoffs, identify why a choice fits the bride's stated constraints, and write like a human consultant, not a generic AI assistant. You obey the requested output language exactly.",
           },
           {
             role: "user",
             content: buildBridalRecommendationPrompt(answers, locale),
           },
         ],
-        temperature: 0.45,
-        max_tokens: 2200,
+        temperature: 0.55,
+        max_tokens: 4200,
         response_format: { type: "json_object" },
       }),
     });
