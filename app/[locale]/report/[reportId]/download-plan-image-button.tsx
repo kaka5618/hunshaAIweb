@@ -13,6 +13,70 @@ type DownloadPlanImageButtonProps = {
   errorLabel: string;
 };
 
+type ImageSnapshot = {
+  image: HTMLImageElement;
+  src: string;
+  srcset: string;
+};
+
+function shouldProxyImage(src: string) {
+  if (!src || src.startsWith("data:") || src.startsWith("blob:")) {
+    return false;
+  }
+
+  try {
+    const url = new URL(src, window.location.href);
+    return url.origin !== window.location.origin;
+  } catch {
+    return false;
+  }
+}
+
+function proxiedImageUrl(src: string) {
+  return `/api/bridal/image-proxy?url=${encodeURIComponent(src)}`;
+}
+
+async function prepareImagesForExport(target: HTMLElement) {
+  const snapshots: ImageSnapshot[] = [];
+  const images = Array.from(target.querySelectorAll("img"));
+
+  await Promise.all(images.map(image => {
+    const source = image.currentSrc || image.src;
+
+    snapshots.push({
+      image,
+      src: image.src,
+      srcset: image.srcset,
+    });
+
+    if (!shouldProxyImage(source)) {
+      return Promise.resolve();
+    }
+
+    return new Promise<void>(resolve => {
+      const finish = () => resolve();
+
+      image.onload = finish;
+      image.onerror = finish;
+      image.srcset = "";
+      image.src = proxiedImageUrl(source);
+
+      if (image.complete) {
+        resolve();
+      }
+    });
+  }));
+
+  return () => {
+    for (const snapshot of snapshots) {
+      snapshot.image.onload = null;
+      snapshot.image.onerror = null;
+      snapshot.image.srcset = snapshot.srcset;
+      snapshot.image.src = snapshot.src;
+    }
+  };
+}
+
 export function DownloadPlanImageButton({
   targetId,
   fileName,
@@ -34,7 +98,10 @@ export function DownloadPlanImageButton({
     setIsDownloading(true);
     setError(null);
 
+    let restoreImages = () => {};
+
     try {
+      restoreImages = await prepareImagesForExport(target);
       const dataUrl = await toPng(target, {
         backgroundColor: "#fffaf3",
         cacheBust: true,
@@ -57,6 +124,7 @@ export function DownloadPlanImageButton({
       console.error("Failed to download bridal report image", downloadError);
       setError(errorLabel);
     } finally {
+      restoreImages();
       setIsDownloading(false);
     }
   }
