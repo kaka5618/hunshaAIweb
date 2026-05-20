@@ -1404,6 +1404,13 @@
     "detailSleeve": "Sleeve",
     "imageAlt": "Bridal look visual for {name}"
   },
+  "checkoutSuccess": {
+    "title": "Payment received",
+    "foundReport": "We found your latest bridal report. Open it to continue from where you left off.",
+    "fallback": "Your payment was received. Open your dashboard to find your latest report.",
+    "openReport": "Open my report",
+    "goDashboard": "Go to dashboard"
+  },
   "footer": {
     "tagline": "AI bridal styling reports for brides who want a clear plan before trying on dresses.",
     "product": {

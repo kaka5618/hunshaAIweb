@@ -1403,6 +1403,13 @@
     "detailSleeve": "袖型",
     "imageAlt": "{name} 的婚纱造型图"
   },
+  "checkoutSuccess": {
+    "title": "付款已收到",
+    "foundReport": "我们已找到您最近的婚纱报告，打开后可以继续查看刚才的方案。",
+    "fallback": "您的付款已收到。请进入仪表盘查看最近的报告。",
+    "openReport": "打开我的报告",
+    "goDashboard": "进入仪表盘"
+  },
   "footer": {
     "tagline": "为准备试纱的新娘生成清晰、可分享的 AI 婚纱风格报告。",
     "product": {
