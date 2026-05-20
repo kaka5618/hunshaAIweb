@@ -1368,8 +1368,11 @@
     },
     "deliverables": {
       "title": "导出和分享",
-      "description": "在新标签页打开可打印报告，或生成公开只读分享链接给朋友、家人或婚纱顾问查看。",
-      "pdf": "打开可打印报告",
+      "description": "将每份婚纱方案下载成精美图片，也可以打开打印视图保存 PDF，或生成公开只读分享链接给朋友、家人或婚纱顾问查看。",
+      "pdf": "打印 / 保存 PDF",
+      "downloadImage": "下载图片",
+      "downloadingImage": "正在生成图片...",
+      "imageDownloadError": "无法生成这张图片，请重试。",
       "share": "复制分享链接",
       "shareLoading": "正在创建链接...",
       "shareCopied": "分享链接已复制。",

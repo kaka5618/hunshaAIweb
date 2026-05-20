@@ -32,6 +32,7 @@ import type { Locale } from "@/i18n.config";
 import type { ElementType } from "react";
 import { BridalUnlockButton } from "./unlock-button";
 import { DetailGenerationProgress } from "./detail-generation-progress";
+import { DownloadPlanImageButton } from "./download-plan-image-button";
 import { GenerateFullReportButton } from "./generate-full-button";
 import Image from "next/image";
 import { PaymentConfirmationRefresh } from "./payment-confirmation-refresh";
@@ -474,6 +475,9 @@ export default async function BridalReportPage(
                       generatingFullBody: t("fullGeneration.placeholders.fullBody"),
                       generatingDetail: t("fullGeneration.placeholders.detail"),
                       generatingHint: t("fullGeneration.placeholders.hint"),
+                      downloadImage: t("deliverables.downloadImage"),
+                      downloadingImage: t("deliverables.downloadingImage"),
+                      imageDownloadError: t("deliverables.imageDownloadError"),
                     }}
                   />
                 );
@@ -621,6 +625,9 @@ function FullRecommendationReport({
     generatingFullBody: string;
     generatingDetail: string;
     generatingHint: string;
+    downloadImage: string;
+    downloadingImage: string;
+    imageDownloadError: string;
   };
 }) {
   return (
@@ -635,13 +642,22 @@ function FullRecommendationReport({
               {recommendation.styleName}
             </h3>
           </div>
-          <div className="flex flex-wrap gap-2 text-xs font-medium text-[#5f694c]">
-            <span className="rounded-full border border-[#d8cdbd] bg-white/70 px-3 py-1">
-              {recommendation.silhouette}
-            </span>
-            <span className="rounded-full border border-[#d8cdbd] bg-white/70 px-3 py-1">
-              {recommendation.neckline}
-            </span>
+          <div className="flex flex-col gap-3 md:items-end">
+            <div className="flex flex-wrap gap-2 text-xs font-medium text-[#5f694c] md:justify-end">
+              <span className="rounded-full border border-[#d8cdbd] bg-white/70 px-3 py-1">
+                {recommendation.silhouette}
+              </span>
+              <span className="rounded-full border border-[#d8cdbd] bg-white/70 px-3 py-1">
+                {recommendation.neckline}
+              </span>
+            </div>
+            <DownloadPlanImageButton
+              targetId={`direction-${recommendation.rank}`}
+              fileName={`your-bridal-style-direction-${recommendation.rank}.png`}
+              label={labels.downloadImage}
+              loadingLabel={labels.downloadingImage}
+              errorLabel={labels.imageDownloadError}
+            />
           </div>
         </div>
       </div>

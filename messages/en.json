@@ -1369,8 +1369,11 @@
     },
     "deliverables": {
       "title": "Export and share",
-      "description": "Open a print-ready report in a new tab, or create a public read-only share link for friends, family, or your bridal consultant.",
-      "pdf": "Open printable report",
+      "description": "Download each bridal direction as a polished image, open the print view to save a PDF, or create a public read-only share link for friends, family, or your bridal consultant.",
+      "pdf": "Print / Save as PDF",
+      "downloadImage": "Download image",
+      "downloadingImage": "Preparing image...",
+      "imageDownloadError": "We could not create this image. Please try again.",
       "share": "Copy share link",
       "shareLoading": "Creating link...",
       "shareCopied": "Share link copied.",
