@@ -31,11 +31,6 @@ export const marketingNavigationKeys: NavigationKeyItem[] = [
     key: "contact",
     href: "/contact",
   },
-  {
-    key: "docs",
-    href: "/docs",
-    target: "_blank",
-  },
 ];
 
 export const appNavigationKeys: NavigationKeyItem[] = [
@@ -70,11 +65,6 @@ export const marketingNavigation: NavigationItem[] = [
   {
     title: "Contact",
     href: "/contact",
-  },
-  {
-    title: "Docs",
-    href: "/docs",
-    target: "_blank",
   },
 ];
 
