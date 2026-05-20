@@ -1330,6 +1330,20 @@
         "detail": "Rendering detail visual",
         "hint": "Usually ready in 2-4 minutes."
       },
+      "detailProgress": {
+        "eyebrow": "Detail images",
+        "title": "Detail visuals are still rendering",
+        "description": "Your full-body looks are ready. We are adding neckline, waist, and sleeve details in the background.",
+        "active": "Rendering detail images for direction {rank}: {name}.",
+        "count": "{success}/{total} details",
+        "progress": "{success}/{total} detail images ready",
+        "plan": "Direction {rank}",
+        "planCount": "{success}/{total} details ready",
+        "generating": "Generating",
+        "partial": "Retrying",
+        "ready": "Ready",
+        "statusError": "We could not read detail image progress. Please refresh this page later."
+      },
       "waitTips": {
         "title": "While you wait",
         "items": [

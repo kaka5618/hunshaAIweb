@@ -31,6 +31,7 @@ import { unlockBridalReportFromCreemReturn } from "@/lib/bridal/payment";
 import type { Locale } from "@/i18n.config";
 import type { ElementType } from "react";
 import { BridalUnlockButton } from "./unlock-button";
+import { DetailGenerationProgress } from "./detail-generation-progress";
 import { GenerateFullReportButton } from "./generate-full-button";
 import Image from "next/image";
 import { PaymentConfirmationRefresh } from "./payment-confirmation-refresh";
@@ -119,6 +120,37 @@ export default async function BridalReportPage(
     total: 3,
   };
   const paidVisualsIncomplete = report.isPaid && cleanPrimaryVisualCount < fullReportImageProgress.total;
+  const detailPlanProgress = recommendations.slice(0, 3).map(recommendation => {
+    const detailImages = generatedImages.filter(
+      image =>
+        image.recommendationId === recommendation.id &&
+        image.type !== "full_body",
+    );
+    const success = new Set(
+      detailImages
+        .filter(image => image.generationStatus === "success" && !image.errorMessage && image.r2Key)
+        .map(image => image.type),
+    ).size;
+    const failed = new Set(
+      detailImages
+        .filter(image => image.generationStatus === "failed")
+        .map(image => image.type),
+    ).size;
+
+    return {
+      recommendationId: recommendation.id,
+      rank: recommendation.rank,
+      styleName: recommendation.styleName,
+      success,
+      failed,
+      total: 3,
+      status: success >= 3 ? "ready" : failed > 0 ? "partial" : "generating",
+    };
+  });
+  const detailVisualsIncomplete =
+    report.isPaid &&
+    cleanPrimaryVisualCount >= fullReportImageProgress.total &&
+    detailPlanProgress.some(progress => progress.success < progress.total);
 
   const price = `$${(report.priceCents / 100).toFixed(2)}`;
   const budgetMin = Math.min(...recommendations.map(recommendation => recommendation.budgetMin));
@@ -391,6 +423,15 @@ export default async function BridalReportPage(
                     reportId={report.id}
                     autoStart={returnedFromPayment || report.status === "generating"}
                     initialProgress={fullReportImageProgress}
+                  />
+                </div>
+              )}
+
+              {detailVisualsIncomplete && (
+                <div className="mt-8">
+                  <DetailGenerationProgress
+                    reportId={report.id}
+                    initialPlanProgress={detailPlanProgress}
                   />
                 </div>
               )}

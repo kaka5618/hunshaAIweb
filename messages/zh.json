@@ -1329,6 +1329,20 @@
         "detail": "正在生成细节图",
         "hint": "通常需要 2-4 分钟。"
       },
+      "detailProgress": {
+        "eyebrow": "细节图生成",
+        "title": "细节图仍在继续生成",
+        "description": "3 张全身方案图已经完成。系统正在后台补齐领口、腰线和袖型细节图。",
+        "active": "正在生成第 {rank} 份方案「{name}」的细节图。",
+        "count": "{success}/{total} 张细节图",
+        "progress": "已完成 {success}/{total} 张细节图",
+        "plan": "第 {rank} 份方案",
+        "planCount": "已完成 {success}/{total} 张细节图",
+        "generating": "生成中",
+        "partial": "重试中",
+        "ready": "已完成",
+        "statusError": "无法读取细节图进度，请稍后刷新页面。"
+      },
       "waitTips": {
         "title": "等待时可以看看",
         "items": [

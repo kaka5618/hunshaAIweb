@@ -84,10 +84,15 @@ export async function GET(
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const recommendationCount = await db
-      .select({ id: bridalRecommendation.id })
+    const recommendations = await db
+      .select({
+        id: bridalRecommendation.id,
+        rank: bridalRecommendation.rank,
+        styleName: bridalRecommendation.styleName,
+      })
       .from(bridalRecommendation)
-      .where(eq(bridalRecommendation.reportId, report.id));
+      .where(eq(bridalRecommendation.reportId, report.id))
+      .orderBy(bridalRecommendation.rank);
 
     const images = await db
       .select({
@@ -112,7 +117,7 @@ export async function GET(
       priceCents: report.priceCents,
       currency: report.currency,
       expiresAt: report.expiresAt.toISOString(),
-      recommendationCount: recommendationCount.length,
+      recommendationCount: recommendations.length,
       imageProgress: {
         success: primarySuccess,
         failed: countFailedImagesByType(images, "full_body"),
@@ -123,6 +128,23 @@ export async function GET(
         failed: Math.max(0, countFailedImages(images) - countFailedImagesByType(images, "full_body")),
         total: TOTAL_IMAGE_COUNT - REQUIRED_PRIMARY_IMAGE_COUNT,
       },
+      detailPlanProgress: recommendations.slice(0, 3).map(recommendation => {
+        const detailImages = images.filter(
+          image => image.recommendationId === recommendation.id && image.type !== "full_body",
+        );
+        const success = countCleanSuccessImages(detailImages);
+        const failed = countFailedImages(detailImages);
+
+        return {
+          recommendationId: recommendation.id,
+          rank: recommendation.rank,
+          styleName: recommendation.styleName,
+          success,
+          failed,
+          total: 3,
+          status: success >= 3 ? "ready" : failed > 0 ? "partial" : "generating",
+        };
+      }),
     });
   } catch (error) {
     console.error("Failed to read bridal report status:", error);
