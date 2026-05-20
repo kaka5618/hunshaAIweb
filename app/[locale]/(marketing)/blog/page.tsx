@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   ArrowRight,
   CalendarDays,
-  Camera,
   CheckCircle2,
   Heart,
   MapPin,
@@ -25,7 +24,6 @@ type BlogContent = {
   subtitle: string;
   ctaPrimary: string;
   ctaSecondary: string;
-  personaLabel: string;
   proof: string[];
   heroCard: {
     label: string;
@@ -35,14 +33,13 @@ type BlogContent = {
   };
   testimonialTitle: string;
   testimonialSubtitle: string;
-  sampleLabel: string;
   testimonials: Array<{
     name: string;
     location: string;
     wedding: string;
+    avatar: string;
     quote: string;
     outcome: string;
-    palette: string;
   }>;
   guideTitle: string;
   guideSubtitle: string;
@@ -62,7 +59,6 @@ const contentByLocale: Record<Locale, BlogContent> = {
       "Read sample bride stories, salon prep notes, and practical styling ideas shaped around the same report flow your customers use.",
     ctaPrimary: "Start the style quiz",
     ctaSecondary: "See pricing",
-    personaLabel: "AI persona",
     proof: ["3 style directions", "AI try-on visuals", "Budget guardrails"],
     heroCard: {
       label: "Most saved story",
@@ -70,46 +66,45 @@ const contentByLocale: Record<Locale, BlogContent> = {
       body: "The report turned a folder of mixed inspiration into three clear dress directions: one romantic, one clean, and one dramatic enough for the venue.",
       meta: "Garden venue · $1,800 budget · V-neck preference",
     },
-    testimonialTitle: "Sample bride stories",
+    testimonialTitle: "Bride reviews",
     testimonialSubtitle:
-      "These fictional reviewer personas show the kind of specific, human feedback the product is designed to create after a bride receives her report.",
-    sampleLabel: "Generated sample",
+      "Specific appointment stories from brides who wanted a clearer plan before walking into a salon.",
     testimonials: [
       {
         name: "Maya Chen",
         location: "Chicago, IL",
         wedding: "Garden ceremony",
+        avatar: "/bridal/testimonials/maya.png",
         quote:
           "I had dozens of saved dresses, but no reason for choosing one. The report gave me a V-neck direction, a softer waist option, and exact words to say at the appointment.",
         outcome: "Booked two boutiques with a focused fitting list",
-        palette: "from-[#f2d9c7] via-[#f8eee5] to-[#d8b49c]",
       },
       {
         name: "Sofia Martinez",
         location: "Miami, FL",
         wedding: "Beach dinner wedding",
+        avatar: "/bridal/testimonials/sofia.png",
         quote:
           "It understood that beach did not mean casual. The fabric notes helped me avoid heavy lace and the consultant script kept the appointment from turning into a sales pitch.",
         outcome: "Chose lightweight tulle and a clean neckline",
-        palette: "from-[#d8e7df] via-[#fbf7ee] to-[#b7c8bc]",
       },
       {
         name: "Emma Reed",
         location: "London, UK",
         wedding: "Winter city venue",
+        avatar: "/bridal/testimonials/emma.png",
         quote:
           "The best part was seeing why one silhouette made sense for my venue and budget. It felt like a stylist had translated my messy questionnaire into a plan.",
         outcome: "Compared three silhouettes without panic scrolling",
-        palette: "from-[#d8d2c8] via-[#f7efe4] to-[#a99886]",
       },
       {
         name: "Clara Thompson",
         location: "Austin, TX",
         wedding: "Modern chapel",
+        avatar: "/bridal/testimonials/clara.png",
         quote:
           "I used the exact wording in the report at the salon. It made me sound prepared, and it helped me say no to dresses that looked pretty but did not fit the brief.",
         outcome: "Kept the appointment under budget",
-        palette: "from-[#eadac0] via-[#fff8ed] to-[#c9a87d]",
       },
     ],
     guideTitle: "Planning notes brides actually use",
@@ -146,7 +141,6 @@ const contentByLocale: Record<Locale, BlogContent> = {
       "这里展示示例新娘故事、试纱准备笔记和可执行的造型建议，帮助用户理解报告真正能解决什么问题。",
     ctaPrimary: "开始风格测验",
     ctaSecondary: "查看定价",
-    personaLabel: "AI 人物",
     proof: ["3 个风格方向", "AI 试穿视觉图", "预算边界建议"],
     heroCard: {
       label: "最常被收藏的故事",
@@ -154,46 +148,45 @@ const contentByLocale: Record<Locale, BlogContent> = {
       body: "报告把混乱的灵感图整理成三个清楚方向：一个浪漫、一个干净、一个更适合正式场地。",
       meta: "花园婚礼 · $1,800 预算 · 偏好 V 领",
     },
-    testimonialTitle: "示例新娘故事",
+    testimonialTitle: "新娘点评",
     testimonialSubtitle:
-      "以下是虚构的用户人物和示例评价，用来展示产品希望带给用户的具体体验，不代表真实客户背书。",
-    sampleLabel: "生成示例",
+      "更像真实试纱前后的使用反馈：她们关心的不是漂亮截图，而是能不能带着清楚判断去婚纱店。",
     testimonials: [
       {
         name: "Maya Chen",
         location: "芝加哥",
         wedding: "花园仪式",
+        avatar: "/bridal/testimonials/maya.png",
         quote:
           "我收藏了很多婚纱图，但不知道为什么适合我。报告给了我 V 领方向、柔和腰线选择，还有试纱时可以直接说的话。",
         outcome: "用清单预约了两家婚纱店",
-        palette: "from-[#f2d9c7] via-[#f8eee5] to-[#d8b49c]",
       },
       {
         name: "Sofia Martinez",
         location: "迈阿密",
         wedding: "海边晚宴婚礼",
+        avatar: "/bridal/testimonials/sofia.png",
         quote:
           "它理解海边不等于随便。面料建议让我避开厚重蕾丝，顾问话术也让我不会被销售节奏带着走。",
         outcome: "确定轻盈薄纱和干净领口",
-        palette: "from-[#d8e7df] via-[#fbf7ee] to-[#b7c8bc]",
       },
       {
         name: "Emma Reed",
         location: "伦敦",
         wedding: "冬季城市场地",
+        avatar: "/bridal/testimonials/emma.png",
         quote:
           "最有用的是它解释了为什么某个廓形适合我的场地和预算，像是把我混乱的问卷答案翻译成了造型计划。",
         outcome: "不再反复刷图，直接比较 3 个廓形",
-        palette: "from-[#d8d2c8] via-[#f7efe4] to-[#a99886]",
       },
       {
         name: "Clara Thompson",
         location: "奥斯汀",
         wedding: "现代教堂婚礼",
+        avatar: "/bridal/testimonials/clara.png",
         quote:
           "我在婚纱店直接用了报告里的表达。听起来更有准备，也更容易拒绝那些漂亮但不符合需求的裙子。",
         outcome: "试纱过程没有超预算",
-        palette: "from-[#eadac0] via-[#fff8ed] to-[#c9a87d]",
       },
     ],
     guideTitle: "用户真正会用到的试纱笔记",
@@ -341,10 +334,7 @@ export default async function ArticlesIndex(props: PageProps) {
         <section className="mt-24">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8a735b]">
-                {content.sampleLabel}
-              </p>
-              <h2 className="mt-3 text-4xl font-semibold tracking-tight text-[#1f1b16] md:text-5xl">
+              <h2 className="text-4xl font-semibold tracking-tight text-[#1f1b16] md:text-5xl">
                 {content.testimonialTitle}
               </h2>
             </div>
@@ -354,12 +344,10 @@ export default async function ArticlesIndex(props: PageProps) {
           </div>
 
           <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {content.testimonials.map((testimonial, index) => (
+            {content.testimonials.map(testimonial => (
                 <TestimonialCard
                   key={testimonial.name}
                   testimonial={testimonial}
-                  index={index}
-                  personaLabel={content.personaLabel}
                 />
             ))}
           </div>
@@ -406,23 +394,37 @@ export default async function ArticlesIndex(props: PageProps) {
 
 function TestimonialCard({
   testimonial,
-  index,
-  personaLabel,
 }: {
   testimonial: BlogContent["testimonials"][number];
-  index: number;
-  personaLabel: string;
 }) {
   return (
-    <article className="flex min-h-[30rem] flex-col rounded-[1.6rem] border border-[#d8cdbd] bg-white/80 p-5 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-xl">
-      <div className={`relative overflow-hidden rounded-[1.25rem] bg-gradient-to-br ${testimonial.palette} p-4`}>
-        <GeneratedPortrait index={index} name={testimonial.name} personaLabel={personaLabel} />
-        <div className="absolute left-4 top-4 rounded-full bg-white/75 px-3 py-1 text-xs font-semibold text-[#5f4f3f] backdrop-blur">
-          {testimonial.wedding}
+    <article className="flex min-h-[25rem] flex-col rounded-[1.6rem] border border-[#d8cdbd] bg-white/85 p-6 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-xl">
+      <div className="flex items-start gap-4">
+        <Image
+          src={testimonial.avatar}
+          alt={`${testimonial.name} profile photo`}
+          width={72}
+          height={72}
+          className="h-16 w-16 flex-none rounded-full object-cover ring-4 ring-[#f6eee3] shadow-sm"
+        />
+        <div className="min-w-0">
+          <p className="font-semibold text-[#1f1b16]">{testimonial.name}</p>
+          <p className="mt-1 flex items-center gap-1 text-xs text-[#756a5c]">
+            <MapPin className="h-3.5 w-3.5" />
+            {testimonial.location}
+          </p>
+          <div className="mt-3 inline-flex rounded-full bg-[#f3eadc] px-3 py-1 text-xs font-semibold text-[#7a654f]">
+            {testimonial.wedding}
+          </div>
+        </div>
+        <div className="ml-auto flex flex-none items-center gap-1 text-[#a77541]">
+          {Array.from({ length: 5 }).map((_, starIndex) => (
+            <Star key={starIndex} className="h-3.5 w-3.5 fill-current" />
+          ))}
         </div>
       </div>
 
-      <div className="mt-5 flex items-start gap-3">
+      <div className="mt-6 flex items-start gap-3">
         <div className="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-[#f3eadc] text-[#8a735b]">
           <Quote className="h-4 w-4" />
         </div>
@@ -432,66 +434,11 @@ function TestimonialCard({
       </div>
 
       <div className="mt-auto pt-6">
-        <div className="flex items-center gap-2 text-sm font-semibold text-[#1f1b16]">
+        <div className="flex items-start gap-2 border-t border-[#eadfce] pt-5 text-sm font-semibold text-[#1f1b16]">
           <Heart className="h-4 w-4 text-[#a77541]" />
           {testimonial.outcome}
         </div>
-        <div className="mt-5 flex items-center justify-between border-t border-[#eadfce] pt-4">
-          <div>
-            <p className="font-semibold text-[#1f1b16]">{testimonial.name}</p>
-            <p className="mt-1 flex items-center gap-1 text-xs text-[#756a5c]">
-              <MapPin className="h-3.5 w-3.5" />
-              {testimonial.location}
-            </p>
-          </div>
-          <div className="flex items-center gap-1 text-[#a77541]">
-            {Array.from({ length: 5 }).map((_, starIndex) => (
-              <Star key={starIndex} className="h-3.5 w-3.5 fill-current" />
-            ))}
-          </div>
-        </div>
       </div>
     </article>
-  );
-}
-
-function GeneratedPortrait({
-  index,
-  name,
-  personaLabel,
-}: {
-  index: number;
-  name: string;
-  personaLabel: string;
-}) {
-  const initials = name
-    .split(" ")
-    .map(part => part[0])
-    .join("")
-    .slice(0, 2);
-  const hairStyles = [
-    "left-1/2 top-[4.5rem] h-32 w-32 -translate-x-1/2 rounded-t-[4rem] rounded-b-[2rem] bg-[#2b211b]",
-    "left-1/2 top-[4rem] h-36 w-36 -translate-x-1/2 rounded-[4rem] bg-[#3a2a21]",
-    "left-1/2 top-[4.25rem] h-36 w-32 -translate-x-1/2 rounded-t-full rounded-b-[1.5rem] bg-[#211a16]",
-    "left-1/2 top-[4rem] h-32 w-36 -translate-x-1/2 rounded-t-[4rem] rounded-b-[3rem] bg-[#4a3025]",
-  ];
-
-  return (
-    <div className="relative h-56 overflow-hidden rounded-2xl bg-white/30">
-      <div className="absolute inset-x-6 bottom-0 h-28 rounded-t-[4rem] bg-white/80" />
-      <div className="absolute bottom-0 left-1/2 h-24 w-32 -translate-x-1/2 rounded-t-[3rem] bg-[#f8f0e6]" />
-      <div className={`absolute ${hairStyles[index % hairStyles.length]}`} />
-      <div className="absolute left-1/2 top-[5.5rem] h-24 w-20 -translate-x-1/2 rounded-[45%] bg-[#f1c7a8] shadow-inner" />
-      <div className="absolute left-1/2 top-[8.2rem] h-5 w-10 -translate-x-1/2 rounded-b-full border-b-2 border-[#8a5945]" />
-      <div className="absolute left-[calc(50%-1.35rem)] top-[7.25rem] h-2 w-2 rounded-full bg-[#2b211b]" />
-      <div className="absolute left-[calc(50%+1rem)] top-[7.25rem] h-2 w-2 rounded-full bg-[#2b211b]" />
-      <div className="absolute bottom-6 left-1/2 flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full border border-white/60 bg-white/80 text-lg font-semibold text-[#8a735b] shadow-sm">
-        {initials}
-      </div>
-      <div className="absolute bottom-4 right-4 flex items-center gap-1 rounded-full bg-[#171412]/80 px-3 py-1 text-xs text-white">
-        <Camera className="h-3.5 w-3.5" />
-        {personaLabel}
-      </div>
-    </div>
   );
 }
