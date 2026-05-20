@@ -98,6 +98,18 @@ function countAllImageProgress(
   };
 }
 
+function hasAllExpectedImages(
+  images: Array<{ recommendationId: string; type: string; generationStatus: string; errorMessage: string | null }>,
+) {
+  return recommendationsExpectedCount(images) >= TOTAL_IMAGE_COUNT;
+}
+
+function hasRequiredPrimaryImages(
+  images: Array<{ recommendationId: string; type: string; generationStatus: string; errorMessage: string | null }>,
+) {
+  return recommendationsExpectedCount(images.filter(image => image.type === "full_body")) >= REQUIRED_PRIMARY_IMAGE_COUNT;
+}
+
 async function runWithConcurrency<T>(
   items: T[],
   concurrency: number,
@@ -133,6 +145,15 @@ async function settleReportAfterGenerationError(reportId: string) {
     .where(eq(bridalReport.id, reportId));
 }
 
+function scheduleFullReportGeneration(reportId: string, logLabel: string) {
+  after(() => {
+    void generateFullBridalReport(reportId).catch(async error => {
+      console.error(logLabel, error);
+      await settleReportAfterGenerationError(reportId).catch(() => undefined);
+    });
+  });
+}
+
 export async function POST(
   _request: Request,
   props: {
@@ -164,7 +185,9 @@ export async function POST(
 
     const primaryImageCount = recommendationsExpectedCount(existingImages.filter(image => image.type === "full_body"));
     const allImageCount = recommendationsExpectedCount(existingImages);
-    if (primaryImageCount >= REQUIRED_PRIMARY_IMAGE_COUNT && allImageCount >= TOTAL_IMAGE_COUNT) {
+    const primaryImagesReady = hasRequiredPrimaryImages(existingImages);
+    const allImagesReady = hasAllExpectedImages(existingImages);
+    if (primaryImagesReady && allImagesReady) {
       await db
         .update(bridalReport)
         .set({ status: "ready" })
@@ -180,18 +203,16 @@ export async function POST(
       });
     }
 
-    if (primaryImageCount >= REQUIRED_PRIMARY_IMAGE_COUNT && report.status !== "generating") {
+    if (primaryImagesReady && !allImagesReady) {
       await db
         .update(bridalReport)
         .set({ status: "generating" })
         .where(eq(bridalReport.id, report.id));
 
-      after(() => {
-        void generateFullBridalReport(report.id).catch(async error => {
-          console.error("Failed to backfill bridal report detail images in background:", error);
-          await settleReportAfterGenerationError(report.id).catch(() => undefined);
-        });
-      });
+      scheduleFullReportGeneration(
+        report.id,
+        "Failed to backfill bridal report detail images in background:",
+      );
 
       return NextResponse.json({
         reportId: report.id,
@@ -219,12 +240,10 @@ export async function POST(
       .set({ status: "generating" })
       .where(eq(bridalReport.id, report.id));
 
-    after(() => {
-      void generateFullBridalReport(report.id).catch(async error => {
-        console.error("Failed to generate full bridal report in background:", error);
-        await settleReportAfterGenerationError(report.id).catch(() => undefined);
-      });
-    });
+    scheduleFullReportGeneration(
+      report.id,
+      "Failed to generate full bridal report in background:",
+    );
 
     return NextResponse.json(
       {

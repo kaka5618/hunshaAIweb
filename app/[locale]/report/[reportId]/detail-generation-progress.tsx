@@ -26,6 +26,7 @@ export function DetailGenerationProgress({
   const [planProgress, setPlanProgress] = useState(initialPlanProgress);
   const [error, setError] = useState<string | null>(null);
   const pollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const kickTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const hasStartedBackfill = useRef(false);
   const previousDoneCount = useRef(
     initialPlanProgress.reduce((count, plan) => count + plan.success, 0),
@@ -53,6 +54,17 @@ export function DetailGenerationProgress({
     }
   }, []);
 
+  const clearKickTimer = useCallback(() => {
+    if (kickTimer.current) {
+      clearInterval(kickTimer.current);
+      kickTimer.current = null;
+    }
+  }, []);
+
+  const kickBackfill = useCallback(async () => {
+    await fetch(`/api/bridal/report/${reportId}/generate-full`, { method: "POST" }).catch(() => undefined);
+  }, [reportId]);
+
   const pollStatus = useCallback(async () => {
     try {
       const response = await fetch(`/api/bridal/report/${reportId}`, {
@@ -79,6 +91,7 @@ export function DetailGenerationProgress({
         const complete = payload.detailPlanProgress.every(plan => plan.success >= plan.total);
         if (complete) {
           clearPollTimer();
+          clearKickTimer();
           router.refresh();
           return;
         }
@@ -91,7 +104,7 @@ export function DetailGenerationProgress({
       clearPollTimer();
       setError(statusError instanceof Error ? statusError.message : t("fullGeneration.detailProgress.statusError"));
     }
-  }, [clearPollTimer, reportId, router, t]);
+  }, [clearKickTimer, clearPollTimer, reportId, router, t]);
 
   useEffect(() => {
     if (isComplete || hasStartedBackfill.current) {
@@ -99,18 +112,22 @@ export function DetailGenerationProgress({
     }
 
     hasStartedBackfill.current = true;
-    void fetch(`/api/bridal/report/${reportId}/generate-full`, { method: "POST" })
-      .catch(() => undefined)
+    void kickBackfill()
       .finally(() => {
         void pollStatus();
       });
-  }, [isComplete, pollStatus, reportId]);
+
+    kickTimer.current = setInterval(() => {
+      void kickBackfill();
+    }, 30000);
+  }, [isComplete, kickBackfill, pollStatus]);
 
   useEffect(() => {
     return () => {
       clearPollTimer();
+      clearKickTimer();
     };
-  }, [clearPollTimer]);
+  }, [clearKickTimer, clearPollTimer]);
 
   if (isComplete) {
     return null;
