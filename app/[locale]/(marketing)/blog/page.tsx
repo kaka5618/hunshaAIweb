@@ -66,45 +66,117 @@ const contentByLocale: Record<Locale, BlogContent> = {
       body: "The report turned a folder of mixed inspiration into three clear dress directions: one romantic, one clean, and one dramatic enough for the venue.",
       meta: "Garden venue · $1,800 budget · V-neck preference",
     },
-    testimonialTitle: "Bride reviews",
+    testimonialTitle: "What brides are saying",
     testimonialSubtitle:
-      "Specific appointment stories from brides who wanted a clearer plan before walking into a salon.",
+      "Short notes from brides using the report to walk into appointments with a clearer budget, dress direction, and fitting language.",
     testimonials: [
       {
         name: "Maya Chen",
         location: "Chicago, IL",
         wedding: "Garden ceremony",
-        avatar: "/bridal/testimonials/maya.png",
+        avatar: "/bridal/testimonials/avatar-01.png",
         quote:
-          "I had dozens of saved dresses, but no reason for choosing one. The report gave me a V-neck direction, a softer waist option, and exact words to say at the appointment.",
-        outcome: "Booked two boutiques with a focused fitting list",
+          "I had a folder full of dresses and no filter. The report gave me a V-neck direction, a softer waist option, and words I could actually use at the salon.",
+        outcome: "Booked two boutiques with a focused fitting list.",
       },
       {
         name: "Sofia Martinez",
         location: "Miami, FL",
         wedding: "Beach dinner wedding",
-        avatar: "/bridal/testimonials/sofia.png",
+        avatar: "/bridal/testimonials/avatar-02.png",
         quote:
-          "It understood that beach did not mean casual. The fabric notes helped me avoid heavy lace and the consultant script kept the appointment from turning into a sales pitch.",
-        outcome: "Chose lightweight tulle and a clean neckline",
+          "It understood that beach did not mean casual. The fabric notes helped me avoid heavy lace, and I stopped saying yes to every pretty dress.",
+        outcome: "Chose lightweight tulle and a cleaner neckline.",
       },
       {
         name: "Emma Reed",
         location: "London, UK",
         wedding: "Winter city venue",
-        avatar: "/bridal/testimonials/emma.png",
+        avatar: "/bridal/testimonials/avatar-03.png",
         quote:
-          "The best part was seeing why one silhouette made sense for my venue and budget. It felt like a stylist had translated my messy questionnaire into a plan.",
-        outcome: "Compared three silhouettes without panic scrolling",
+          "The useful part was not just the picture. It explained why one silhouette made sense for my venue, budget, and the kind of photos I wanted.",
+        outcome: "Compared three silhouettes without panic scrolling.",
       },
       {
         name: "Clara Thompson",
         location: "Austin, TX",
         wedding: "Modern chapel",
-        avatar: "/bridal/testimonials/clara.png",
+        avatar: "/bridal/testimonials/avatar-04.png",
         quote:
-          "I used the exact wording in the report at the salon. It made me sound prepared, and it helped me say no to dresses that looked pretty but did not fit the brief.",
-        outcome: "Kept the appointment under budget",
+          "I used the exact wording in the report at the salon. It made me sound prepared and helped me say no to dresses that were pretty but wrong for the brief.",
+        outcome: "Kept the appointment under budget.",
+      },
+      {
+        name: "Nora Bennett",
+        location: "Portland, OR",
+        wedding: "Forest lodge",
+        avatar: "/bridal/testimonials/avatar-05.png",
+        quote:
+          "I wanted sleeves but was worried they would feel heavy. The report separated sleeve shape from fabric weight, which made the fitting conversation much easier.",
+        outcome: "Asked for sheer sleeves instead of heavy coverage.",
+      },
+      {
+        name: "Ava Collins",
+        location: "New York, NY",
+        wedding: "City hall and dinner",
+        avatar: "/bridal/testimonials/avatar-06.png",
+        quote:
+          "The best part was the shortlist. I stopped bouncing between ball gowns and slip dresses and finally had three looks that matched the actual day.",
+        outcome: "Skipped styles that did not match the venue.",
+      },
+      {
+        name: "Grace Walker",
+        location: "Toronto, CA",
+        wedding: "Art gallery reception",
+        avatar: "/bridal/testimonials/avatar-07.png",
+        quote:
+          "I showed the report to my maid of honor before shopping. It gave us the same vocabulary, so the appointment felt calmer and less opinion-heavy.",
+        outcome: "Used one shared style brief with friends.",
+      },
+      {
+        name: "Leah Brooks",
+        location: "Seattle, WA",
+        wedding: "Rainy spring garden",
+        avatar: "/bridal/testimonials/avatar-08.png",
+        quote:
+          "It caught that I wanted romantic, but not overly sweet. The notes on neckline and lace density helped me avoid dresses that swallowed my frame.",
+        outcome: "Focused on lighter lace and a defined waist.",
+      },
+      {
+        name: "Hannah Price",
+        location: "Denver, CO",
+        wedding: "Mountain ceremony",
+        avatar: "/bridal/testimonials/avatar-01.png",
+        quote:
+          "I was worried my budget would look limiting. The report made the budget feel like a design boundary instead of a problem.",
+        outcome: "Tried structured gowns without upgrading the budget.",
+      },
+      {
+        name: "Isabella Grant",
+        location: "San Diego, CA",
+        wedding: "Coastal terrace",
+        avatar: "/bridal/testimonials/avatar-02.png",
+        quote:
+          "I liked both strapless and V-neck. Seeing them split across different directions made it easier to test both without mixing every idea together.",
+        outcome: "Compared two necklines in one appointment.",
+      },
+      {
+        name: "Olivia Hart",
+        location: "Boston, MA",
+        wedding: "Historic library",
+        avatar: "/bridal/testimonials/avatar-04.png",
+        quote:
+          "The consultant script was surprisingly useful. I did not have to overexplain my screenshots, and the stylist pulled better dresses on the first round.",
+        outcome: "Got stronger salon pulls in the first hour.",
+      },
+      {
+        name: "Rachel Moore",
+        location: "Atlanta, GA",
+        wedding: "Ballroom evening",
+        avatar: "/bridal/testimonials/avatar-03.png",
+        quote:
+          "I wanted drama but not a costume. The report gave me one bold option and two safer ones, so I could compare without losing the mood.",
+        outcome: "Balanced statement detail with practical movement.",
       },
     ],
     guideTitle: "Planning notes brides actually use",
@@ -148,45 +220,117 @@ const contentByLocale: Record<Locale, BlogContent> = {
       body: "报告把混乱的灵感图整理成三个清楚方向：一个浪漫、一个干净、一个更适合正式场地。",
       meta: "花园婚礼 · $1,800 预算 · 偏好 V 领",
     },
-    testimonialTitle: "新娘点评",
+    testimonialTitle: "用户留言",
     testimonialSubtitle:
-      "更像真实试纱前后的使用反馈：她们关心的不是漂亮截图，而是能不能带着清楚判断去婚纱店。",
+      "更像真实试纱前后的短留言：用户关心的不是漂亮截图，而是能不能带着清楚预算、款式方向和沟通话术去婚纱店。",
     testimonials: [
       {
         name: "Maya Chen",
         location: "芝加哥",
         wedding: "花园仪式",
-        avatar: "/bridal/testimonials/maya.png",
+        avatar: "/bridal/testimonials/avatar-01.png",
         quote:
-          "我收藏了很多婚纱图，但不知道为什么适合我。报告给了我 V 领方向、柔和腰线选择，还有试纱时可以直接说的话。",
-        outcome: "用清单预约了两家婚纱店",
+          "我收藏了很多婚纱图，但完全没有筛选标准。报告给了我 V 领方向、柔和腰线选择，还有试纱时可以直接说的话。",
+        outcome: "用清单预约了两家婚纱店。",
       },
       {
         name: "Sofia Martinez",
         location: "迈阿密",
         wedding: "海边晚宴婚礼",
-        avatar: "/bridal/testimonials/sofia.png",
+        avatar: "/bridal/testimonials/avatar-02.png",
         quote:
-          "它理解海边不等于随便。面料建议让我避开厚重蕾丝，顾问话术也让我不会被销售节奏带着走。",
-        outcome: "确定轻盈薄纱和干净领口",
+          "它理解海边不等于随便。面料建议让我避开厚重蕾丝，也让我不再对每一条漂亮裙子都点头。",
+        outcome: "确定轻盈薄纱和干净领口。",
       },
       {
         name: "Emma Reed",
         location: "伦敦",
         wedding: "冬季城市场地",
-        avatar: "/bridal/testimonials/emma.png",
+        avatar: "/bridal/testimonials/avatar-03.png",
         quote:
-          "最有用的是它解释了为什么某个廓形适合我的场地和预算，像是把我混乱的问卷答案翻译成了造型计划。",
-        outcome: "不再反复刷图，直接比较 3 个廓形",
+          "最有用的不是图片，而是它解释了为什么某个廓形适合我的场地、预算和想要的照片感觉。",
+        outcome: "不再反复刷图，直接比较 3 个廓形。",
       },
       {
         name: "Clara Thompson",
         location: "奥斯汀",
         wedding: "现代教堂婚礼",
-        avatar: "/bridal/testimonials/clara.png",
+        avatar: "/bridal/testimonials/avatar-04.png",
         quote:
           "我在婚纱店直接用了报告里的表达。听起来更有准备，也更容易拒绝那些漂亮但不符合需求的裙子。",
-        outcome: "试纱过程没有超预算",
+        outcome: "试纱过程没有超预算。",
+      },
+      {
+        name: "Nora Bennett",
+        location: "波特兰",
+        wedding: "森林小屋婚礼",
+        avatar: "/bridal/testimonials/avatar-05.png",
+        quote:
+          "我想要袖子，又怕显得厚重。报告把袖型和面料重量分开讲，试纱时沟通起来简单很多。",
+        outcome: "优先看透明袖，而不是厚重遮盖。",
+      },
+      {
+        name: "Ava Collins",
+        location: "纽约",
+        wedding: "市政厅加晚宴",
+        avatar: "/bridal/testimonials/avatar-06.png",
+        quote:
+          "最有用的是它帮我缩小范围。我不再在大裙摆和吊带裙之间反复横跳，而是有了 3 个真正适合当天的方向。",
+        outcome: "跳过了不适合场地的款式。",
+      },
+      {
+        name: "Grace Walker",
+        location: "多伦多",
+        wedding: "艺术馆晚宴",
+        avatar: "/bridal/testimonials/avatar-07.png",
+        quote:
+          "我先把报告发给伴娘看。我们终于有同一套表达，试纱时没有那么多临时意见，节奏更稳。",
+        outcome: "和朋友用同一份风格简报。",
+      },
+      {
+        name: "Leah Brooks",
+        location: "西雅图",
+        wedding: "春季花园婚礼",
+        avatar: "/bridal/testimonials/avatar-08.png",
+        quote:
+          "它看出来我想要浪漫，但不要太甜。领口和蕾丝密度的建议，帮我避开了会压身形的裙子。",
+        outcome: "重点看轻盈蕾丝和明确腰线。",
+      },
+      {
+        name: "Hannah Price",
+        location: "丹佛",
+        wedding: "山地仪式",
+        avatar: "/bridal/testimonials/avatar-01.png",
+        quote:
+          "我一直担心预算太限制选择。报告把预算变成了设计边界，而不是问题本身。",
+        outcome: "在不加预算的情况下试了结构感婚纱。",
+      },
+      {
+        name: "Isabella Grant",
+        location: "圣地亚哥",
+        wedding: "海岸露台",
+        avatar: "/bridal/testimonials/avatar-02.png",
+        quote:
+          "我同时喜欢抹胸和 V 领。报告把它们放进不同方案里，我可以分别试，而不是把所有想法混在一起。",
+        outcome: "一次预约里比较了两个领口。",
+      },
+      {
+        name: "Olivia Hart",
+        location: "波士顿",
+        wedding: "历史图书馆",
+        avatar: "/bridal/testimonials/avatar-04.png",
+        quote:
+          "顾问话术真的有用。我不用解释一堆截图，造型师第一轮拿出来的裙子就更接近我的需求。",
+        outcome: "第一小时就试到了更准的款式。",
+      },
+      {
+        name: "Rachel Moore",
+        location: "亚特兰大",
+        wedding: "晚宴舞厅",
+        avatar: "/bridal/testimonials/avatar-03.png",
+        quote:
+          "我想要有气场，但不想像表演服。报告给了我一个大胆方案和两个更稳的方案，可以比较但不丢掉氛围。",
+        outcome: "在亮点和行动方便之间找到平衡。",
       },
     ],
     guideTitle: "用户真正会用到的试纱笔记",
