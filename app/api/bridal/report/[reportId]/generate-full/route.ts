@@ -435,7 +435,7 @@ async function generateFullBridalReport(reportId: string) {
 
       const result = await volcanoEngine.generateImage(prompt, {
         model: "doubao-seedream-5-0-260128",
-        size: imageType === "full_body" ? "2K" : "1K",
+        size: "2K",
         inputImages: [inputImage],
         watermark: false,
         timeoutMs: IMAGE_GENERATION_TIMEOUT_MS,
