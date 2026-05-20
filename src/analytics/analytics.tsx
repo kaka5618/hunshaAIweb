@@ -1,5 +1,6 @@
 import GoogleAnalytics from "./google-analytics";
 import ClarityAnalytics from "./clarity-analytics";
+import VercelAnalytics from "./vercel-analytics";
 import { analyticsConfig } from "@/constants/website";
 
 export type AnalyticsProps = {
@@ -21,6 +22,7 @@ export function Analytics({ forceEnableInDevelopment = false }: AnalyticsProps =
     <>
       <GoogleAnalytics />
       <ClarityAnalytics />
+      <VercelAnalytics />
     </>
   );
 }
